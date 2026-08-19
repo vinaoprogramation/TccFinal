@@ -11,7 +11,7 @@ export default function AcessoInterno({ navigation }) {
     const [senha, setSenha] = useState("");
 
     const login = autenticacao((state) => state.login)
-    const autenticado = autenticacao((state) => state.autenticado)
+    const autenticado = autenticacao((state) => state.autenticado);
 
     const handleLogin = (email, senha) => {
         if (!login) {
@@ -29,6 +29,7 @@ export default function AcessoInterno({ navigation }) {
 
 
     useEffect(() => {
+        console.log(autenticado)
         if (autenticado === null) {
             return;
         }
@@ -38,7 +39,11 @@ export default function AcessoInterno({ navigation }) {
         if (autenticado === true) {
             navigation.navigate('BackDoor')
         }
-    }, [autenticacao])
+    }, [autenticado])
+
+
+
+
 
 
     return <>

@@ -1,6 +1,8 @@
 const autenticacaoService = require('../services/autenticacaoService');
 
 async function login(req, res) {
+  console.log("Início do login")
+
   try {
     const { email, senha } = req.body;
 

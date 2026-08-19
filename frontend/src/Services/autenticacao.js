@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'http://localhost:3000/autencicacao' 
+  ? 'http://localhost:3000/autenticacao' 
   : 'http://192.168.1.11:3000/autencicacao';
   //'http://10.0.2.2:3000/usuarios'
 
@@ -15,7 +15,6 @@ const autenticacao = create((set, get) => ({
   mode: false,
 
   login: async (email, senha) => {
-    console.log(email, senha)
 
     try {
       const response = await fetch(`${baseUrl}/login`, {
@@ -26,12 +25,16 @@ const autenticacao = create((set, get) => ({
         body: JSON.stringify({ email, senha })
       });
 
-      console.log("Resposta: "+response)
+      console.log("Status da Resposta:", response.status);
 
+      
 
-      const answer = await response.json();
+      const answer = await response;
+
       
       await storeToken(answer.token);
+
+      console.log(answer)
 
       
       if (answer.token) {

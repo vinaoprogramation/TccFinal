@@ -3,15 +3,17 @@ import { storeToken, getToken, removeToken } from './authStorage';
 
 import { Platform } from 'react-native';
 
+import api from './api';
+
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
   ? 'http://localhost:3000/autenticacao' 
-  : 'http://192.168.1.11:3000/autencicacao';
+  : 'http://192.168.1.11:3000/autenticacao';
   //'http://10.0.2.2:3000/usuarios'
 
 const autenticacao = create((set, get) => ({
   autenticado: false,
-  user: null,
+  usuario: null,
   mode: false,
 
   login: async (email, senha) => {
@@ -26,20 +28,19 @@ const autenticacao = create((set, get) => ({
       });
 
       console.log("Status da Resposta:", response.status);
-
       
 
-      const answer = await response;
+      const answer = await response.json();
 
       
       await storeToken(answer.token);
-
-      console.log(answer)
-
       
       if (answer.token) {
-        set({ autenticado: true, user: { username: answer.username, foto: answer.foto } });
-        console.log(get().user)
+
+        set({ autenticado: true });
+
+        get().consultarUsuario();
+
         if(answer.role == 'admin'){
           set({mode: true})
         } else{
@@ -53,29 +54,37 @@ const autenticacao = create((set, get) => ({
   },
 
 
-  registrar: async (username, password) => {
+
+
+
+  consultarUsuario: async () => {
 
     try {
-      const response = await fetch(`${baseUrl}/registrar`, {
+      const response = await api.get(`${baseUrl}/consultar/eu`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password })
+        }
       });
-      const answer = await response.json();
 
-      await storeToken(answer.token);
+      console.log("Status da Resposta:", response.status);
 
-      if (answer.token) {
-        set({ autenticado: true, user: { username: answer.username } });
-      }
-      
+
+      const answer = await response.data;
+
+
+      if (answer) {
+
+        set({ usuario: answer.usuario});
+
+      }      
 
     } catch (error) {
-      console.error('Erro ao fazer registro e login:', error);
+      console.error('Erro ao consultar uruário:', error);
     }
   },
+
+
 
   logout: async() => {
     await removeToken();

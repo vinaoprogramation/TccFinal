@@ -8,6 +8,8 @@ async function login(email, senha) {
       `${BASE_URL}/auth/login`,{
         "email": email,
         "senha": senha
+      }, {
+        family: 4
       }
     );
 

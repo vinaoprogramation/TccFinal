@@ -4,6 +4,12 @@ const corsOptions = {
   origin: ['http://localhost:8081', 'http://10.0.2.2:8081',]
 }
 
+require('dnscache')({
+  enable: true,
+  ttl: 300,       // Mantém o endereço salvo por 5 minutos
+  cachesize: 1000 // Capacidade do cache
+});
+
 const app = require('./app');
 app.use(cors(corsOptions));
 

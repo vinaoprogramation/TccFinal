@@ -57,6 +57,9 @@ async function registrar(req, res) {
 async function consultarEu(req, res) {
 
   try {
+    const { extractBearerToken } = require('../utils/header');
+    const token = extractBearerToken(req);
+    
 
     if (!token) {
       return res.status(400).json({

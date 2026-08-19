@@ -11,13 +11,11 @@ const baseUrl = isWeb
   : 'http://192.168.1.11:3000/autenticacao';
   //'http://10.0.2.2:3000/usuarios'
 
-const useCatalogo = create((set, get) => ({
-    projetos: [],
-
-    consultaCatalogo: async () => {
+const useEstoque = create((set, get) => ({
+    consultaEstoque: async () => {
 
         try {
-          const response = await api.get(`${baseUrl}/catalogo`, {
+          const response = await api.get(`${baseUrl}/estoque/`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -28,8 +26,6 @@ const useCatalogo = create((set, get) => ({
     
     
           const answer = await response.data;   
-
-          set({projetos: answer.projetos})
     
         } catch (error) {
           console.error('Erro ao consultar uruário:', error);
@@ -39,4 +35,4 @@ const useCatalogo = create((set, get) => ({
 
 }));
 
-export default useCatalogo;
+export default useEstoque;

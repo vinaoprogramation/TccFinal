@@ -7,14 +7,31 @@ import styles from "./styles";
 import autenticacao from "../../Services/autenticacao";
 
 export default function BackDoor({ navigation }) {
-  const user = autenticacao((state) => state.user);
+
+  const usuario = autenticacao((state) => state.usuario);
+
+
 
   return <>
     <View>
-      <View>
-        <Text>Área Interna</Text>
-        <Text>Aqui você encontra dashboards, contas, etc</Text>
+
+      <View style={styles.cabecalho}>
+        
+        <View style={styles.titulo}>
+          <Text style={styles.saudacao}>Área Interna</Text>
+        </View>
+
+        <View style={styles.subTitulo}>
+          <Text style={styles.nome}>{usuario?.nome}</Text>
+          <Text style={styles.matricula}>{usuario?.matricula}</Text>
+        </View>
+
+        <View>
+          <Text style={styles.descricao}>Aqui você encontra dashboards, estoque, contas, etc</Text>
+        </View>
+
       </View>
+      
     </View>
   </>
 }

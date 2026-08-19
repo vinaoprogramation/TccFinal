@@ -10,17 +10,19 @@ const styles = StyleSheet.create({
     flex: 1
   },
   saudacao:{
-    fontSize: 20
+    fontSize: 20,
+    marginTop: 200
   },
   botoes:{
-    gap: 5
+    gap: 10,
+    marginTop: 20
   },
   botao:{
     borderRadius: 10,
-    backgroundColor: '#ffffff81',
+    backgroundColor: '#ffffff',
     elevation: 5,
     paddingVertical: 10,
-    width: width*0.7
+    width: width*0.9
     
   },
   textoBotao:{

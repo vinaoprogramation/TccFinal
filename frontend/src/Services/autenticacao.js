@@ -7,7 +7,7 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'http://localhost:3000/autenticacao' 
+  ? 'https://glorious-space-garbanzo-g47rjx6vx7px2v4r6-3000.app.github.dev/autenticacao' 
   : 'http://10.0.2.2:3000/autenticacao';
   //'http://10.0.2.2:3000/usuarios'
 

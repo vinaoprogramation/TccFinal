@@ -22,10 +22,13 @@ async function filtrosCatalogo(req, res) {
 }
 
 async function consultaProjeto(req, res) {
+  console.log("Está aqui")
   try {
+    console.log(req.params.id)
     const id = req.params.id;
     if (!id) return res.status(400).json({ error: 'Id ausente' });
     const resultado = await catalogoService.consultaProjeto(id);
+    console.log(resultado)
     return res.json(resultado);
   } catch (error) {
     console.error(error);

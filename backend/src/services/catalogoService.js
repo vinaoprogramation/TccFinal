@@ -109,7 +109,14 @@ async function filtrosCatalogo() {
 
 async function consultaProjeto(id) {
   const api = await axios.get(`${BASE_URL}/catalogo/${id}`);
-  return api.data;
+  const resposta = api.data
+  const fotos = api.data.fotos;
+
+  const listaFotos = await fotos.map(f => 
+    `${BASE_URL}/catalogo/fotos/${f.foto}/visualizar`);
+    
+
+  return ({resposta, listaFotos});
 }
 
 async function visualizarFotoPublica(id) {

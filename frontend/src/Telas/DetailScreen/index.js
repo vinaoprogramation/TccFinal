@@ -5,23 +5,39 @@ import useCatalogo from '../../Services/useCatalogo';
 
 import BotaoVoltar from '../../Reutilizaveis/BotaoVoltar';
 import PassadorImagens from '../../Reutilizaveis/PassadorImagens';
-import arrow from '../../../assets/arrow.png'
+import passarTela from '../../Services/passarTela';
+
 
 export default function DetailScreen({ navigation, route }) {
     const item = route.params;
+    const setMostra = passarTela((state) => state.setMostra);
     const consultaProjeto = useCatalogo((state) => state.consultaProjeto);
     const projetoIndividual = useCatalogo((state) => state.projetoIndividual);
 
     const [fotos, setFotos] = useState([]);
     const [contador, setContador] = useState(0);
 
-    useEffect(async() => {
-        if(consultaProjeto){
-            console.log(item.id)
-            await consultaProjeto(item.id);
-            setFotos(projetoIndividual?.fotos)
-        }
-    }, [consultaProjeto])
+    
+  useEffect(() => { 
+    const buscarDados = async () => {
+      if (consultaProjeto && item?.id) { 
+        console.log("id: "+item.id); 
+        await consultaProjeto(item.id); 
+      } 
+    };
+
+    buscarDados();
+  }, [consultaProjeto, item?.id]); 
+
+  useEffect(() => {
+    if (projetoIndividual) {
+        console.log(projetoIndividual)
+        console.log(projetoIndividual.map(p => p.foto))
+        const fotos = projetoIndividual.map(p => p.foto)
+      setFotos(fotos);
+    }
+  }, [projetoIndividual]);
+
 
 
 
@@ -36,10 +52,14 @@ export default function DetailScreen({ navigation, route }) {
 
             <PassadorImagens
                 navigation={navigation}
-                props={fotos}
+                props={[item.id, fotos]}
             />
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => {
+                    setMostra();
+                }}
+                >
                     <Image
                         source={{ uri: item.thumbnailUrl }}
                         style={styles.imagemImpressao}

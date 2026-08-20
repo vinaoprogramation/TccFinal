@@ -7,7 +7,7 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'http://localhost:3000' 
+  ? 'https://glorious-space-garbanzo-g47rjx6vx7px2v4r6-3000.app.github.dev'  
   : 'http://10.0.2.2:3000';
   //'http://10.0.2.2:3000/usuarios'
 
@@ -37,20 +37,14 @@ const useCatalogo = create((set, get) => ({
 
 
       consultaProjeto: async (id) => {
+        console.log("id: "+id)
 
         try {
           const response = await api.get(`${baseUrl}/catalogo/${id}`);
     
-          console.log("Status da Resposta:", response.status);
-
-          console.log("Resposta: "+response.data.fotos.foto)
+          console.log("Status da Resposta:", response.status);    
     
-    
-          const answer = await response.data.fotos.foto;   
-
-          console.log(answer)
-
-          
+          const answer = await response.data.fotos;   
 
           set({projetoIndividual: answer})
     

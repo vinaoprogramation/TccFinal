@@ -13,6 +13,7 @@ const baseUrl = isWeb
 
 const useCatalogo = create((set, get) => ({
     projetos: [],
+    projetoIndividual: null,
 
     consultaCatalogo: async () => {
 
@@ -30,6 +31,31 @@ const useCatalogo = create((set, get) => ({
     
         } catch (error) {
           console.error('Erro ao consultar catálogo:', error);
+        }
+      },
+
+
+
+      consultaProjeto: async (id) => {
+
+        try {
+          const response = await api.get(`${baseUrl}/catalogo/${id}`);
+    
+          console.log("Status da Resposta:", response.status);
+
+          console.log("Resposta: "+response.data.fotos.foto)
+    
+    
+          const answer = await response.data.fotos.foto;   
+
+          console.log(answer)
+
+          
+
+          set({projetoIndividual: answer})
+    
+        } catch (error) {
+          console.error('Erro ao consultar projeto:', error);
         }
       },
     

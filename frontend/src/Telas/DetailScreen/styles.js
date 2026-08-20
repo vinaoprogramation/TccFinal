@@ -62,6 +62,12 @@ const styles = StyleSheet.create({
         padding: 5,
         fontSize: 14,
         textAlign: 'center',
+    },
+    seta:{
+        position: 'absolute',
+        verticalAlign: 'middle',
+        width: 30,
+        height: 30
     }
 
 });

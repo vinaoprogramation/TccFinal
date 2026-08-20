@@ -13,6 +13,9 @@ export default function Inicio({navigation}){
 
     <View style={styles.botoes}>
       <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('HomeScreen')
+      }}
      
       style={styles.botao}
       >

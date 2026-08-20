@@ -7,8 +7,8 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'http://localhost:3000/autenticacao' 
-  : 'http://192.168.1.11:3000/autenticacao';
+  ? 'http://localhost:3000' 
+  : 'http://10.0.2.2:3000';
   //'http://10.0.2.2:3000/usuarios'
 
 const useCatalogo = create((set, get) => ({
@@ -17,22 +17,19 @@ const useCatalogo = create((set, get) => ({
     consultaCatalogo: async () => {
 
         try {
-          const response = await api.get(`${baseUrl}/catalogo`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
+          const response = await api.get(`${baseUrl}/catalogo`);
     
           console.log("Status da Resposta:", response.status);
     
     
-          const answer = await response.data;   
+          const answer = await response.data.resultado;   
 
-          set({projetos: answer.projetos})
+          
+
+          set({projetos: answer})
     
         } catch (error) {
-          console.error('Erro ao consultar uruário:', error);
+          console.error('Erro ao consultar catálogo:', error);
         }
       },
     

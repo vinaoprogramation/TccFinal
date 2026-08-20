@@ -8,7 +8,7 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
   ? 'http://localhost:3000/autenticacao' 
-  : 'http://192.168.1.11:3000/autenticacao';
+  : 'http://10.0.2.2:3000/autenticacao';
   //'http://10.0.2.2:3000/usuarios'
 
 const autenticacao = create((set, get) => ({
@@ -80,7 +80,7 @@ const autenticacao = create((set, get) => ({
       }      
 
     } catch (error) {
-      console.error('Erro ao consultar uruário:', error);
+      console.error('Erro ao consultar usuário:', error);
     }
   },
 

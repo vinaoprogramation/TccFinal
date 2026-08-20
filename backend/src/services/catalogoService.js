@@ -1,6 +1,8 @@
 const axios = require('axios');
-
+const sharp = require('sharp');
 const BASE_URL = 'https://api-ip3d.mbinfoseg.com.br/api';
+
+
 
 async function listaProjetos(busca, categoria, material, aluno) {
   const params = {};
@@ -9,9 +11,96 @@ async function listaProjetos(busca, categoria, material, aluno) {
   if (material) params.material = material;
   if (aluno) params.aluno = aluno;
 
+  // Passa os filtros na requisição
   const api = await axios.get(`${BASE_URL}/catalogo`, { params });
-  return api.data;
+  const projetos = api.data.projetos || [];
+
+  const resultado = await Promise.all(
+    projetos.map(async (p) => {
+      // Busca os detalhes individuais de cada projeto
+      const detalheRes = await axios.get(`${BASE_URL}/catalogo/${p.id}`);
+      const dados = detalheRes.data;
+      
+      const fotos = dados.fotos || [];
+      const projetoInfo = dados.projeto || {};
+      
+      let thumbnailBase64 = null;
+      if (fotos[0]) {
+        const buffer = await gerarThumbnail(fotos[0].id);
+        thumbnailBase64 = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+      }
+
+      let dataFormatada = null;
+      if (projetoInfo.created_at) {
+        const data = new Date(projetoInfo.created_at);
+        dataFormatada = new Intl.DateTimeFormat('pt-BR', { 
+          dateStyle: 'short', 
+          timeStyle: 'short', 
+          timeZone: 'America/Sao_Paulo' 
+        }).format(data);
+      }
+
+      return {
+        ...p,
+        thumbnailUrl: thumbnailBase64,
+        fotoPerfil: projetoInfo.usuario_id ? `${BASE_URL}/catalogo/usuarios/${projetoInfo.usuario_id}/avatar` : null,
+        data: dataFormatada
+      };
+    })
+  );
+
+  return { resultado };
 }
+
+
+async function baixarImagem(id) {
+
+  const response = await axios.get(
+    `${BASE_URL}/catalogo/fotos/${id}/visualizar`,
+    {
+      responseType: 'arraybuffer'
+    }
+  );
+  return response.data;
+}
+
+
+async function gerarThumbnail(id) {
+
+  const imagem = await baixarImagem(id);
+
+  const buffer = await sharp(imagem)
+    .rotate()
+    .resize({
+      width: 600,
+      withoutEnlargement: true,
+      fit: 'inside'
+    })
+    .jpeg({
+      quality: 55,
+      mozjpeg: true,
+      chromaSubsampling: '4:4:4'
+    })
+    .toBuffer();
+
+  return buffer;
+}
+
+
+async function obterMetadata(id) {
+
+  const imagem = await baixarImagem(id);
+
+  return await sharp(imagem).metadata();
+}
+
+
+module.exports = {
+  gerarThumbnail,
+  obterMetadata
+};
+
+
 
 async function filtrosCatalogo() {
   const api = await axios.get(`${BASE_URL}/catalogo/filtros`);

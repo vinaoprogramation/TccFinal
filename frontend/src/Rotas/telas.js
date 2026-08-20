@@ -7,7 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Inicio from '../Telas/Inicio';
 import AcessoInterno from '../Telas/AcessoInterno';
 import BackDoor from '../Telas/BackDoor';
-
+import HomeScreen from '../Telas/HomeScreen';
+import DetailScreen from '../Telas/DetailScreen';
 
 const Tab = createNativeStackNavigator();
 
@@ -21,6 +22,15 @@ export default function Rotas() {
         <Tab.Screen name="Inicio" options={{ headerShown: false }}
           component={Inicio}
         />
+
+        <Tab.Screen name="HomeScreen" options={{ headerShown: false }}
+          component={HomeScreen}
+        />
+
+        <Tab.Screen name="DetailScreen" options={{ headerShown: false }}
+          component={DetailScreen}
+        />
+
 
         <Tab.Screen name="AcessoInterno" options={{ headerShown: false }}
           component={AcessoInterno}

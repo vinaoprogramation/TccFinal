@@ -42,9 +42,11 @@ const useCatalogo = create((set, get) => ({
         try {
           const response = await api.get(`${baseUrl}/catalogo/${id}`);
     
-          console.log("Status da Resposta:", response.status);    
+          console.log("Status da Resposta:", response.status);
+          
+          console.log("resposta: "+response.data.listaFotos)
     
-          const answer = await response.data.fotos;   
+          const answer = await response.data.listaFotos;   
 
           set({projetoIndividual: answer})
     

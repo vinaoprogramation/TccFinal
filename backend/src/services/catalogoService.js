@@ -113,7 +113,7 @@ async function consultaProjeto(id) {
   const fotos = api.data.fotos;
 
   const listaFotos = await fotos.map(f => 
-    `${BASE_URL}/catalogo/fotos/${f.foto}/visualizar`);
+    `${BASE_URL}/catalogo/fotos/${f.id}/visualizar`);
     
 
   return ({resposta, listaFotos});

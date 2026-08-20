@@ -19,11 +19,6 @@ export default function PassadorImagens({navigation, props}){
 
 
 
-  useEffect(() => {
-
-  })
-
-
   return <>
   {mostra === true? 
 

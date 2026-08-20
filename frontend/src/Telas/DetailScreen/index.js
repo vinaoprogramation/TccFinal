@@ -29,18 +29,6 @@ export default function DetailScreen({ navigation, route }) {
     buscarDados();
   }, [consultaProjeto, item?.id]); 
 
-  useEffect(() => {
-    if (projetoIndividual) {
-        console.log(projetoIndividual)
-        console.log(projetoIndividual.map(p => p.foto))
-        const fotos = projetoIndividual.map(p => p.foto)
-      setFotos(fotos);
-    }
-  }, [projetoIndividual]);
-
-
-
-
     return <>
         
         <ScrollView style={styles.item}>

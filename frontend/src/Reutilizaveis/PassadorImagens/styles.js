@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     imagem:{
         width: 50,
         height: 50,
-        borderRadius: 100
+        borderRadius: 100,
     },
     fundo:{
         backgroundColor: 'white',
@@ -39,10 +39,21 @@ const styles = StyleSheet.create({
         zIndex: 3
     },
     foto:{
-        width: width*0.8,
+        width: width,
         height: 500,
-        zIndex: 5
+        zIndex: 5,
+        alignSelf: 'center'
+    },
+    containerFoto:{
+        alignSelf: 'center',
+        verticalAlign: 'middle'
+
+    },
+    container:{
+        position: 'relative',
+        zIndex: -1
     }
+
 });
 
 export default styles;

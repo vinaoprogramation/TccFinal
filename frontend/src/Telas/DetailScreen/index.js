@@ -15,45 +15,43 @@ export default function DetailScreen({ navigation, route }) {
     const projetoIndividual = useCatalogo((state) => state.projetoIndividual);
 
     const [fotos, setFotos] = useState([]);
-    const [contador, setContador] = useState(0);
 
-    
-  useEffect(() => { 
-    const buscarDados = async () => {
-      if (consultaProjeto && item?.id) { 
-        console.log("id: "+item.id); 
-        await consultaProjeto(item.id); 
-      } 
-    };
 
-    buscarDados();
-  }, [consultaProjeto, item?.id]); 
+
+    useEffect(() => {
+        const buscarDados = async () => {
+            if (consultaProjeto && item?.id) {
+                console.log("Buscando ID: " + item.id);
+                await consultaProjeto(item.id);
+            }
+        };
+        buscarDados();
+    }, [item?.id]);
+
+    useEffect(() => {
+        if (projetoIndividual) {
+            setFotos(projetoIndividual);
+        }
+    }, [projetoIndividual]);
+
+
 
     return <>
-        
+
         <ScrollView style={styles.item}>
-        
-            <View >
             <BotaoVoltar
-            navigation={navigation}
-            />
-
-            <PassadorImagens
                 navigation={navigation}
-                props={[item.id, fotos]}
+
             />
 
-                <TouchableOpacity
-                onPress={() => {
-                    setMostra();
-                }}
-                >
-                    <Image
-                        source={{ uri: item.thumbnailUrl }}
-                        style={styles.imagemImpressao}
-                        resizeMode='contain'
-                    />
-                </TouchableOpacity>
+
+            <View >
+
+
+                <PassadorImagens
+                    navigation={navigation}
+                    props={[item.id, fotos]}
+                />
 
 
                 <View style={styles.textos}>
@@ -73,7 +71,7 @@ export default function DetailScreen({ navigation, route }) {
 
                     <Text style={styles.nomeImpressao}>{item.nome_impressao}</Text>
 
-                   <View style={styles.detalhes}>
+                    <View style={styles.detalhes}>
                         <View style={styles.conteudo}>
                             <View style={styles.materiais}>
                                 <Text style={styles.materiaisItem}>{item.categoria}</Text>
@@ -104,6 +102,10 @@ export default function DetailScreen({ navigation, route }) {
 
 
             </View>
+
+            <TouchableOpacity style={styles.botaoStl}>
+                <Text style={styles.textoStl}>Baixar Stl</Text>
+            </TouchableOpacity>
         </ScrollView>
     </>
 }

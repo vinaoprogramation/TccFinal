@@ -5,7 +5,7 @@ import { getToken } from './authStorage';
 const isWeb = Platform.OS === 'web';
 
 const api = axios.create({
-  baseURL: isWeb ? 'https://glorious-space-garbanzo-g47rjx6vx7px2v4r6-3000.app.github.dev/' : 'http://10.0.2.2:3000',
+  baseURL: isWeb ? 'http://localhost:3000' : 'http://10.0.2.2:3000',
   //'http://10.0.2.2:3000/usuarios'
 });
 api.interceptors.request.use(

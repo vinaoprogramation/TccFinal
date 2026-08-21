@@ -3,6 +3,7 @@ const catalogoService = require('../services/catalogoService');
 async function listaProjetos(req, res) {
   try {
     const { busca, categoria, material, aluno } = req.query;
+    console.log(busca, categoria, material, aluno)
     const resultado = await catalogoService.listaProjetos(busca, categoria, material, aluno);
     return res.json(resultado);
   } catch (error) {
@@ -22,13 +23,11 @@ async function filtrosCatalogo(req, res) {
 }
 
 async function consultaProjeto(req, res) {
-  console.log("Está aqui")
   try {
     console.log(req.params.id)
     const id = req.params.id;
     if (!id) return res.status(400).json({ error: 'Id ausente' });
     const resultado = await catalogoService.consultaProjeto(id);
-    console.log(resultado)
     return res.json(resultado);
   } catch (error) {
     console.error(error);

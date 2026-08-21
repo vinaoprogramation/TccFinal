@@ -11,13 +11,12 @@ async function listaProjetos(busca, categoria, material, aluno) {
   if (material) params.material = material;
   if (aluno) params.aluno = aluno;
 
-  // Passa os filtros na requisição
   const api = await axios.get(`${BASE_URL}/catalogo`, { params });
   const projetos = api.data.projetos || [];
 
   const resultado = await Promise.all(
     projetos.map(async (p) => {
-      // Busca os detalhes individuais de cada projeto
+
       const detalheRes = await axios.get(`${BASE_URL}/catalogo/${p.id}`);
       const dados = detalheRes.data;
       

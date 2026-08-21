@@ -8,7 +8,7 @@ import arrow from '../../../assets/arrow.png'
 
 import passarTela from "../../Services/passarTela";
 
-export default function PassadorImagens({navigation, props}){
+export default function PassadorImagens({ navigation, props }) {
   const numeroInicial = props[0];
   const fotos = props[1];
   const mostra = passarTela((state) => state.mostra);
@@ -18,50 +18,44 @@ export default function PassadorImagens({navigation, props}){
   const [contadorFotos, setContadorFotos] = useState(0);
 
 
+  useEffect(() => {
+    console.log("Fotos: " + fotos)
+  })
 
   return <>
-  {mostra === true? 
+        <View style={styles.container}>
+          <Image
+            source={{ uri: fotos[contadorFotos] }}
+            style={styles.foto}
+          />
 
-    <>
-      <Image
-      source={{uri: fotos[contadorFotos]}}
-      style={styles.foto}
-      />
+          {contador > numeroInicial ? (<TouchableOpacity
+            style={styles.fundo2}
+            onPress={() => {
+              setContador(contador - 1)
+              setContadorFotos(contadorFotos - 1)
+            }}
+          >
+            <Image
+              source={arrow}
+              style={styles.imagem2}
+            />
+          </TouchableOpacity>) : null}
 
-      {contador > numeroInicial ? (<TouchableOpacity
-        style={styles.fundo2}
-        onPress={() => {
-          setContador(contador - 1)
-          setContadorFotos(contadorFotos - 1)
-        }}
-      >
-        <Image
-          source={arrow}
-          style={styles.imagem2}
-        />
-      </TouchableOpacity>) : null}
+          {contador < fotos.length - 1 + numeroInicial ? (<TouchableOpacity
+            onPress={() => {
+              setContador(contador + 1)
+              setContadorFotos(contadorFotos + 1)
+            }}
+            style={styles.fundo}
+          >
+            <Image
+              source={arrow}
+              style={styles.imagem}
+            />
+          </TouchableOpacity>) : null}
+        </View>
 
-      {contador < fotos.length + numeroInicial ? (<TouchableOpacity
-        onPress={() => {
-          setContador(contador + 1)
-          setContadorFotos(contadorFotos + 1)
-        }}
-        style={styles.fundo}
-      >
-        <Image
-          source={arrow}
-          style={styles.imagem}
-        />
-      </TouchableOpacity>) : null}
 
-      <TouchableOpacity style={styles.fundoTotal}
-        onPress={() => {
-          setMostra();
-        }}
-      />
-    </> : (null)}
-
-  
-    
   </>
 }

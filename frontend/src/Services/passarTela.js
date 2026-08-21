@@ -7,12 +7,13 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'https://glorious-space-garbanzo-g47rjx6vx7px2v4r6-3000.app.github.dev'  
+  ? 'http://localhost:3000'
   : 'http://10.0.2.2:3000';
   //'http://10.0.2.2:3000/usuarios'
 
 const passarTela = create((set, get) => ({
     mostra: false,
+    filtroUsado: true,
 
     setMostra: () => {
         const v = get().mostra;
@@ -21,7 +22,16 @@ const passarTela = create((set, get) => ({
         } else{
             set({mostra: true});
         }
-        console.log(get().mostra)
+        
+    },
+
+    setFiltros: () => {
+        const v = get().filtroUsado;
+        if(v === true){
+            set({filtroUsado: false});
+        } else{
+            set({filtroUsado: true});
+        }
         
     }
 

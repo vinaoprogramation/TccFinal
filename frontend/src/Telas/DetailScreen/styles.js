@@ -68,6 +68,21 @@ const styles = StyleSheet.create({
         verticalAlign: 'middle',
         width: 30,
         height: 30
+    },
+    botaoStl:{
+        backgroundColor: "rgb(73, 171, 216)",
+        width: width*0.6,
+        padding: 20,
+        alignSelf: 'center',
+        marginBottom: 100,
+        borderRadius: 20,
+        elevation: 5
+    },
+    textoStl:{
+        color:'#ffffff',
+        textAlign: 'center',
+        fontWeight:'600',
+        fontSize: 18
     }
 
 });

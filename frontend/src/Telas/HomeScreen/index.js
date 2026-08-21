@@ -3,6 +3,10 @@ import { Text, View, FlatList, ActivityIndicator, Image, Touchable, TouchableOpa
 import styles from './styles';
 import useCatalogo from '../../Services/useCatalogo';
 
+import Filtros from '../../Reutilizaveis/Filtros';
+
+import BotaoFiltro from '../../Reutilizaveis/BotaoFiltro';
+
 export default function HomeScreen({ navigation }) {
   const projetos = useCatalogo((state) => state.projetos);
   const consultaCatalogo = useCatalogo((state) => state.consultaCatalogo);
@@ -30,29 +34,37 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View>
+      <BotaoFiltro/>
+      <Filtros/>
+      
+
 
 
 
       <FlatList
         data={projetos}
+        extraData={detalhesId}
         keyExtractor={(item) => String(item.id)}
         style={styles.flatList}
-        ListHeaderComponent={() => (
+        ListHeaderComponent={() => <>
+          
           <View style={styles.cabecalho}>
             <Text style={styles.saudacao}>Olá, confira o nosso catálogo de impressões</Text>
 
             <Text style={styles.app}>Reni 3D App</Text>
+            
           </View>
-        )}
-        renderItem={({ item }) => (
+          </>
+          }
+        renderItem={({ item }) => <>
           <TouchableOpacity style={styles.item}
             onPress={() => {
               {
-                {
-                  detalhesId ? item.id != detalhesId ? (setDetalhesId(item.id)
-                    , setDetalhes(true)) : (setDetalhesId(item.id)
-                      , setDetalhes(!detalhes)) : (setDetalhesId(item.id)
-                        , setDetalhes(!detalhes))
+                if (detalhesId === item.id) {
+                  setDetalhes(!detalhes);
+                } else {
+                  setDetalhesId(item.id);
+                  setDetalhes(true);
                 }
 
               }
@@ -121,8 +133,10 @@ export default function HomeScreen({ navigation }) {
 
           </TouchableOpacity>
 
+          
 
-        )
+
+          </>
         }
       />
     </View >

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const cors = require('cors');
 const corsOptions = {
-  origin: ['http://localhost:8081', 'http://10.0.2.2:8081', 'https://glorious-space-garbanzo-g47rjx6vx7px2v4r6-8081.app.github.dev']
+  origin: ['http://localhost:8081', 'http://10.0.2.2:8081']
 }
 
 require('dnscache')({

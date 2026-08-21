@@ -78,8 +78,7 @@ const styles = StyleSheet.create({
     },
     cabecalho:{
         backgroundColor: 'rgb(41, 135, 223)',
-        height: 300,
-        padding: 30
+        padding: 30,
     },
     saudacao:{
         fontSize: 22,
@@ -91,6 +90,23 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontWeight: 'bold',
         top: 10
+    },
+    filtro:{
+        flexDirection: 'row',
+        marginTop: 50,
+        gap: 5
+
+    },
+    textoFiltro:{
+        color: 'rgb(0, 52, 95)',
+        fontSize: 25,
+        fontWeight: '300',
+        verticalAlign: 'middle'
+    },
+    imagemFiltro:{
+        width: 30,
+        height: 30,
+        verticalAlign: 'middle'
     }
 });
 

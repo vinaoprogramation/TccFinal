@@ -6,55 +6,88 @@ import { Platform } from 'react-native';
 import api from './api';
 
 const isWeb = Platform.OS === 'web';
-const baseUrl = isWeb 
-  ? 'https://glorious-space-garbanzo-g47rjx6vx7px2v4r6-3000.app.github.dev'  
+const baseUrl = isWeb
+  ? 'http://localhost:3000'
   : 'http://10.0.2.2:3000';
-  //'http://10.0.2.2:3000/usuarios'
+//'http://10.0.2.2:3000/usuarios'
 
 const useCatalogo = create((set, get) => ({
-    projetos: [],
-    projetoIndividual: null,
-
-    consultaCatalogo: async () => {
-
-        try {
-          const response = await api.get(`${baseUrl}/catalogo`);
-    
-          console.log("Status da Resposta:", response.status);
-    
-    
-          const answer = await response.data.resultado;   
-
-          
-
-          set({projetos: answer})
-    
-        } catch (error) {
-          console.error('Erro ao consultar catálogo:', error);
-        }
-      },
+  projetos: [],
+  projetoIndividual: [],
+  alunos: [],
+  categorias: [],
+  materiais: [],
 
 
+  consultaCatalogo: async (busca, categoria, material, aluno) => {
+    console.log(busca, categoria, material, aluno)
 
-      consultaProjeto: async (id) => {
-        console.log("id: "+id)
+    try {
 
-        try {
-          const response = await api.get(`${baseUrl}/catalogo/${id}`);
-    
-          console.log("Status da Resposta:", response.status);
-          
-          console.log("resposta: "+response.data.listaFotos)
-    
-          const answer = await response.data.listaFotos;   
+      const params = {};
+      if (busca) params.busca = busca;
+      if (categoria) params.categoria = categoria;
+      if (material) params.material = material;
+      if (aluno) params.aluno = aluno;
 
-          set({projetoIndividual: answer})
-    
-        } catch (error) {
-          console.error('Erro ao consultar projeto:', error);
-        }
-      },
-    
+
+      const response = await api.get(`${baseUrl}/catalogo`, {params});
+
+      console.log("Status da Resposta:", response.status);
+
+
+      const answer = await response.data.resultado;
+
+
+
+      set({ projetos: answer })
+
+    } catch (error) {
+      console.error('Erro ao consultar catálogo:', error);
+    }
+  },
+
+
+
+  consultaFiltros: async () => {
+
+    try {
+
+      const response = await api.get(`${baseUrl}/catalogo/filtros`, {
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+      const answer = await response.data;
+
+      set({ alunos: answer.alunos, categorias: answer.categorias, materiais: answer.materiais })
+
+
+    } catch (error) {
+      console.error('Erro ao consultar catálogo:', error);
+    }
+  },
+
+
+
+  consultaProjeto: async (id) => {
+    set({ projetoIndividual: null });
+
+
+    try {
+      const response = await api.get(`${baseUrl}/catalogo/${id}`);
+
+      console.log("Status da Resposta:", response.status);
+
+      const answer = await response.data.listaFotos;
+
+      set({ projetoIndividual: answer })
+
+    } catch (error) {
+      console.error('Erro ao consultar projeto:', error);
+    }
+  },
+
 
 }));
 

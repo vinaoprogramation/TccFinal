@@ -10,8 +10,6 @@ export default function BackDoor({ navigation }) {
 
   const usuario = autenticacao((state) => state.usuario);
 
-
-
   return <>
     <View>
 
@@ -25,6 +23,11 @@ export default function BackDoor({ navigation }) {
           <Text style={styles.nome}>{usuario?.nome}</Text>
           <Text style={styles.matricula}>{usuario?.matricula}</Text>
         </View>
+
+        <Image
+          source={{uri: usuario.fotoPerfil}}
+          style={{width: 200, height: 200}}
+        />
 
         <View>
           <Text style={styles.descricao}>Aqui você encontra dashboards, estoque, contas, etc</Text>

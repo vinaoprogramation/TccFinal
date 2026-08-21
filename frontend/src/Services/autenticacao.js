@@ -7,8 +7,8 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'http://localhost:3000'
-  : 'http://10.0.2.2:3000/autenticacao';
+  ? 'http://localhost:3000/autenticacao'
+  : 'http://192.168.1.11:3000/autenticacao';
   //'http://10.0.2.2:3000/usuarios'
 
 const autenticacao = create((set, get) => ({
@@ -28,6 +28,9 @@ const autenticacao = create((set, get) => ({
       });
 
       console.log("Status da Resposta:", response.status);
+
+
+      console.log(response)
       
 
       const answer = await response.json();
@@ -41,7 +44,7 @@ const autenticacao = create((set, get) => ({
 
         get().consultarUsuario();
 
-        if(answer.role == 'admin'){
+      if(answer.role == 'admin'){
           set({mode: true})
         } else{
           set({mode: false})
@@ -71,6 +74,7 @@ const autenticacao = create((set, get) => ({
 
 
       const answer = await response.data;
+      console.log(response.data.fotoPerfil);
 
 
       if (answer) {

@@ -4,7 +4,7 @@ const {width, height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
     cabecalho:{
-        backgroundColor: 'rgb(235, 235, 235)',
+        backgroundColor: 'rgb(41, 135, 223)',
         height: 240,
         padding: 40,
         elevation: 5,
@@ -14,23 +14,28 @@ const styles = StyleSheet.create({
     },
     saudacao:{
         fontSize: 18,
+        color: '#ffffff'
     },
     subTitulo:{
         fontSize: 16,
         padding: 18,
-        marginTop: 10
+        marginTop: 10,
+        color: '#ffffff'
     },
     nome:{
-        fontSize: 18
+        fontSize: 18,
+        color: '#ffffff'
     },
     matricula:{
         fontSize:  14,
         marginTop: 5,
-        padding: 10
+        padding: 10,
+        color: '#ffffff'
     },
     descricao:{
         fontSize: 14,
-        width: width* 0.6
+        width: width* 0.6,
+        color: '#ffffff'
     }
 
 });

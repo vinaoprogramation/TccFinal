@@ -5,7 +5,8 @@ const corsOptions = {
     origin: [
     'http://localhost:8081', 
     'http://10.0.2.2:8081',
-    'http://localhost:19006',
+    'http://192.168.1.11:8081',
+    
     ]
 }
 

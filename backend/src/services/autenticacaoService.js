@@ -54,7 +54,17 @@ async function consultarEu(token) {
 
     const response = api.data
 
-    return response;
+    const fotoperfil = api?.data?.usuario?.id
+    const foto = await axios.get(
+        `${BASE_URL}/catalogo/usuarios/${fotoperfil}/avatar`,
+        {
+          responseType: 'blob' 
+        }
+      );
+
+    const fotoPerfil = foto.data;
+
+    return ({response, fotoPerfil});
 }
 
 

@@ -5,13 +5,16 @@ const {width, height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   fundo:{
-    backgroundColor: '#ffffff',
+    backgroundColor: 'rgb(41, 135, 223)',
     alignItems: 'center',
     flex: 1
   },
   saudacao:{
     fontSize: 20,
-    marginTop: 200
+    marginTop: 200,
+    color: '#ffffff',
+    fontSize: 20,
+    padding: 20
   },
   botoes:{
     gap: 10,
@@ -28,6 +31,12 @@ const styles = StyleSheet.create({
   textoBotao:{
     fontSize: 16,
     textAlign: 'center'
+  },
+  sheilong:{
+    width: width*0.7,
+    height: 500,
+    position: 'absolute',
+    top: 320
   }
 });
 

@@ -10,6 +10,7 @@ import BotaoFiltro from '../../Reutilizaveis/BotaoFiltro';
 export default function HomeScreen({ navigation }) {
   const projetos = useCatalogo((state) => state.projetos);
   const consultaCatalogo = useCatalogo((state) => state.consultaCatalogo);
+  const consultaFiltros = useCatalogo((state) => state.consultaFiltros);
   const [carregando, setCarregando] = useState(true);
   const [detalhes, setDetalhes] = useState(false)
   const [detalhesId, setDetalhesId] = useState(null)
@@ -18,6 +19,7 @@ export default function HomeScreen({ navigation }) {
     async function carregarDados() {
       setCarregando(true);
       await consultaCatalogo();
+      await consultaFiltros();
       setCarregando(false);
     }
     carregarDados();

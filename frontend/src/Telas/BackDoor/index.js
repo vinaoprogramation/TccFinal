@@ -9,6 +9,13 @@ import autenticacao from "../../Services/autenticacao";
 export default function BackDoor({ navigation }) {
 
   const usuario = autenticacao((state) => state.usuario);
+  const foto = autenticacao((state) => state.foto);
+
+  useEffect(() => {
+    if(foto){
+      console.log(foto)
+    }
+  }, [foto])
 
   return <>
     <View>
@@ -24,10 +31,19 @@ export default function BackDoor({ navigation }) {
           <Text style={styles.matricula}>{usuario?.matricula}</Text>
         </View>
 
+
+        { 
+        foto?
+        <>
         <Image
-          source={{uri: usuario.fotoPerfil}}
-          style={{width: 200, height: 200}}
+          source={{uri: foto}}
+          style={{width: 200, height: 200, zIndex: 10, position: 'absolute'}}
         />
+        </>
+         : 
+         null
+        
+        }
 
         <View>
           <Text style={styles.descricao}>Aqui você encontra dashboards, estoque, contas, etc</Text>

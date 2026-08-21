@@ -55,16 +55,15 @@ async function consultarEu(token) {
     const response = api.data
 
     const fotoperfil = api?.data?.usuario?.id
-    const foto = await axios.get(
-        `${BASE_URL}/catalogo/usuarios/${fotoperfil}/avatar`,
-        {
-          responseType: 'blob' 
-        }
-      );
+    const foto = await axios.get(`${BASE_URL}/catalogo/usuarios/${fotoperfil}/avatar`, {
+      responseType: 'arraybuffer' // Use arraybuffer no Node.js
+  });
 
-    const fotoPerfil = foto.data;
+  // Converte o buffer para uma string Base64 utilizável
+  const base64Image = Buffer.from(foto.data, 'binary').toString('base64');
+  const fotoPerfil = `data:image/webp;base64,${base64Image}`;
 
-    return ({response, fotoPerfil});
+  return { response, fotoPerfil };
 }
 
 

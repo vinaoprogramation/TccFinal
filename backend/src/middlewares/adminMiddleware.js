@@ -10,7 +10,7 @@ async function autenticarId(req, res, next) {
 
     const decoded = verificarToken(tokenFormatado[1])
 
-    const userId = decoded.userId
+    const userId = decoded.perfil
 
     const verifyId = await usuarioRepository.buscarPorId(userId)
 

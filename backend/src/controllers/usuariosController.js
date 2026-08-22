@@ -12,11 +12,15 @@ async function perfil(req, res) {
 }
 
 async function atualizarPerfil(req, res) {
+  console.log("aqui")
   try {
     const token = req.headers.authorization?.split(' ')[1];
     const body = req.body;
+    console.log(body)
     const resultado = await usuariosService.atualizarPerfil(token, body);
+    console.log(resultado)
     return res.json(resultado);
+    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Erro ao atualizar perfil' });

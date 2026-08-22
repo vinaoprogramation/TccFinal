@@ -9,6 +9,11 @@ import AcessoInterno from '../Telas/AcessoInterno';
 import BackDoor from '../Telas/BackDoor';
 import HomeScreen from '../Telas/HomeScreen';
 import DetailScreen from '../Telas/DetailScreen';
+import Dashboard from '../Telas/Dashboard';
+import Impressoes from '../Telas/Impressoes';
+import Financeiro from '../Telas/Financeiro';
+import Aprovacoes from '../Telas/Aprovacoes';
+
 
 const Tab = createNativeStackNavigator();
 
@@ -40,6 +45,27 @@ export default function Rotas() {
         <Tab.Screen name="BackDoor" options={{ headerShown: false }}
           component={BackDoor}
         />
+
+
+        <Tab.Screen name="Dashboard" options={{ headerShown: false }}
+          component={Dashboard}
+        />
+
+
+        <Tab.Screen name="Impressoes" options={{ headerShown: false }}
+          component={Impressoes}
+        />
+
+        <Tab.Screen name="Financeiro" options={{ headerShown: false }}
+          component={Financeiro}
+        />
+
+
+        <Tab.Screen name="Aprovacoes" options={{ headerShown: false }}
+          component={Aprovacoes}
+        />
+
+
 
       </Tab.Navigator>
     </NavigationContainer>

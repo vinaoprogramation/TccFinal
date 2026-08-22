@@ -3,7 +3,6 @@ const catalogoService = require('../services/catalogoService');
 async function listaProjetos(req, res) {
   try {
     const { busca, categoria, material, aluno } = req.query;
-    console.log(busca, categoria, material, aluno)
     const resultado = await catalogoService.listaProjetos(busca, categoria, material, aluno);
     return res.json(resultado);
   } catch (error) {

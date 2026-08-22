@@ -8,6 +8,7 @@ async function perfil(token) {
 
 async function atualizarPerfil(token, body) {
   const api = await axios.put(`${BASE_URL}/usuarios/perfil`, body, { headers: { Authorization: `Bearer ${token}` } });
+  console.log(api.data)
   return api.data;
 }
 

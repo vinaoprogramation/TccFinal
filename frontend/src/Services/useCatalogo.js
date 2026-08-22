@@ -8,7 +8,7 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3001'
-  : 'http://10.0.2.2:3001'
+  : 'http://192.168.1.11:3001'
 //'http://10.0.2.2:3000/usuarios'
 
 const useCatalogo = create((set, get) => ({
@@ -59,8 +59,7 @@ const useCatalogo = create((set, get) => ({
       console.log("Status da Resposta:", response.status);
 
 
-      const answer = await response.data.usuario;
-
+      const answer = await response.data;
 
       set({ alunos: answer.alunos, categorias: answer.categorias, materiais: answer.materiais })
 

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   saudacao:{
-    fontSize: 20,
+    fontSize: 25,
     marginTop: 200,
     color: '#ffffff',
     fontWeight: '600',
@@ -17,11 +17,11 @@ const styles = StyleSheet.create({
   },
   inputs:{
     width:width*0.95,
-    elevation: 5,
-    backgroundColor: '#00000010',
+
     borderRadius: 5,
     padding: 20,
-    gap: 20
+    gap: 20,
+    borderRadius: 10
   },
   input:{
     backgroundColor: 'rgb(223, 223, 223)',

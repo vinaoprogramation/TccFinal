@@ -21,11 +21,13 @@ import useAprovacao from "../../Services/useAprovacao";
 export default function Aprovacoes({ navigation }) {
   const consultaAprovacoes = useAprovacao((state) => state.consultaAprovacoes);
   const aprovacoes = useAprovacao((state) => state.aprovacoes);
+  const decideAprovacao = useAprovacao((state) => state.decideAprovacao);
+  const resultado = useAprovacao((state) => state.resultado);
 
   const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
   const iniciaMenu = navegacaoMenu((state) => state.iniciaMenu);
 
-  const [obersvacao, setObservacao] = useState('')
+  const [observacao, setObservacao] = useState('')
 
   useEffect(() => {
     if (iniciaMenu) {
@@ -39,6 +41,30 @@ export default function Aprovacoes({ navigation }) {
       consultaAprovacoes();
     }
   }, [consultaAprovacoes])
+
+
+  useEffect(() => {
+      consultaAprovacoes();
+  }, [aprovacoes])
+
+
+
+  const decide = async(id, status, observacao) => {
+    if(!decideAprovacao){
+      console.log("Função não carregada");
+      return;
+    }
+    if(!id || !status){
+      console.log("Falta parâmetros");
+      return;
+    }
+    const resposta = await decideAprovacao(id, status, observacao);
+    if(!resposta){
+      console.log("Erro na função de decisão");
+      return;
+    }
+    console.log("Decisão realizada com sucesso!")
+  }
 
 
 
@@ -135,18 +161,26 @@ export default function Aprovacoes({ navigation }) {
 
           <View>
             <TextInput
-            value={obersvacao}
+            value={observacao}
             onChangeText={setObservacao}
             placeholder="Observação Opcional"
             style={styles.inputObservacao}
             />
 
             <View style={styles.botoes}>
-              <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}>
+              <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}
+              onPress={() => {
+                decide(item.id, "APROVADO", observacao)
+              }}
+              >
                 <Text style={[styles.textoBotao, styles.textoBotaoAprovar]}>APROVAR</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[styles.botao, styles.botaoNegar]}>
+              <TouchableOpacity style={[styles.botao, styles.botaoNegar]}
+              onPress={() => {
+                decide(item.id, "REJEITADO", observacao)
+              }}
+              >
                 <Text style={[styles.textoBotao, styles.textoBotaoNegar]}>REJEITAR</Text>
               </TouchableOpacity>
             </View>

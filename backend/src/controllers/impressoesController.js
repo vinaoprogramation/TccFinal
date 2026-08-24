@@ -146,9 +146,10 @@ async function cadastrarImpressao(req, res) {
   try {
 
     const { nome_impressao, categoria, tempo_impressao, maquina_id, filamentos, material, cor_filamento, gramas, comprador, objetivo, status } = req.body
+    console.log(req.body)
     const token = extractBearerToken(req);
 
-    if (!token || !nome_impressao || !categoria || !tempo_impressao || !maquina_id || !filamentos || !material || !cor_filamento || !gramas || !comprador || !objetivo || !status) {
+    if (!token || !nome_impressao || !categoria || !tempo_impressao || !maquina_id || !filamentos || !material || !cor_filamento || !gramas) {
       return res.status(400).json({
         error: 'Parâmetros faltosos'
       });

@@ -40,7 +40,7 @@ export default function Menu({ navigation }) {
             <View style={styles.itens}>
               <TouchableOpacity style={styles.item}
               onPress={() => {
-                navigation.navigate('BackDoor')
+                navigation.replace('BackDoor')
                 setMostra();
               }}
               >
@@ -53,7 +53,7 @@ export default function Menu({ navigation }) {
 
               <TouchableOpacity style={styles.item}
               onPress={() => {
-                navigation.navigate('Dashboard')
+                navigation.replace('Dashboard')
               }}
               >
                 <Image
@@ -65,7 +65,7 @@ export default function Menu({ navigation }) {
 
               <TouchableOpacity style={styles.item}
               onPress={() => {
-                navigation.navigate('Financeiro')
+                navigation.replace('Financeiro')
               }}
               >
                 <Image
@@ -78,7 +78,7 @@ export default function Menu({ navigation }) {
 
               <TouchableOpacity style={styles.item}
               onPress={() => {
-                navigation.navigate('Impressoes')
+                navigation.replace('Impressoes')
               }}
               >
                 <Image
@@ -91,7 +91,7 @@ export default function Menu({ navigation }) {
 
               <TouchableOpacity style={styles.item}
               onPress={() => {
-                navigation.navigate('Aprovacoes')
+                navigation.replace('Aprovacoes')
               }}
               >
                 <Image
@@ -104,7 +104,7 @@ export default function Menu({ navigation }) {
 
               <TouchableOpacity style={styles.item}
               onPress={() => {
-                navigation.navigate('Inicio')
+                navigation.replace('Inicio')
               }}
               >
                 <Image

@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: width*0.95,
     alignSelf: 'center',
-    marginBottom: 50
   },
   conteudo:{
     marginTop: 20,

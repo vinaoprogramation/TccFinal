@@ -7,25 +7,23 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb 
-  ? 'http://localhost:3001'
-  : 'http://192.168.1.11:3001/'
+  ? 'http://localhost:3001/estoque'
+  : 'http://192.168.1.11:3001/estoque'
   //'http://10.0.2.2:3000/usuarios'
 
 const useEstoque = create((set, get) => ({
+  estoque: [],
+
     consultaEstoque: async () => {
 
         try {
-          const response = await api.get(`${baseUrl}/estoque/`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
+          const response = await api.get(`${baseUrl}/opcoes`);
     
           console.log("Status da Resposta:", response.status);
     
-    
-          const answer = await response.data;   
+          const answer = await response.data.itens;   
+
+          set({estoque: answer})
     
         } catch (error) {
           console.error('Erro ao consultar uruário:', error);

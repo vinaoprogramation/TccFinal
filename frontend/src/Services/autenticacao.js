@@ -71,6 +71,8 @@ const autenticacao = create((set, get) => ({
 
       const answer = await response.data;
 
+      console.log("Está aqui" + answer)
+
 
       if (answer) {
 

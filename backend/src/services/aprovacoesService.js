@@ -3,6 +3,7 @@ const BASE_URL = 'https://api-ip3d.mbinfoseg.com.br/api';
 
 async function listaPendentes(token) {
   const api = await axios.get(`${BASE_URL}/aprovacoes/pendentes`, { headers: { Authorization: `Bearer ${token}` } });
+  console.log(api.data)
   return api.data;
 }
 

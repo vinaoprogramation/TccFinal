@@ -32,6 +32,32 @@ const useAprovacao = create((set, get) => ({
     }
   },
 
+
+  decideAprovacao: async (id, status, observacao) => {
+
+    try {
+      const response = await api.patch(`${baseUrl}/aprovacoes/${id}`,{
+          "status": status,
+          "observacao": observacao,
+        
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+      const answer = await response.data;
+
+      if(answer){
+        return true;
+      }
+
+
+    } catch (error) {
+      console.error('Erro ao DECIDIR:', error);
+    }
+  },
+
+  
+
 }));
 
 export default useAprovacao;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Toast from 'react-native-toast-message'
 
-import { Text, View, Image, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, Image, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
 
 import styles from "./styles";
 
@@ -19,6 +19,7 @@ import navegacaoMenu from "../../Services/navegacaoMenu";
 export default function BackDoor({ navigation }) {
 
   const usuario = autenticacao((state) => state.usuario);
+  const consultarUsuario = autenticacao((state) => state.consultarUsuario);
   const foto = autenticacao((state) => state.foto);
 
   const alteraUsuario = useUsuarios((state) => state.alteraUsuario);
@@ -26,7 +27,7 @@ export default function BackDoor({ navigation }) {
   const iniciaMenu = navegacaoMenu((state) => state.iniciaMenu);
 
   useEffect(() => {
-    if(iniciaMenu){
+    if (iniciaMenu) {
       iniciaMenu();
     }
   }, [iniciaMenu])
@@ -65,18 +66,25 @@ export default function BackDoor({ navigation }) {
     }
   }
 
+  useEffect(() => {
+    if (consultarUsuario) {
+      consultarUsuario();
+    }
+  }, [consultarUsuario])
+
 
   const [nome, setNome] = useState(usuario?.nome)
   const [curso, setCurso] = useState(usuario?.curso)
 
 
   return <>
-    {nome && curso ?
+
+    {usuario && foto ?
       <>
-      <BotaoMenu/>
-      <Menu
-      navigation={navigation}
-      />
+        <BotaoMenu />
+        <Menu
+          navigation={navigation}
+        />
         <View style={styles.fundo}>
 
           <View style={styles.cabecalho}>
@@ -96,7 +104,7 @@ export default function BackDoor({ navigation }) {
                   />
                 </>
                 :
-               <>
+                <>
                   <Image
                     source={user}
                     style={styles.fotoPerfil}
@@ -113,7 +121,7 @@ export default function BackDoor({ navigation }) {
                   onChangeText={setNome}
                   placeholder="Nome*"
                   style={styles.input}
-                  editable={mostraMenu? false : true}
+                  editable={mostraMenu ? false : true}
                 />
               </View>
 
@@ -123,7 +131,7 @@ export default function BackDoor({ navigation }) {
                   onChangeText={setCurso}
                   placeholder="Curso*"
                   style={styles.input}
-                  editable={mostraMenu? false : true}
+                  editable={mostraMenu ? false : true}
                 />
               </View>
 
@@ -150,11 +158,12 @@ export default function BackDoor({ navigation }) {
           </View>
         </View>
       </>
-
       :
-
-      null
+      <ActivityIndicator />
     }
+    <>
+
+    </>
 
   </>
 }

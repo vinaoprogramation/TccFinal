@@ -18,6 +18,8 @@ async function aprovarRejeitar(req, res) {
     const token = extractBearerToken(req);
     const id = req.params.id;
     const body = req.body;
+
+    console.log(id, body)
     if (!token || !id) return res.status(400).json({ error: 'Parâmetros faltosos' });
     const resultado = await aprovacoesService.aprovarRejeitar(token, id, body);
     return res.json(resultado);

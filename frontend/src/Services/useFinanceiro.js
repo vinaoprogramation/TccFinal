@@ -6,32 +6,57 @@ import { Platform } from 'react-native';
 import api from './api';
 
 const isWeb = Platform.OS === 'web';
-const baseUrl = isWeb 
-  ? 'http://localhost:3001'
-  : 'http://192.168.1.11:3001'
-  
+const baseUrl = isWeb
+  ? 'http://localhost:3001/financeiro'
+  : 'http://192.168.1.11:3001/financeiro'
+
 
 const useFinanceiro = create((set, get) => ({
-    consultaFinanceiro: async () => {
+  pendentes: [],
 
-        try {
-          const response = await api.get(`${baseUrl}/financeiro/`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          });
-    
-          console.log("Status da Resposta:", response.status);
-    
-    
-          const answer = await response.data;
-    
-        } catch (error) {
-          console.error('Erro ao consultar uruário:', error);
+  consultaFinanceiro: async () => {
+
+    try {
+      const response = await api.get(`${baseUrl}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
         }
-      },
-    
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+
+      const answer = await response.data;
+
+    } catch (error) {
+      console.error('Erro ao consultar uruário:', error);
+    }
+  },
+
+
+  consultaPendentes: async () => {
+
+    try {
+      const response = await api.get(`${baseUrl}/pendentes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+
+      const answer = await response.data.pendentes;
+
+      set({pendentes: answer})
+
+    } catch (error) {
+      console.error('Erro ao consultar uruário:', error);
+    }
+  },
+
 
 }));
 

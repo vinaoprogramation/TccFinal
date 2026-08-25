@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff00',
     height: height,
     justifyContent: 'center',
-     width: 90,
+    width: 90,
   },
   cabecalho:{
     padding: 20,

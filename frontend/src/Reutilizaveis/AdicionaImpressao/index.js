@@ -25,6 +25,7 @@ export default function AdicionaImpressao({ navigation }) {
  const mostraAdicionar = useImpressoes((state) => state.mostraAdicionar);
  const setMostraAdicionar = useImpressoes((state) => state.setMostraAdicionar);
  const cadastraImpressao = useImpressoes((state) => state.cadastraImpressao);
+ const consultaImpressoes = useImpressoes((state) => state.consultaImpressoes);
 
 
  const maquinas = useMaquinas((state) => state.maquinas);
@@ -128,6 +129,7 @@ export default function AdicionaImpressao({ navigation }) {
      setGramas("");
 
 
+     consultaImpressoes();
      setMostraAdicionar();
    }
 

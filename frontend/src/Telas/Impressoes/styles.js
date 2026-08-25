@@ -145,7 +145,12 @@ const styles = StyleSheet.create({
  lixeira:{
    width: 20,
    height: 20,
-   position: 'absolute'
+   position: 'absolute',
+   verticalAlign: 'middle'
+ },
+ botaoLixeira:{
+  verticalAlign: 'middle',
+  marginTop: 10
  }
 }
 );

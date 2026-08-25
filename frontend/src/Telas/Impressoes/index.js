@@ -10,7 +10,7 @@ import { Text, View, Image, TouchableOpacity, TextInput, ScrollView, FlatList } 
 import styles from "./styles";
 
 
-import trashcan from '../../assets/trashcan.png'
+import trashcan from '../../../assets/trashcan.png'
 
 
 import autenticacao from "../../Services/autenticacao";
@@ -22,7 +22,7 @@ import user from '../../../assets/user.png'
 
 import BotaoMenu from "../../Reutilizaveis/BotaoMenu";
 import Menu from "../../Reutilizaveis/Menu";
-
+import AvisoDelete from "../../Reutilizaveis/AvisoDelete";
 
 
 
@@ -44,8 +44,10 @@ export default function Impressoes({ navigation }) {
 
 
  const setMostraAdicionar = useImpressoes((state) => state.setMostraAdicionar);
+ const setMostraDeletar = useImpressoes((state) => state.setMostraDeletar);
  const impressoes = useImpressoes((state) => state.impressoes);
  const consultaImpressoes = useImpressoes((state) => state.consultaImpressoes);
+ const setaId = useImpressoes((state) => state.setaId);
  
 
 
@@ -88,6 +90,7 @@ export default function Impressoes({ navigation }) {
    />
    <BotaoFiltro/>
    <Filtros/>
+   <AvisoDelete/>
    <AdicionaImpressao/>
    <View style={styles.cabecalho}>
      <View style={styles.textos}>
@@ -248,7 +251,12 @@ export default function Impressoes({ navigation }) {
              </TouchableOpacity>
 
 
-             <TouchableOpacity>
+             <TouchableOpacity style={styles.botaoLixeira}
+             onPress={() => {
+              setMostraDeletar();
+              setaId(item.id)
+             }}
+             >
                <Image
                source={trashcan}
                style={styles.lixeira}

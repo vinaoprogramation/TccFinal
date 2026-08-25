@@ -13,7 +13,9 @@ const baseUrl = isWeb
 
 const useImpressoes = create((set, get) => ({
   mostraAdicionar: false,
+  mostraDeletar: false,
   impressoes: [],
+  id: null,
 
   consultaImpressoes: async () => {
 
@@ -29,7 +31,7 @@ const useImpressoes = create((set, get) => ({
 
 
     } catch (error) {
-      console.error('Erro ao consultar dashboard:', error);
+      console.error('Erro ao consultar impressoes:', error);
     }
   },
 
@@ -102,6 +104,43 @@ const useImpressoes = create((set, get) => ({
       set({mostraAdicionar: false})
     }
     
+  },
+
+
+  setMostraDeletar: () => {
+    const mostra = get().mostraDeletar;
+    if(mostra == false){
+      set({mostraDeletar: true})
+    } else{
+      set({mostraDeletar: false})
+    }
+    
+  },
+
+
+  deletaImpressao: async (id) => {
+    console.log("Id: "+id)
+
+    try {
+      const response = await api.delete(`${baseUrl}/deletar/${id}`);
+
+      console.log("Status da Resposta:", response.status);
+
+
+      const answer = await response;
+
+      if(answer){
+        return true;
+      }
+
+
+    } catch (error) {
+      console.error('Erro ao deletar impressão:', error);
+    }
+  },
+
+  setaId: (id) => {
+    set({id: id});
   }
 
   

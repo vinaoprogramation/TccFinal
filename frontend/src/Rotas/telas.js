@@ -13,6 +13,7 @@ import Dashboard from '../Telas/Dashboard';
 import Impressoes from '../Telas/Impressoes';
 import Financeiro from '../Telas/Financeiro';
 import Aprovacoes from '../Telas/Aprovacoes';
+import Estoque from '../Telas/Estoque';
 
 
 const Tab = createNativeStackNavigator();
@@ -63,6 +64,10 @@ export default function Rotas() {
 
         <Tab.Screen name="Aprovacoes" options={{ headerShown: false }}
           component={Aprovacoes}
+        />
+
+        <Tab.Screen name="Estoque" options={{ headerShown: false }}
+          component={Estoque}
         />
 
 

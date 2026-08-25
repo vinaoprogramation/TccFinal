@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     cabecalho:{
-        backgroundColor: 'rgb(196, 228, 255)',
+        backgroundColor: 'rgb(255, 255, 255)',
         padding: 10,
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,

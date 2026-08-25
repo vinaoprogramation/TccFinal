@@ -7,8 +7,8 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
-  ? 'http://localhost:3001'
-  : 'http://10.0.2.2:3001'
+  ? 'http://localhost:3000'
+  : 'http://10.0.2.2:3000'
 //'http://10.0.2.2:3000/usuarios'
 
 const useCatalogo = create((set, get) => ({

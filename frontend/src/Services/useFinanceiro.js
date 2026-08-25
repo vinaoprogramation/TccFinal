@@ -7,12 +7,16 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
-  ? 'http://localhost:3001/financeiro'
-  : 'http://10.0.2.2:3001/financeiro'
+  ? 'http://localhost:3000/financeiro'
+  : 'http://10.0.2.2:3000/financeiro'
 
 
 const useFinanceiro = create((set, get) => ({
   pendentes: [],
+  totalArrecadado: null,
+  totalPorMes: [],
+  totalPorAluno: [],
+  totalPorCategoria: [],
 
   consultaFinanceiro: async () => {
 
@@ -75,7 +79,7 @@ const useFinanceiro = create((set, get) => ({
 
       const answer = await response.data.dashboard;
 
-      set({pendentes: answer})
+      set({totalArrecadado: answer.total_arrecadado, totalPorMes: answer.total_por_mes, totalPorAluno: answer.total_por_aluno, totalPorCategoria: answer.total_por_categoria});
 
     } catch (error) {
       console.error('Erro ao consultar uruário:', error);

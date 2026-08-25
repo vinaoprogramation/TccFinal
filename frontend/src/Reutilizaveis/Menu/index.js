@@ -11,6 +11,7 @@ import money from '../../../assets/money.png'
 import printer from '../../../assets/printer.png'
 import checklist from '../../../assets/checklist.png'
 import signout from '../../../assets/sign-out.png'
+import estoque from '../../../assets/estoque.png'
 
 import navegacaoMenu from "../../Services/navegacaoMenu";
 
@@ -102,6 +103,22 @@ export default function Menu({ navigation }) {
               </TouchableOpacity>
 
 
+
+              <TouchableOpacity style={styles.item}
+              onPress={() => {
+                navigation.replace('Estoque')
+              }}
+              >
+                <Image
+                  source={estoque}
+                  style={styles.imagemItem}
+                />
+                <Text style={styles.textoItem}>Estoque</Text>
+              </TouchableOpacity>
+
+
+
+
               <TouchableOpacity style={styles.item}
               onPress={() => {
                 navigation.replace('Inicio')
@@ -113,6 +130,10 @@ export default function Menu({ navigation }) {
                 />
                 <Text style={styles.textoItem}>Sair</Text>
               </TouchableOpacity>
+
+
+
+              
 
 
             </View>

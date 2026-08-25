@@ -18,7 +18,11 @@ export default function Financeiro({ navigation }) {
 
   const pendentes = useFinanceiro((state) => state.pendentes);
   const consultaPendentes = useFinanceiro((state) => state.consultaPendentes);
-
+  const consultaDashboard = useFinanceiro((state) => state.consultaDashboard);
+  const totalArrecadado = useFinanceiro((state) => state.totalArrecadado);
+  const totalPorMes = useFinanceiro((state) => state.totalPorMes);
+  const totalPorAluno = useFinanceiro((state) => state.totalPorAluno);
+  const totalPorCategoria = useFinanceiro((state) => state.totalPorCategoria);
 
   useEffect(() => {
     if (iniciaMenu) {
@@ -32,6 +36,13 @@ export default function Financeiro({ navigation }) {
       consultaPendentes();
     }
   }, [consultaPendentes])
+
+
+  useEffect(() => {
+    if (consultaDashboard) {
+      consultaDashboard();
+    }
+  }, [consultaDashboard])
 
 
   const ajustaData = (dataInteira) => {
@@ -125,12 +136,40 @@ export default function Financeiro({ navigation }) {
         </>}
       />
 
+      <View style={styles.dashboard}>
+        <View style={styles.itemDashboard}>
+          <Text style={styles.legenda}>Total Arrecadado</Text>
+          <Text style={styles.quantidade}>{totalArrecadado}</Text>
+        </View>
+      </View>
+
+
+      <View style={styles.dashboard}>
+        <View style={styles.itemDashboard}>
+          <Text style={styles.legenda}>Meses com receita</Text>
+          <Text style={styles.quantidade}>{totalPorMes.length}</Text>
+        </View>
+      </View>
+
+
+      <View style={styles.dashboard}>
+        <View style={styles.itemDashboard}>
+          <Text style={styles.legenda}>Alunos com receita</Text>
+          <Text style={styles.quantidade}>{totalPorAluno.length}</Text>
+        </View>
+      </View>
+
+
+
+
       <View style={styles.separacao}>
         <View style={styles.textos}>
           <Text style={styles.titulo}>Financeiro</Text>
           <Text style={styles.chamada}>Recebimentos das impressoes.</Text>
         </View>
       </View>
+
+
 
       <FlatList
         style={styles.flatlistRecebimentos}
@@ -173,20 +212,17 @@ export default function Financeiro({ navigation }) {
               <Text style={styles.nomePendente}>{item.dias_atraso} dias</Text>
             </View>
 
-
-
-
-
           </View>
         </>}
       />
-      
+
     </ScrollView>
-    
+
 
 
 
 
   </>
 }
+
 

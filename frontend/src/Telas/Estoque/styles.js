@@ -52,6 +52,63 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 35
   },
+  flatList:{
+    backgroundColor: '#e6e6e6',
+    width: width*0.95,
+    alignSelf: 'center',
+    borderRadius: 15,
+    padding: 0,
+    padding: 20
+  },
+  divisoria:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    paddingVertical: 5,
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+  },
+  label: {
+    fontWeight: 'bold'
+  },
+  principal:{
+    fontSize: 18,
+    padding: 5,
+    verticalAlign: 'middle',
+
+  },
+  divisao:{
+    width: '100%',
+    justifyContent: 'center',
+    alignSelf: 'center'
+  },
+  especificacao:{
+    textAlign: 'center'
+  },
+  botaoAdicionar:{
+   backgroundColor: 'rgb(41, 135, 223)',
+   marginVertical: 10,
+   width: width*0.8,
+   borderRadius: 20,
+   padding: 10,
+   alignSelf: 'center'
+ },
+ textoAdicionar:{
+   color: '#ffffff',
+   textAlign: 'center',
+   fontWeight: '700',
+   elevation: 5
+ },
+ lixeira:{
+   width: 20,
+   height: 20,
+   position: 'absolute',
+   verticalAlign: 'middle'
+ },
+ botaoLixeira:{
+  verticalAlign: 'middle',
+  marginTop: 10
+ }
 
 });
 

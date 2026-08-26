@@ -19,6 +19,7 @@ import useEstoque from "../../Services/useEstoque";
 
 import AdicionaEstoque from "../../Reutilizaveis/AdicionaEstoque";
 import AvisoDeleteEstoque from "../../Reutilizaveis/AvisoDeleteEstoque";
+import AdicionaRolo from "../../Reutilizaveis/AdicionaRolo";
 export default function Estoque({ navigation }) {
 
     const consultaEstoque = useEstoque((state) => state.consultaEstoque);
@@ -28,6 +29,7 @@ export default function Estoque({ navigation }) {
     const setMostraAdicionar = useEstoque((state) => state.setMostraAdicionar);
     const setMostraDeletar = useEstoque((state) => state.setMostraDeletar);
     const setaId = useEstoque((state) => state.setaId);
+    const setMostraAdicionarRolo = useEstoque((state) => state.setMostraAdicionarRolo);
 
 
     const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
@@ -58,6 +60,7 @@ export default function Estoque({ navigation }) {
             navigation={navigation}
         />
         <AdicionaEstoque />
+        <AdicionaRolo/>
         <AvisoDeleteEstoque/>
 
         <ScrollView style={styles.fundo}>
@@ -75,7 +78,7 @@ export default function Estoque({ navigation }) {
                     setMostraAdicionar();
                 }}
             >
-                <Text style={styles.textoAdicionar}>NOVA IMPRESSÃO</Text>
+                <Text style={styles.textoAdicionar}>NOVO ESTOQUE</Text>
             </TouchableOpacity>
 
 
@@ -193,6 +196,18 @@ export default function Estoque({ navigation }) {
                                 style={styles.lixeira}
                             />
                         </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.botaoRolo}
+                            onPress={() => {
+                                setMostraAdicionarRolo();
+                                setaId(item.id)
+                            }}
+                        >
+                            <Text>ROLO</Text>
+                        </TouchableOpacity>
+
+
+                        
                     </View>
 
 

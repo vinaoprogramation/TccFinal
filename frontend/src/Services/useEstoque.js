@@ -8,14 +8,16 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3000/estoque'
-  : 'http://192.168.1.11:3000/estoque'
+  : 'http://10.0.2.2:3000/estoque'
 //'http://10.0.2.2:3000/usuarios'
 
 const useEstoque = create((set, get) => ({
   estoque: [],
   materiais: [],
-  mostraDicionar: false,
+  mostraAdicionar: false,
+  mostraAdicionarRolo: false,
   mostraDeletar: false,
+  id:null,
 
   consultaEstoque: async () => {
 
@@ -60,6 +62,32 @@ const useEstoque = create((set, get) => ({
   },
 
 
+
+  adicionaRolo: async (peso, dataMovimentacao, observacao, id) => {
+    console.log("Parametros: "+ peso, dataMovimentacao, observacao, id)
+
+    try {
+      const response = await api.post(`${baseUrl}/${id}/entrada`, {
+        "peso": peso,
+        "data_movimentacao": dataMovimentacao,
+        "observacao": observacao
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+      const answer = await response.data;
+
+      if(answer){
+        return true;
+      }
+
+    } catch (error) {
+      console.error('Erro ao consultar uruário:', error);
+    }
+  },
+
+
+
   deletaEstoque: async (id) => {
     console.log("Id: "+id)
 
@@ -92,6 +120,17 @@ const useEstoque = create((set, get) => ({
       set({mostraAdicionar: true})
     } else{
       set({mostraAdicionar: false})
+    }
+    
+  },
+
+
+  setMostraAdicionarRolo: () => {
+    const mostra = get().mostraAdicionarRolo;
+    if(mostra == false){
+      set({mostraAdicionarRolo: true})
+    } else{
+      set({mostraAdicionarRolo: false})
     }
     
   },

@@ -29,10 +29,9 @@ export default function AdicionaRolo({ navigation }) {
                 text1: "Rolo adicionado com sucesso!",
                 visibilityTime: 3000
             })
-            setCor("");
-            setMaterial("");
-            setPesoInicial("");
-            setSaida("")
+            setPeso("");
+            setObservacao("")
+
 
 
             consultaEstoque()

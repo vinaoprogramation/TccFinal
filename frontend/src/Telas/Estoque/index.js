@@ -203,7 +203,7 @@ export default function Estoque({ navigation }) {
                                 setaId(item.id)
                             }}
                         >
-                            <Text>ROLO</Text>
+                            <Text style={styles.textoRolo}>ROLO</Text>
                         </TouchableOpacity>
 
 

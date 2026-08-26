@@ -12,16 +12,20 @@ import navegacaoMenu from "../../Services/navegacaoMenu";
 
 import useFinanceiro from "../../Services/useFinanceiro";
 
+import RecebeImpressao from "../../Reutilizaveis/RecebeImpressao";
+
 export default function Financeiro({ navigation }) {
   const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
   const iniciaMenu = navegacaoMenu((state) => state.iniciaMenu);
 
   const pendentes = useFinanceiro((state) => state.pendentes);
+  const setMostraReceber = useFinanceiro((state) => state.setMostraReceber);
   const consultaPendentes = useFinanceiro((state) => state.consultaPendentes);
   const consultaDashboard = useFinanceiro((state) => state.consultaDashboard);
   const totalArrecadado = useFinanceiro((state) => state.totalArrecadado);
   const totalPorMes = useFinanceiro((state) => state.totalPorMes);
   const totalPorAluno = useFinanceiro((state) => state.totalPorAluno);
+  const setaPendencia = useFinanceiro((state) => state.setaPendencia);
   const totalPorCategoria = useFinanceiro((state) => state.totalPorCategoria);
 
   useEffect(() => {
@@ -58,6 +62,7 @@ export default function Financeiro({ navigation }) {
     <Menu
       navigation={navigation}
     />
+    <RecebeImpressao/>
 
     <View style={styles.cabecalho}>
       <View style={styles.textos}>
@@ -122,7 +127,10 @@ export default function Financeiro({ navigation }) {
 
             <View style={styles.coluna}>
               <View style={styles.containerBotao}>
-                <TouchableOpacity style={styles.botaoReceber}>
+                <TouchableOpacity style={styles.botaoReceber} onPress={() => {
+                  setaPendencia(item);
+                  setMostraReceber();
+                }}>
                   <Text style={styles.textoBotaoReceber}>RECEBER</Text>
                 </TouchableOpacity>
               </View>

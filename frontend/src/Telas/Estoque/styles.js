@@ -58,7 +58,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 15,
     padding: 0,
-    padding: 20
+    padding: 20,
+    marginVertical: 10
   },
   divisoria:{
     flexDirection: 'row',
@@ -108,6 +109,18 @@ const styles = StyleSheet.create({
  botaoLixeira:{
   verticalAlign: 'middle',
   marginTop: 10
+ },
+ botaoRolo:{
+  alignSelf: 'flex-end',
+  borderWidth: 1,
+  borderColor: 'rgb(41, 135, 223)',
+  paddingVertical: 5,
+  paddingHorizontal: 15,
+  borderRadius: 20
+ },
+ textoRolo:{
+  color: 'rgb(41, 135, 223)',
+  textAlign: 'center'
  }
 
 });

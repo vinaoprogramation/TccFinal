@@ -8,7 +8,7 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3000/financeiro'
-  : 'http://10.0.2.2:3000/financeiro'
+  : 'http://192.168.1.11:3000/financeiro'
 
 
 const useFinanceiro = create((set, get) => ({
@@ -17,6 +17,8 @@ const useFinanceiro = create((set, get) => ({
   totalPorMes: [],
   totalPorAluno: [],
   totalPorCategoria: [],
+  pendencia: null,
+  mostraReceber: false,
 
   consultaFinanceiro: async () => {
 
@@ -54,7 +56,7 @@ const useFinanceiro = create((set, get) => ({
 
       const answer = await response.data.pendentes;
 
-      set({pendentes: answer})
+      set({ pendentes: answer })
 
     } catch (error) {
       console.error('Erro ao consultar uruário:', error);
@@ -79,11 +81,62 @@ const useFinanceiro = create((set, get) => ({
 
       const answer = await response.data.dashboard;
 
-      set({totalArrecadado: answer.total_arrecadado, totalPorMes: answer.total_por_mes, totalPorAluno: answer.total_por_aluno, totalPorCategoria: answer.total_por_categoria});
+      set({ totalArrecadado: answer.total_arrecadado, totalPorMes: answer.total_por_mes, totalPorAluno: answer.total_por_aluno, totalPorCategoria: answer.total_por_categoria });
 
     } catch (error) {
       console.error('Erro ao consultar uruário:', error);
     }
+  },
+
+
+
+
+  recebeImpressao: async (impressaoId, comprador, valorRecebido, formaPagamento, observacoes, dataVencimento, dataRecebimento) => {
+
+    try {
+      const response = await api.post(`${baseUrl}`, {
+        "impressao_id": impressaoId,
+        "comprador": comprador,
+        "valor_recebido": valorRecebido,
+        "forma_pagamento": formaPagamento,
+        "observacoes": observacoes,
+        "data_vencimento": dataVencimento,
+        "data_recebimento": dataRecebimento,
+        "status": "PAGO"
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+
+      const answer = await response.data;
+
+      if(answer){
+        return true
+      }
+
+    } catch (error) {
+      console.error('Erro ao consultar uruário:', error);
+    }
+  },
+
+
+  setaPendencia: (item) => {
+    console.log("Item: "+item.impressao_id)
+    set({pendencia: item});
+  },
+
+
+  setMostraReceber: () => {
+    
+    const mostra = get().mostraReceber;
+    if(mostra == false){
+      set({mostraReceber: true})
+      console.log("setou: "+get().mostraReceber)
+    } else{
+      set({mostraReceber: false})
+      console.log("setou: "+get().mostraReceber)
+    }
+    
   },
 
 

@@ -6,6 +6,9 @@ import { Text, View, Image, TouchableOpacity, TextInput } from "react-native";
 
 import styles from "./styles";
 
+import Toast from 'react-native-toast-message'
+
+
 
 import autenticacao from "../../Services/autenticacao";
 
@@ -19,7 +22,7 @@ export default function AcessoInterno({ navigation }) {
    const autenticado = autenticacao((state) => state.autenticado);
 
 
-   const handleLogin = (email, senha) => {
+   const handleLogin = async (email, senha) => {
        if (!login) {
            console.log("Login não foi carregado")
            return;
@@ -32,8 +35,41 @@ export default function AcessoInterno({ navigation }) {
 
 
        }
-       login(email, senha)
+       const loga = await login(email, senha);
+       
+       if(loga){
+        return true;
+       }
+       
    }
+
+
+
+   const mostraPop = async (email, senha) => {
+       const mostra = await handleLogin(email, senha);
+   
+       if (mostra) {
+         Toast.show({
+           type: "success",
+           text1: "Login realizado com sucesso!",
+           visibilityTime: 3000
+         })
+         setEmail("");
+         setSenha("");
+         navigation.navigate('BackDoor')
+   
+       } else{
+        Toast.show({
+            type: "error",
+            text1: "Email ou senha inválidos!",
+            visibilityTime: 3000
+          })
+          setEmail("");
+          setSenha("");
+       }
+   
+   
+     }
 
 
 
@@ -47,7 +83,7 @@ export default function AcessoInterno({ navigation }) {
            return;
        }
        if (autenticado === true) {
-           navigation.navigate('BackDoor')
+           navigation.navigate('BackDoor');
        }
    }, [autenticado])
 
@@ -97,7 +133,7 @@ export default function AcessoInterno({ navigation }) {
            <View>
                <TouchableOpacity
                    onPress={() => {
-                       handleLogin(email, senha)
+                       mostraPop(email, senha)
                    }}
 
 

@@ -1,4 +1,6 @@
 const autenticacaoService = require('../services/autenticacaoService');
+const { extractBearerToken } = require('../utils/header');
+
 
 async function login(req, res) {
   console.log("Início do login")
@@ -32,8 +34,8 @@ async function registrar(req, res) {
   try {
     const { nome, email, matricula, senha, perfil, curso } = req.body;
 
-    const { extractBearerToken } = require('../utils/header');
     const token = extractBearerToken(req);
+    if (!token) return res.status(400).json({ error: 'Token ausente' });
 
     if (!nome || !email || !matricula || !senha || !perfil || !curso) {
       return res.status(400).json({
@@ -59,7 +61,7 @@ async function consultarEu(req, res) {
   try {
     const { extractBearerToken } = require('../utils/header');
     const token = extractBearerToken(req);
-    
+  
 
     if (!token) {
       return res.status(400).json({

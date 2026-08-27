@@ -58,6 +58,17 @@ const styles = StyleSheet.create({
    color: '#ffffff',
    fontWeight: '500'
  },
+ tituloImpressao:{
+  fontSize: 20
+ },
+ itens:{
+  backgroundColor: 'rgb(253, 253, 253)',
+  padding: 10
+ },
+ pagamentos:{
+  gap: 0,
+  borderRadius: 5
+ }
 
 });
 

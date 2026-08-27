@@ -20,6 +20,8 @@ export default function RecebeImpressao({ navigation }) {
   const [valorRecebido, setValorRecebido] = useState("");
   const [formaPagamento, setFormaPagamento] = useState("");
   const [observacao, setObervacao] = useState("");
+  const [opcao, setOpcao] = useState("");
+  const [mostraOpcao, setMostraOpcao] = useState("");
 
 
 
@@ -59,7 +61,7 @@ export default function RecebeImpressao({ navigation }) {
 
 
                 <View style={styles.inputs}>
-                  <Text style={styles.input}>{pendencia.nome_impressao}</Text>
+                  <Text style={styles.tituloImpressao}>{pendencia.nome_impressao}</Text>
 
                   <TextInput
                     value={comprador}
@@ -75,11 +77,78 @@ export default function RecebeImpressao({ navigation }) {
                     style={styles.input}
                   />
 
+                  <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => {
+                      setMostraOpcao(!mostraOpcao)
+                    }}
+                  >
+                    <Text>{opcao ? opcao : "Forma de Pagamento"}</Text>
+
+                  </TouchableOpacity>
+
+                  {mostraOpcao ?
+                    <>
+                      <View style={styles.pagamentos}>
+                        <TouchableOpacity style={styles.itens}
+                          onPress={() => {
+                            setMostraOpcao()
+                            setOpcao("Dinheiro")
+                          }}
+                        >
+                          <Text style={styles.textoMaquinas}>Dinheiro</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.itens}
+                          onPress={() => {
+                            setMostraOpcao()
+                            setOpcao("Pix")
+                          }}
+                        >
+                          <Text style={styles.textoMaquinas}>Pix</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.itens}
+                          onPress={() => {
+                            setMostraOpcao()
+                            setOpcao("Cartão")
+                          }}
+                        >
+                          <Text style={styles.textoMaquinas}>Cartão</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.itens}
+                          onPress={() => {
+                            setMostraOpcao()
+                            setOpcao("Transferência")
+                          }}
+                        >
+                          <Text style={styles.textoMaquinas}>Transferência</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.itens}
+                          onPress={() => {
+                            setMostraOpcao()
+                            setOpcao("Outro")
+                          }}
+                        >
+                          <Text style={styles.textoMaquinas}>Outro</Text>
+                        </TouchableOpacity>
+                      </View>
+
+                    </>
+                    :
+                    null
+                  }
+
+
+
+
 
                   <TextInput
                     value={observacao}
                     onChangeText={setObervacao}
-                    placeholder="Obsevação"
+                    placeholder="Observação"
                     style={styles.input}
                   />
 

@@ -52,6 +52,10 @@ const autenticacao = create((set, get) => ({
         }
       }      
 
+      if(answer){
+        return true
+      }
+
     } catch (error) {
       console.error('Erro ao fazer login:', error);
     }

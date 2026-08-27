@@ -66,20 +66,40 @@ export default function BackDoor({ navigation }) {
     }
   }
 
+  const [nome, setNome] = useState("");
+  const [curso, setCurso] = useState("");
+  const [carrega, setCarrega] = useState(false)
+
+
   useEffect(() => {
+    console.log("Consultando usuario")
     if (consultarUsuario) {
       consultarUsuario();
     }
   }, [consultarUsuario])
 
+  const setaUsuario = () => {
+    if(usuario){
+      setNome(usuario.nome);
+      setCurso(usuario.curso);
+      setCarrega(true)
+    }
+  }
 
-  const [nome, setNome] = useState(usuario?.nome)
-  const [curso, setCurso] = useState(usuario?.curso)
+  useEffect(() => {
+    if(usuario != null){
+      setaUsuario();
+    }
+    
+  }, [usuario])
+
+
+
 
 
   return <>
 
-    {usuario && foto ?
+    {nome && curso && foto && carrega?
       <>
         <BotaoMenu />
         <Menu

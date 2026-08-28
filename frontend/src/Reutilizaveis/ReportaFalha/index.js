@@ -26,14 +26,11 @@ export default function ReportaFalha({ navigation }) {
 
     const mostraFalha = useImpressoes((state) => state.mostraFalha);
     const setMostraFalha = useImpressoes((state) => state.setMostraFalha);
-
-    const maquinas = useMaquinas((state) => state.maquinas);
-    const consultaMaquinas = useMaquinas((state) => state.consultaMaquinas);
+    const reportaFalha = useImpressoes((state) => state.reportaFalha);
 
 
     const consultaOpcoes = useConfiguracoes((state) => state.consultaOpcoes);
     const materiais = useConfiguracoes((state) => state.materiais);
-    const categorias = useConfiguracoes((state) => state.categorias);
 
 
     const estoque = useEstoque((state) => state.estoque);
@@ -42,18 +39,13 @@ export default function ReportaFalha({ navigation }) {
     const [porcentagem, setPorcentagem] = useState("");
     const [observacao, setObservacao] = useState("");
     const [gramasPerdidas, setGramasPerdidas] = useState("");
+    const [foto, setFoto] = useState("");
 
     const [materialMostra, setMaterialMostra] = useState(false);
     const [materialValor, setMaterialValor] = useState("");
 
     const [corMostra, setCorMostra] = useState(false);
     const [corValor, setCorValor] = useState("");
-
-    const [tempo, setTempo] = useState("");
-
-
-
-
 
     useEffect(() => {
         consultaMaquinas();
@@ -71,20 +63,8 @@ export default function ReportaFalha({ navigation }) {
 
 
 
-
-    useEffect(() => {
-        console.log(maquinasValor)
-    }, [maquinasValor])
-
-
-    useEffect(() => {
-    }, [])
-
-
-
-
-    const mostraPop = async (nome, categoria, tempo, maquina, material, cor, gramas, objetivo, comprador) => {
-        const mostra = await cadastra(nome, categoria, tempo, maquina, material, cor, gramas, objetivo, comprador);
+    const mostraPop = async (id, foto, percentualFalha, material, cor, gramasPerdidas, observacao) => {
+        const mostra = await reportaFalha(id, foto, percentualFalha, material, cor, gramasPerdidas, observacao);
 
 
         if (mostra) {
@@ -93,30 +73,22 @@ export default function ReportaFalha({ navigation }) {
                 text1: "Impressão cadastrada com sucesso!",
                 visibilityTime: 3000
             })
-            setCategoriasMostra(false);
-            setCategoriasValor("");
-
+            
 
             setEstoqueMostra(false);
             setEstoqueValor("");
 
+            setPorcentagem("");
+            setObservacao("");
+            setGramasPerdidas("");
+            setFoto("");
 
-            setMaquinasMostra(false);
-            setMaquinasValor("");
+            setMaterialMostra(false);
+            setMaterialValor("");
 
-
-            setMateriaisMostra(false);
-            setMateriaisValor("");
-
-            setObjetivo("");
-            setComprador("")
-
-
-            setNome("");
-            setTempo("");
-            setGramas("");
-
-
+            setCorMostra(false);
+            setCorValor("");    
+        
             consultaImpressoes();
             setMostraFalha();
         }

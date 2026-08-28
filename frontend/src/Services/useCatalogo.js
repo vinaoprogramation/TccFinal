@@ -8,7 +8,7 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3000'
-  : 'http://192.168.1.11:3000'
+  : 'http://10.0.2.2:3000'
 //'http://10.0.2.2:3000/usuarios'
 
 const useCatalogo = create((set, get) => ({
@@ -17,6 +17,7 @@ const useCatalogo = create((set, get) => ({
   alunos: [],
   categorias: [],
   materiais: [],
+  recarregando: false,
 
 
   consultaCatalogo: async (busca, categoria, material, aluno) => {
@@ -88,6 +89,10 @@ const useCatalogo = create((set, get) => ({
       console.error('Erro ao consultar projeto:', error);
     }
   },
+
+  setRecarregando: (condicao) => {
+    set({recarregando: condicao})
+  }
 
 
 }));

@@ -106,6 +106,12 @@ async function filtrosCatalogo() {
   return api.data;
 }
 
+
+async function siteConfig() {
+  const api = await axios.get(`${BASE_URL}/site-config`);
+  return api.data;
+}
+
 async function consultaProjeto(id) {
   const api = await axios.get(`${BASE_URL}/catalogo/${id}`);
   const resposta = api.data
@@ -140,4 +146,5 @@ module.exports = {
   visualizarFotoPublica,
   avatarPublico,
   downloadStlPublico,
+  siteConfig,
 };

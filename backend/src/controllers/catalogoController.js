@@ -70,6 +70,17 @@ async function downloadStlPublico(req, res) {
   }
 }
 
+
+async function siteConfig(req, res) {
+  try {
+    const resultado = await catalogoService.siteConfig();
+    return res.json(resultado);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Erro ao buscar site-config' });
+  }
+}
+
 module.exports = {
   listaProjetos,
   filtrosCatalogo,
@@ -77,4 +88,5 @@ module.exports = {
   visualizarFotoPublica,
   avatarPublico,
   downloadStlPublico,
+  siteConfig,
 };

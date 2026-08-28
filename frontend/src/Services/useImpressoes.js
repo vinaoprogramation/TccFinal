@@ -8,7 +8,7 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3000/impressoes'
-  : 'http:/192.168.1.11:3000/impressoes'
+  : 'http://10.0.2.2:3000/impressoes'
 //'http://10.0.2.2:3000/usuarios'
 
 const useImpressoes = create((set, get) => ({
@@ -16,6 +16,8 @@ const useImpressoes = create((set, get) => ({
   mostraDeletar: false,
   impressoes: [],
   id: null,
+  mostraConcluir: false,
+  mostraFalha: false,
 
   consultaImpressoes: async () => {
 
@@ -60,8 +62,66 @@ const useImpressoes = create((set, get) => ({
   },
 
 
-  cadastraImpressao: async (nome, categoria, tempo, maquina, material, cor, gramas) => {
-    console.log()
+  alteraStatus: async (id, comprador, objetivo) => {
+
+    try {
+      const response = await api.patch(`${baseUrl}/altera/status/${id}`,{
+        "status": "Concluida",
+        "comprador": "string",
+        "objetivo": "string"
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+      const answer = await response.data;
+
+      if(answer){
+        return true;
+      }
+
+
+    } catch (error) {
+      console.error('Erro ao concluir:', error);
+    }
+  },
+
+
+  reportaFalha: async (id, foto, percentualFalha, material, cor, gramasPerdidas, observacao) => {
+
+    try {
+      const response = await api.patch(`${baseUrl}/altera/falha/${id}`,{
+        "foto": foto,
+        "percentual_falha": percentualFalha,
+        "consumos": [
+          {
+            "material": material,
+            "cor": cor,
+            "gramas_perdidas": gramasPerdidas,
+          }
+        ],
+        "observacao": observacao
+      });
+
+      console.log("Status da Resposta:", response.status);
+
+      const answer = await response.data;
+
+      if(answer){
+        return true;
+      }
+
+
+    } catch (error) {
+      console.error('Erro ao concluir:', error);
+    }
+  },
+
+
+
+
+
+  cadastraImpressao: async (nome, categoria, tempo, maquina, material, cor, gramas, objetivo, comprador) => {
+    console.log(nome, categoria, tempo, maquina, material, cor, gramas, objetivo, comprador)
 
     try {
       const response = await api.post(`${baseUrl}/cadastrar`,{
@@ -72,13 +132,15 @@ const useImpressoes = create((set, get) => ({
           "filamentos": [
             {
               "material": material,
-              "cor": cor,
+              "cor": cor? cor : "Material Próprio",
               "gramas_previstas": gramas,
             }
           ],
           "material": material,
-          "cor_filamento": cor,
-          "gramas": gramas
+          "cor_filamento": cor? cor : "Material Próprio",
+          "gramas": gramas,
+          "comprador": comprador? comprador : null,
+          "objetivo": objetivo? objetivo : null,
           
       });
 
@@ -102,6 +164,26 @@ const useImpressoes = create((set, get) => ({
       set({mostraAdicionar: true})
     } else{
       set({mostraAdicionar: false})
+    }
+    
+  },
+
+  setMostraFalha: () => {
+    const mostra = get().mostraFalha;
+    if(mostra == false){
+      set({mostraFalha: true})
+    } else{
+      set({mostraFalha: false})
+    }
+    
+  },
+
+  setMostraConcluir: () => {
+    const mostra = get().mostraConcluir;
+    if(mostra == false){
+      set({mostraConcluir: true})
+    } else{
+      set({mostraConcluir: false})
     }
     
   },

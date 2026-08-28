@@ -34,6 +34,8 @@ import BotaoFiltro from '../../Reutilizaveis/BotaoFiltro';
 
 import navegacaoMenu from "../../Services/navegacaoMenu";
 
+import ConcluiImpressao from "../../Reutilizaveis/ConcluiImpressao";
+
 
 import useImpressoes from "../../Services/useImpressoes";
 import useMaquinas from "../../Services/useMaquinas";
@@ -48,6 +50,7 @@ export default function Impressoes({ navigation }) {
  const impressoes = useImpressoes((state) => state.impressoes);
  const consultaImpressoes = useImpressoes((state) => state.consultaImpressoes);
  const setaId = useImpressoes((state) => state.setaId);
+ const setMostraConcluir = useImpressoes((state) => state.setMostraConcluir);
  
 
 
@@ -92,6 +95,7 @@ export default function Impressoes({ navigation }) {
    <Filtros/>
    <AvisoDelete/>
    <AdicionaImpressao/>
+   <ConcluiImpressao/>
    <View style={styles.cabecalho}>
      <View style={styles.textos}>
        <Text style={styles.titulo}>Impressões 3D</Text>
@@ -241,7 +245,12 @@ export default function Impressoes({ navigation }) {
 
 
            <View style={styles.acoes}>
-             <TouchableOpacity style={styles.botaoConcluir}>
+             <TouchableOpacity style={styles.botaoConcluir}
+             onPress={() => {
+              setMostraConcluir();
+              setaId(item.id)
+             }}
+             >
                <Text style={styles.textoBotaoConcluir}>CONCLUIR</Text>
              </TouchableOpacity>
 

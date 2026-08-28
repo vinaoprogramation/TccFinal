@@ -7,11 +7,13 @@ const {
   visualizarFotoPublica,
   avatarPublico,
   downloadStlPublico,
+  siteConfig,
 } = require('../controllers/catalogoController');
 
 const router = express.Router();
 
 router.get('/', listaProjetos);
+router.get('/site-config', siteConfig);
 router.get('/filtros', filtrosCatalogo);
 router.get('/:id', consultaProjeto);
 router.get('/fotos/:id/visualizar', visualizarFotoPublica);

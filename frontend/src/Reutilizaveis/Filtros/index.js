@@ -15,9 +15,17 @@ export default function Filtros({ navigation, props }) {
     const categorias = useCatalogo((state) => state.categorias);
     const materiais = useCatalogo((state) => state.materiais);
     const consultaCatalogo = useCatalogo((state) => state.consultaCatalogo);
+    const setRecarregando = useCatalogo((state) => state.setRecarregando);
 
 
-    const [filtros, mostraFiltros] = useState(null)
+    const [filtros, mostraFiltros] = useState(null);
+
+    const recarrega = async(var1 ,var2 , var3, var4) => {
+        setRecarregando(true)
+        consultaCatalogo(var1, var2, var3, var4);
+        
+        
+    }
 
 
     return <>
@@ -48,7 +56,8 @@ export default function Filtros({ navigation, props }) {
                                     renderItem={({ item }) => (
                                         <TouchableOpacity style={styles.botaoOpcao}
                                             onPress={() => {
-                                                consultaCatalogo(null, null, null, item.id)
+                                                recarrega(null, null, null, item.id)
+                                                setFiltros();
                                             }}
                                         >
                                             <Text style={styles.textoOpcao}>{item.nome}</Text>
@@ -83,7 +92,8 @@ export default function Filtros({ navigation, props }) {
                                     renderItem={({ item }) => (
                                         <TouchableOpacity style={styles.botaoOpcao}
                                             onPress={() => {
-                                                consultaCatalogo(null, item.nome, null, null)
+                                                recarrega(null, item.nome, null, null)
+                                                setFiltros();
                                             }}
                                         >
                                             <Text style={styles.textoOpcao}>{item.nome}</Text>
@@ -118,7 +128,8 @@ export default function Filtros({ navigation, props }) {
                                     renderItem={({ item }) => (
                                         <TouchableOpacity style={styles.botaoOpcao}
                                             onPress={() => {
-                                                consultaCatalogo(null, null, item.nome, null)
+                                                recarrega(null, null, item.nome, null)
+                                                setFiltros();
                                             }}
                                         >
                                             <Text style={styles.textoOpcao}>{item.nome}</Text>

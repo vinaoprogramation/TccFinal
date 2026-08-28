@@ -96,6 +96,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderWidth: 0.5,
     borderColor: '#ff0000'
+  },
+  nulo:{
+    fontSize: 18,
+    marginTop: 20,
+    alignSelf: 'center'
   }
 });
 

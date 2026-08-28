@@ -44,22 +44,22 @@ export default function Aprovacoes({ navigation }) {
 
 
   useEffect(() => {
-      consultaAprovacoes();
+    consultaAprovacoes();
   }, [aprovacoes])
 
 
 
-  const decide = async(id, status, observacao) => {
-    if(!decideAprovacao){
+  const decide = async (id, status, observacao) => {
+    if (!decideAprovacao) {
       console.log("Função não carregada");
       return;
     }
-    if(!id || !status){
+    if (!id || !status) {
       console.log("Falta parâmetros");
       return;
     }
     const resposta = await decideAprovacao(id, status, observacao);
-    if(!resposta){
+    if (!resposta) {
       console.log("Erro na função de decisão");
       return;
     }
@@ -92,104 +92,113 @@ export default function Aprovacoes({ navigation }) {
 
     </View>
 
-
-    <FlatList
-      data={aprovacoes}
-      keyExtractor={(item) => String(item.id)}
-      ListFooterComponent={() => <>
-      <View style={{height: 500, width: 100}}>
-
-      </View>
-      </>}
-      renderItem={({ item }) => <>
-        <View style={styles.item}>
-          <View>
-            <Text style={styles.legenda}>{item.nome_impressao}</Text>
-            <View style={styles.containerInformacoes}>
-              <Text style={styles.informacoes}>{item.categoria}</Text>
-              <Text style={styles.informacoes}>{item.cor_filamento}</Text>
-            </View>
-
-            <View style={styles.containerDetalhes}>
-              <View style={styles.detalhes}>
-                <Text style={styles.informacoes}>Solicitante</Text>
-                <Text style={styles.legenda}>{item.usuario_nome}</Text>
-              </View>
-
-
-              <View style={styles.detalhes}>
-                <Text style={styles.informacoes}>Material</Text>
-                <Text style={styles.legenda}>{item.material}</Text>
-              </View>
+    {aprovacoes.length != 0 ?
+      <>
+        <FlatList
+          data={aprovacoes}
+          keyExtractor={(item) => String(item.id)}
+          ListFooterComponent={() => <>
+            <View style={{ height: 500, width: 100 }}>
 
             </View>
+          </>}
+          renderItem={({ item }) => <>
+            <View style={styles.item}>
+              <View>
+                <Text style={styles.legenda}>{item.nome_impressao}</Text>
+                <View style={styles.containerInformacoes}>
+                  <Text style={styles.informacoes}>{item.categoria}</Text>
+                  <Text style={styles.informacoes}>{item.cor_filamento}</Text>
+                </View>
+
+                <View style={styles.containerDetalhes}>
+                  <View style={styles.detalhes}>
+                    <Text style={styles.informacoes}>Solicitante</Text>
+                    <Text style={styles.legenda}>{item.usuario_nome}</Text>
+                  </View>
 
 
-             <View style={styles.containerDetalhes}>
-              <View style={styles.detalhes}>
-                <Text style={styles.informacoes}>Gramas</Text>
-                <Text style={styles.legenda}>{item.gramas}</Text>
+                  <View style={styles.detalhes}>
+                    <Text style={styles.informacoes}>Material</Text>
+                    <Text style={styles.legenda}>{item.material}</Text>
+                  </View>
+
+                </View>
+
+
+                <View style={styles.containerDetalhes}>
+                  <View style={styles.detalhes}>
+                    <Text style={styles.informacoes}>Gramas</Text>
+                    <Text style={styles.legenda}>{item.gramas}</Text>
+                  </View>
+
+
+                  <View style={styles.detalhes}>
+                    <Text style={styles.informacoes}>Valor Final</Text>
+                    <Text style={styles.legenda}>{item.valor_final}</Text>
+                  </View>
+
+                </View>
+
+
+                <View style={styles.containerDetalhes}>
+                  <View style={styles.detalhes}>
+                    <Text style={styles.informacoes}>Tempo</Text>
+                    <Text style={styles.legenda}>{item.tempo_impressao}</Text>
+                  </View>
+
+
+
+                  <View style={styles.detalhes}>
+                    <Text style={styles.informacoes}>Criada em </Text>
+                    <Text style={styles.legenda}>{ajustaData(item.impressao_created_at)}</Text>
+                  </View>
+
+                </View>
+
+
+
               </View>
 
+              <View>
+                <TextInput
+                  value={observacao}
+                  onChangeText={setObservacao}
+                  placeholder="Observação Opcional"
+                  style={styles.inputObservacao}
+                />
 
-              <View style={styles.detalhes}>
-                <Text style={styles.informacoes}>Valor Final</Text>
-                <Text style={styles.legenda}>{item.valor_final}</Text>
+                <View style={styles.botoes}>
+                  <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}
+                    onPress={() => {
+                      decide(item.id, "APROVADO", observacao)
+                    }}
+                  >
+                    <Text style={[styles.textoBotao, styles.textoBotaoAprovar]}>APROVAR</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={[styles.botao, styles.botaoNegar]}
+                    onPress={() => {
+                      decide(item.id, "REJEITADO", observacao)
+                    }}
+                  >
+                    <Text style={[styles.textoBotao, styles.textoBotaoNegar]}>REJEITAR</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
+
 
             </View>
+          </>}
+        />
+      </>
+      :
+      <Text style={styles.nulo}>Não há aprovações pendentes</Text>
 
-
-            <View style={styles.containerDetalhes}>
-              <View style={styles.detalhes}>
-                <Text style={styles.informacoes}>Tempo</Text>
-                <Text style={styles.legenda}>{item.tempo_impressao}</Text>
-              </View>
-              
-
-
-              <View style={styles.detalhes}>
-                <Text style={styles.informacoes}>Criada em </Text>
-                <Text style={styles.legenda}>{ajustaData(item.impressao_created_at)}</Text>
-              </View>
-
-            </View>
+    }
 
 
 
-          </View>
-
-          <View>
-            <TextInput
-            value={observacao}
-            onChangeText={setObservacao}
-            placeholder="Observação Opcional"
-            style={styles.inputObservacao}
-            />
-
-            <View style={styles.botoes}>
-              <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}
-              onPress={() => {
-                decide(item.id, "APROVADO", observacao)
-              }}
-              >
-                <Text style={[styles.textoBotao, styles.textoBotaoAprovar]}>APROVAR</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={[styles.botao, styles.botaoNegar]}
-              onPress={() => {
-                decide(item.id, "REJEITADO", observacao)
-              }}
-              >
-                <Text style={[styles.textoBotao, styles.textoBotaoNegar]}>REJEITAR</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-
-        </View>
-      </>}
-    />
 
 
   </>

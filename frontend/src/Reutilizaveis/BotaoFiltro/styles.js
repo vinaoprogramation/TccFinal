@@ -6,7 +6,7 @@ const {width, height} = Dimensions.get('screen');
 const styles = StyleSheet.create({
     fundo:{
         position: 'absolute',
-        zIndex: 5,
+        zIndex: 3,
         elevation: 5,
         left: 10,
         top: 200,

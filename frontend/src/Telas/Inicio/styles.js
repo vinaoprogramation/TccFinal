@@ -11,18 +11,19 @@ const styles = StyleSheet.create({
   },
   saudacao:{
     fontSize: 20,
-    marginTop: 200,
+    marginTop: 300,
     color: '#ffffff',
     fontSize: 20,
-    padding: 20
+    padding: 20,
+    fontWeight: '500'
   },
   botoes:{
     gap: 10,
-    marginTop: 20
+    marginTop: 50
   },
   botao:{
     borderRadius: 10,
-    backgroundColor: '#ffffff',
+    backgroundColor: 'rgb(222, 246, 255)',
     elevation: 5,
     paddingVertical: 10,
     width: width*0.9
@@ -33,10 +34,20 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   sheilong:{
-    width: width*0.7,
+    width: 500,
     height: 500,
     position: 'absolute',
-    top: 320
+    top: -120,
+    borderRadius: 1000,
+  },
+  logo:{
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    borderRadius: 100,
+    alignSelf: 'center',
+    top: 550,
+    elevation: 5
   }
 });
 

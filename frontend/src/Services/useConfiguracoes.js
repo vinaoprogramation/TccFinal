@@ -8,7 +8,7 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3000/configuracoes'
-  : 'http://192.168.1.11:3000/configuracoes'
+  : 'http://10.0.2.2:3000/configuracoes'
 //'http://10.0.2.2:3000/usuarios'
 
 const useConfiguracoes = create((set, get) => ({

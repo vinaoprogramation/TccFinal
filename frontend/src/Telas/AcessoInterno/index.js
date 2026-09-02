@@ -29,12 +29,7 @@ export default function AcessoInterno({ navigation }) {
 
 
        }
-       if (!email, !senha) {
-           console.log("Parâmetros inválidos")
-           return;
 
-
-       }
        const loga = await login(email, senha);
        
        if(loga){
@@ -46,6 +41,17 @@ export default function AcessoInterno({ navigation }) {
 
 
    const mostraPop = async (email, senha) => {
+        if(!email || !senha){
+            Toast.show({
+                type: "error",
+                text1: "Email e senha obrigatórios!",
+                visibilityTime: 3000
+              })
+
+              return;
+    
+        }
+
        const mostra = await handleLogin(email, senha);
    
        if (mostra) {
@@ -64,8 +70,7 @@ export default function AcessoInterno({ navigation }) {
             text1: "Email ou senha inválidos!",
             visibilityTime: 3000
           })
-          setEmail("");
-          setSenha("");
+
        }
    
    

@@ -143,7 +143,7 @@ export default function AdicionaImpressao({ navigation }) {
 
 
   const cadastra = async (nome, categoria, tempo, maquina, material, cor, gramas, objetivo, comprador) => {
-    if (!nome || !categoria || !tempo || !maquina || !material || materiaisValor != "Material Próprio" && !cor || !gramas || categoria == "Pessoal" && !objetivo || objetivo == "" || categoria == "Venda" && !comprador) {
+    if (!nome || !categoria || !tempo || !maquina || !material || materiaisValor != "Material Próprio" && !cor || !gramas || categoria == "Pessoal" && !objetivo || categoria == "Venda" && !comprador) {
       console.log("Faltam parâmetros");
       Toast.show({
         type: "error",

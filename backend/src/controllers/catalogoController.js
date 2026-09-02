@@ -58,19 +58,6 @@ async function avatarPublico(req, res) {
   }
 }
 
-async function downloadStlPublico(req, res) {
-  try {
-    const id = req.params.id;
-    if (!id) return res.status(400).json({ error: 'Id ausente' });
-    const resultado = await catalogoService.downloadStlPublico(id);
-    return res.json(resultado);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Erro ao baixar stl' });
-  }
-}
-
-
 async function siteConfig(req, res) {
   try {
     const resultado = await catalogoService.siteConfig();
@@ -81,12 +68,38 @@ async function siteConfig(req, res) {
   }
 }
 
+async function verificarStlPublico(req, res) {
+  try {
+    const id = req.params.id;
+    if (!id) return res.status(400).json({ error: 'Id ausente' });
+    const disponivel = await catalogoService.verificarStlPublico(id);
+    return res.json({ disponivel });
+  } catch (error) {
+    return res.json({ disponivel: false });
+  }
+}
+
+async function downloadStlPublico(req, res) {
+  try {
+    const id = req.params.id;
+    if (!id) return res.status(400).json({ error: 'Id ausente' });
+    
+    // Passa o objeto `res` para fazer o pipe da imagem/arquivo
+    await catalogoService.downloadStlPublico(id, res);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Erro ao baixar STL' });
+  }
+}
+
 module.exports = {
+  // ...outras funções mantidas
   listaProjetos,
   filtrosCatalogo,
   consultaProjeto,
   visualizarFotoPublica,
   avatarPublico,
+  verificarStlPublico,
   downloadStlPublico,
   siteConfig,
 };

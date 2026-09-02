@@ -7,6 +7,7 @@ const {
   visualizarFotoPublica,
   avatarPublico,
   downloadStlPublico,
+  verificarStlPublico,
   siteConfig,
 } = require('../controllers/catalogoController');
 
@@ -19,5 +20,6 @@ router.get('/:id', consultaProjeto);
 router.get('/fotos/:id/visualizar', visualizarFotoPublica);
 router.get('/usuarios/:id/avatar', avatarPublico);
 router.get('/stl/:id/download', downloadStlPublico);
+router.get('/stl/:id/verificar', verificarStlPublico);
 
 module.exports = router;

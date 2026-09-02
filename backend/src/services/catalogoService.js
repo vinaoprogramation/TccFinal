@@ -120,20 +120,39 @@ async function avatarPublico(id) {
 }
 
 
-// Essa função só será chamada quando o usuário
-// realmente apertar "Baixar STL".
-async function downloadStlPublico(id) {
-  return `${BASE_URL}/catalogo/stl/${id}/download`;
+async function verificarStlPublico(id) {
+  try {
+    const response = await axios.get(`${BASE_URL}/catalogo/stl/${id}/download`, {
+      responseType: 'stream'
+    });
+    return response.status === 200;
+  } catch (error) {
+    return false;
+  }
 }
 
+async function downloadStlPublico(id, res) {
+  // Fatora o download para fazer stream do arquivo direto ao cliente
+  const response = await axios.get(`${BASE_URL}/catalogo/stl/${id}/download`, {
+    responseType: 'stream'
+  });
+
+  res.setHeader('Content-Type', response.headers['content-type'] || 'application/octet-stream');
+  res.setHeader('Content-Disposition', `attachment; filename="modelo-${id}.stl"`);
+  
+  response.data.pipe(res);
+}
 
 module.exports = {
+  // ...outras funções mantidas
   listaProjetos,
   filtrosCatalogo,
   consultaProjeto,
   visualizarFotoPublica,
   avatarPublico,
+  verificarStlPublico,
   downloadStlPublico,
   siteConfig
 };
+
 

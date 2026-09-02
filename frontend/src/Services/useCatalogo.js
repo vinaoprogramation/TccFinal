@@ -89,3 +89,4 @@ const useCatalogo = create((set, get) => ({
 }));
 
 export default useCatalogo;
+export { baseUrl };

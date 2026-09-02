@@ -22,11 +22,6 @@ export default function Inicio({ navigation }) {
   return <>
     <View style={styles.fundo}>
 
-      <Image
-      source={coruja}
-      style={styles.sheilong}
-      />
-
       <View>
         {configuracoes ?
           <>

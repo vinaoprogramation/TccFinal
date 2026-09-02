@@ -12,6 +12,7 @@ import styles from "./styles";
 
 import trashcan from '../../../assets/trashcan.png'
 
+import ReportaFalha from "../../Reutilizaveis/ReportaFalha";
 
 import autenticacao from "../../Services/autenticacao";
 import useUsuarios from "../../Services/useUsuarios";
@@ -51,6 +52,8 @@ export default function Impressoes({ navigation }) {
  const consultaImpressoes = useImpressoes((state) => state.consultaImpressoes);
  const setaId = useImpressoes((state) => state.setaId);
  const setMostraConcluir = useImpressoes((state) => state.setMostraConcluir);
+
+ const setMostraFalha = useImpressoes((state) => state.setMostraFalha);
  
 
 
@@ -96,6 +99,7 @@ export default function Impressoes({ navigation }) {
    <AvisoDelete/>
    <AdicionaImpressao/>
    <ConcluiImpressao/>
+   <ReportaFalha/>
    <View style={styles.cabecalho}>
      <View style={styles.textos}>
        <Text style={styles.titulo}>Impressões 3D</Text>
@@ -255,7 +259,11 @@ export default function Impressoes({ navigation }) {
              </TouchableOpacity>
 
 
-             <TouchableOpacity style={styles.botaoRegistrarFalha}>
+             <TouchableOpacity style={styles.botaoRegistrarFalha}
+             onPress={() => {
+              setMostraFalha();
+             }}
+             >
                <Text style={styles.textoBotaoRegistrarFalha}>REGISTRAR FALHA</Text>
              </TouchableOpacity>
 

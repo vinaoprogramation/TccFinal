@@ -46,9 +46,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View>
-      <BotaoVoltarInicio
-      navigation={navigation}
-      />
+
       <BotaoFiltro />
       <Filtros />
 
@@ -59,7 +57,7 @@ export default function HomeScreen({ navigation }) {
 
       {
         recarregando ?
-          <ActivityIndicator size="large" color="#00000" style={[styles.loader, { position: 'absolute', marginTop: 300, alignSelf: 'center', transform: [{scale: 2}] }]} />
+          <ActivityIndicator size="large" color="#00000" style={[styles.loader, { position: 'absolute', marginTop: 300, alignSelf: 'center', transform: [{ scale: 2 }] }]} />
           :
           null
       }
@@ -71,6 +69,11 @@ export default function HomeScreen({ navigation }) {
         extraData={detalhesId}
         keyExtractor={(item) => String(item.id)}
         style={styles.flatList}
+        ListFooterComponent={() => <>
+          <BotaoVoltarInicio
+            navigation={navigation}
+          />
+        </>}
         ListHeaderComponent={() => <>
 
           <View style={styles.cabecalho}>
@@ -172,6 +175,8 @@ export default function HomeScreen({ navigation }) {
         </>
         }
       />
+
+
     </View >
   );
 }

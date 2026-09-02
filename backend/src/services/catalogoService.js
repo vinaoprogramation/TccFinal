@@ -1,11 +1,11 @@
+
 const axios = require('axios');
-const sharp = require('sharp');
+
 const BASE_URL = 'https://api-ip3d.mbinfoseg.com.br/api';
-
-
 
 async function listaProjetos(busca, categoria, material, aluno) {
   const params = {};
+
   if (busca) params.busca = busca;
   if (categoria) params.categoria = categoria;
   if (material) params.material = material;
@@ -16,33 +16,38 @@ async function listaProjetos(busca, categoria, material, aluno) {
 
   const resultado = await Promise.all(
     projetos.map(async (p) => {
+      const detalheRes = await axios.get(
+        `${BASE_URL}/catalogo/${p.id}`
+      );
 
-      const detalheRes = await axios.get(`${BASE_URL}/catalogo/${p.id}`);
       const dados = detalheRes.data;
-      
+
       const fotos = dados.fotos || [];
       const projetoInfo = dados.projeto || {};
-      
-      let thumbnailBase64 = null;
-      if (fotos[0]) {
-        const buffer = await gerarThumbnail(fotos[0].id);
-        thumbnailBase64 = `data:image/jpeg;base64,${buffer.toString('base64')}`;
-      }
 
       let dataFormatada = null;
+
       if (projetoInfo.created_at) {
         const data = new Date(projetoInfo.created_at);
-        dataFormatada = new Intl.DateTimeFormat('pt-BR', { 
-          dateStyle: 'short', 
-          timeStyle: 'short', 
-          timeZone: 'America/Sao_Paulo' 
+
+        dataFormatada = new Intl.DateTimeFormat('pt-BR', {
+          dateStyle: 'short',
+          timeStyle: 'short',
+          timeZone: 'America/Sao_Paulo'
         }).format(data);
       }
 
       return {
         ...p,
-        thumbnailUrl: thumbnailBase64,
-        fotoPerfil: projetoInfo.usuario_id ? `${BASE_URL}/catalogo/usuarios/${projetoInfo.usuario_id}/avatar` : null,
+
+        thumbnailUrl: fotos[0]
+          ? `${BASE_URL}/catalogo/fotos/${fotos[0].id}/visualizar`
+          : null,
+
+        fotoPerfil: projetoInfo.usuario_id
+          ? `${BASE_URL}/catalogo/usuarios/${projetoInfo.usuario_id}/avatar`
+          : null,
+
         data: dataFormatada
       };
     })
@@ -52,92 +57,75 @@ async function listaProjetos(busca, categoria, material, aluno) {
 }
 
 
-async function baixarImagem(id) {
-
-  const response = await axios.get(
-    `${BASE_URL}/catalogo/fotos/${id}/visualizar`,
-    {
-      responseType: 'arraybuffer'
-    }
-  );
-  return response.data;
-}
-
-
-async function gerarThumbnail(id) {
-
-  const imagem = await baixarImagem(id);
-
-  const buffer = await sharp(imagem)
-    .rotate()
-    .resize({
-      width: 600,
-      withoutEnlargement: true,
-      fit: 'inside'
-    })
-    .jpeg({
-      quality: 55,
-      mozjpeg: true,
-      chromaSubsampling: '4:4:4'
-    })
-    .toBuffer();
-
-  return buffer;
-}
-
-
-async function obterMetadata(id) {
-
-  const imagem = await baixarImagem(id);
-
-  return await sharp(imagem).metadata();
-}
-
-
-module.exports = {
-  gerarThumbnail,
-  obterMetadata
-};
-
-
-
 async function filtrosCatalogo() {
-  const api = await axios.get(`${BASE_URL}/catalogo/filtros`);
+  const api = await axios.get(
+    `${BASE_URL}/catalogo/filtros`
+  );
+
   return api.data;
 }
 
 
 async function siteConfig() {
-  const api = await axios.get(`${BASE_URL}/site-config`);
+  const api = await axios.get(
+    `${BASE_URL}/site-config`
+  );
+
   return api.data;
 }
+
 
 async function consultaProjeto(id) {
-  const api = await axios.get(`${BASE_URL}/catalogo/${id}`);
-  const resposta = api.data
-  const fotos = api.data.fotos;
+  const api = await axios.get(
+    `${BASE_URL}/catalogo/${id}`
+  );
 
-  const listaFotos = await fotos.map(f => 
-    `${BASE_URL}/catalogo/fotos/${f.id}/visualizar`);
-    
+  const resposta = api.data;
 
-  return ({resposta, listaFotos});
+  const fotos = resposta.fotos || [];
+
+  const listaFotos = fotos.map(
+    (f) =>
+      `${BASE_URL}/catalogo/fotos/${f.id}/visualizar`
+  );
+
+  // A URL é apenas montada.
+  // O arquivo NÃO é baixado aqui.
+  const stlUrl =
+    `${BASE_URL}/catalogo/stl/${id}/download`;
+
+  return {
+    resposta,
+    listaFotos,
+    stlUrl
+  };
 }
+
 
 async function visualizarFotoPublica(id) {
-  const api = await axios.get(`${BASE_URL}/catalogo/fotos/${id}/visualizar`);
+  const api = await axios.get(
+    `${BASE_URL}/catalogo/fotos/${id}/visualizar`
+  );
+
   return api.data;
 }
+
 
 async function avatarPublico(id) {
-  const api = await axios.get(`${BASE_URL}/catalogo/usuarios/${id}/avatar`);
+  const api = await axios.get(
+    `${BASE_URL}/catalogo/usuarios/${id}/avatar`
+  );
+
   return api.data;
 }
 
+
+// Essa função só será chamada quando o usuário
+// realmente apertar "Baixar STL".
 async function downloadStlPublico(id) {
-  const api = await axios.get(`${BASE_URL}/catalogo/stl/${id}/download`);
-  return api.data;
+  return `${BASE_URL}/catalogo/stl/${id}/download`;
 }
+
 
 module.exports = {
   listaProjetos,
@@ -146,5 +134,6 @@ module.exports = {
   visualizarFotoPublica,
   avatarPublico,
   downloadStlPublico,
-  siteConfig,
+  siteConfig
 };
+

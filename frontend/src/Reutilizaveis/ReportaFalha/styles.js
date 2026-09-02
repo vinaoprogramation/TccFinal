@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
  textoFlat:{
    padding: 20,
    color: '#979797'
- }
+ },
+ 
 
 
 

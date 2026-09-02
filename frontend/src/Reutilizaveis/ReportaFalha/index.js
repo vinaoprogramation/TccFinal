@@ -48,11 +48,6 @@ export default function ReportaFalha({ navigation }) {
     const [corValor, setCorValor] = useState("");
 
     useEffect(() => {
-        consultaMaquinas();
-    }, [consultaMaquinas]);
-
-
-    useEffect(() => {
         consultaOpcoes();
     }, [consultaOpcoes]);
 
@@ -73,10 +68,10 @@ export default function ReportaFalha({ navigation }) {
                 text1: "Impressão cadastrada com sucesso!",
                 visibilityTime: 3000
             })
-            
 
-            setEstoqueMostra(false);
-            setEstoqueValor("");
+
+            setCorMostra(false);
+            setCorValor("");
 
             setPorcentagem("");
             setObservacao("");
@@ -86,9 +81,6 @@ export default function ReportaFalha({ navigation }) {
             setMaterialMostra(false);
             setMaterialValor("");
 
-            setCorMostra(false);
-            setCorValor("");    
-        
             consultaImpressoes();
             setMostraFalha();
         }
@@ -133,7 +125,7 @@ export default function ReportaFalha({ navigation }) {
                 <TouchableOpacity style={styles.fundo}
                     onPress={() => {
 
-                        setMostraAdicionar();
+                        setMostraFalha();
                     }}
                 >
 
@@ -147,6 +139,14 @@ export default function ReportaFalha({ navigation }) {
 
 
                             <View style={styles.inputs}>
+
+                                <TextInput
+                                    value={foto}
+                                    onChangeText={setFoto}
+                                    placeholder="Enviar foto"
+                                    style={styles.input}
+                                />
+
                                 <TextInput
                                     value={porcentagem}
                                     onChangeText={setPorcentagem}
@@ -174,26 +174,31 @@ export default function ReportaFalha({ navigation }) {
 
 
                                 </TouchableOpacity>
-                                {categoriasMostra ?
+                                {materialMostra ?
                                     <>
                                         <FlatList
                                             style={styles.flatList}
-                                            data={categorias}
+                                            data={materiais}
                                             scrollEnabled={false}
                                             keyExtractor={(item) => String(item.id)}
                                             ListHeaderComponent={() => <>
-                                                <Text style={styles.textoFlat}>Selecione uma categoria</Text>
+                                                <Text style={styles.textoFlat}>Selecione um material</Text>
                                             </>}
                                             renderItem={({ item }) => <>
 
 
-                                                <TouchableOpacity style={styles.itens}
+                                                <TouchableOpacity style={[styles.itens, { flexDirection: 'row', gap: 10, flexWrap: 'wrap' }]}
                                                     onPress={() => {
                                                         setMaterialValor(item.nome)
                                                         setMaterialMostra(false)
+                                                        setCorValor("")
                                                     }}
+
+
                                                 >
                                                     <Text style={styles.textoMaquinas}>{item.nome}</Text>
+                                                    <Text style={styles.textoMaquinas}>·</Text>
+                                                    <Text style={styles.textoMaquinas}>R$ {item.valor_grama}/g</Text>
                                                 </TouchableOpacity>
 
 
@@ -205,191 +210,61 @@ export default function ReportaFalha({ navigation }) {
                                 }
 
 
-                                <TouchableOpacity style={styles.filamento}
-                                    activeOpacity={1}
-                                >
-                                    <View style={styles.cabecalhoFilamento}>
-                                        <Text style={styles.tituloFilamento}>Filamentos Perdido
-                                        </Text>
-                                        <Text style={styles.descricaoFilamento}>Adicione as cores que foram realmente usadas antes da falha.</Text>
-                                    </View>
+
+                                {materialValor != "" ?
+                                    <>
+                                        {corMostra ?
+                                            <>
 
 
-                                    <View style={styles.inputsFilamento}>
-
-                                        <View style={styles.opcoes}>
-                                            <TouchableOpacity
-                                                style={styles.input}
-                                                onPress={() => {
-                                                    setMateriaisMostra(!C)
-                                                }}
-                                            >
-                                                <Text>
-                                                    {materiaisValor != "" ? materiaisValor : "Selecione um material*"}
-                                                </Text>
-                                            </TouchableOpacity>
-                                            {materiaisMostra ?
-                                                <>
-                                                    <FlatList
-                                                        style={styles.flatList}
-                                                        data={materiais}
-                                                        scrollEnabled={false}
-                                                        keyExtractor={(item) => String(item.id)}
-                                                        ListHeaderComponent={() => <>
-                                                            <Text style={styles.textoFlat}>Selecione um material</Text>
-                                                        </>}
-                                                        renderItem={({ item }) => <>
+                                                <FlatList
+                                                    style={styles.flatList}
+                                                    data={estoque}
+                                                    scrollEnabled={false}
+                                                    keyExtractor={(item) => String(item.id)}
+                                                    ListHeaderComponent={() => <>
+                                                        <Text style={styles.textoFlat}>Selecione uma cor</Text>
+                                                    </>}
+                                                    renderItem={({ item }) => <>
+                                                        {materialValor ?
+                                                            <>
 
 
-                                                            <TouchableOpacity style={[styles.itens, { flexDirection: 'row', gap: 10, flexWrap: 'wrap' }]}
-                                                                onPress={() => {
-                                                                    setMateriaisValor(item.nome)
-                                                                    setMateriaisMostra(false)
-                                                                    setEstoqueValor("")
-                                                                }}
+                                                                {item.material == materialValor ? <>
+                                                                    <TouchableOpacity style={[styles.itens, { flexDirection: 'row', gap: 10, flexWrap: 'wrap' }]}
+                                                                        onPress={() => {
+                                                                            setCorValor(item.cor)
+                                                                            setCorMostra(false)
+                                                                        }}
 
 
-                                                            >
-                                                                <Text style={styles.textoMaquinas}>{item.nome}</Text>
-                                                                <Text style={styles.textoMaquinas}>·</Text>
-                                                                <Text style={styles.textoMaquinas}>R$ {item.valor_grama}/g</Text>
-                                                            </TouchableOpacity>
+                                                                    >
+                                                                        <Text style={styles.textoMaquinas}>{item.material == materialValor ? item.cor : null}</Text>
+                                                                        <Text style={styles.textoMaquinas}>·</Text>
+                                                                        <Text style={styles.textoMaquinas}>saldo {item.saldo}g</Text>
+                                                                    </TouchableOpacity>
+                                                                </> : null}
+                                                            </>
+                                                            :
+                                                            null
+                                                        }
 
 
-                                                        </>}
-                                                    />
-                                                </>
-                                                :
-                                                null
-                                            }
+                                                    </>}
+                                                />
 
 
 
 
-                                            <TouchableOpacity
-                                                style={styles.input}
-                                                onPress={() => {
-                                                    setEstoqueMostra(!estoqueMostra)
-                                                }}
-                                            >
-                                                <Text>
-                                                    {estoqueValor != "" ? estoqueValor : "Selecione uma cor*"}
-                                                </Text>
-                                            </TouchableOpacity>
-                                            {materiaisValor != "" ?
-                                                <>
-                                                    {estoqueMostra ?
-                                                        <>
+                                            </>
+                                            :
+                                            null
 
 
-                                                            <FlatList
-                                                                style={styles.flatList}
-                                                                data={estoque}
-                                                                scrollEnabled={false}
-                                                                keyExtractor={(item) => String(item.id)}
-                                                                ListHeaderComponent={() => <>
-                                                                    <Text style={styles.textoFlat}>Selecione uma cor</Text>
-                                                                </>}
-                                                                renderItem={({ item }) => <>
-                                                                    {materiaisValor ?
-                                                                        <>
-
-
-                                                                            {item.material == materiaisValor ? <>
-                                                                                <TouchableOpacity style={[styles.itens, { flexDirection: 'row', gap: 10, flexWrap: 'wrap' }]}
-                                                                                    onPress={() => {
-                                                                                        setEstoqueValor(item.cor)
-                                                                                        setEstoqueMostra(false)
-                                                                                    }}
-
-
-                                                                                >
-                                                                                    <Text style={styles.textoMaquinas}>{item.material == materiaisValor ? item.cor : null}</Text>
-                                                                                    <Text style={styles.textoMaquinas}>·</Text>
-                                                                                    <Text style={styles.textoMaquinas}>saldo {item.saldo}g</Text>
-                                                                                </TouchableOpacity>
-                                                                            </> : null}
-                                                                        </>
-                                                                        :
-                                                                        null
-                                                                    }
-
-
-                                                                </>}
-                                                            />
-
-
-
-
-                                                        </>
-                                                        :
-                                                        null
-
-
-                                                    }
-                                                </>
-                                                :
-                                                <Text style={styles.textoObs}>Selecione um Material*</Text>
-                                            }
-
-
-                                            <Text style={styles.textoObs}>As cores vêm do estoque</Text>
-
-
-
-
-                                            <TextInput
-                                                style={styles.input}
-                                                placeholder="Gramas Previstas*"
-                                                value={gramas}
-                                                onChangeText={setGramas}
-                                            />
-
-                                        </View>
-
-
-                                    </View>
-
-                                </TouchableOpacity>
-
-
-                                <TextInput
-                                    value={tempo}
-                                    onChangeText={setTempo}
-                                    placeholder="Tempo de Impressão*"
-                                    style={styles.input}
-                                />
-
-
-                                {
-                                    categoriasValor == 'Pessoal' ?
-                                        <>
-                                            <TextInput
-                                                value={objetivo}
-                                                onChangeText={setObjetivo}
-                                                placeholder="Objetivo*"
-                                                style={styles.input}
-                                            />
-
-                                        </>
-                                        :
-                                        null
-                                }
-
-
-                                {
-                                    categoriasValor == 'Venda' ?
-                                        <>
-                                            <TextInput
-                                                value={comprador}
-                                                onChangeText={setComprador}
-                                                placeholder="Comprador*"
-                                                style={styles.input}
-                                            />
-
-                                        </>
-                                        :
-                                        null
+                                        }
+                                    </>
+                                    :
+                                    <Text style={styles.textoObs}>Selecione um Material*</Text>
                                 }
 
 
@@ -397,87 +272,24 @@ export default function ReportaFalha({ navigation }) {
                                 <TouchableOpacity
                                     style={styles.input}
                                     onPress={() => {
-                                        setMaquinasMostra(!maquinasMostra)
+                                        setCorMostra(!corMostra)
                                     }}
                                 >
                                     <Text>
-                                        {maquinasValor != "" ? `Reni-0${maquinasValor}` : "Selecione uma máquina*"}
+                                        {corValor != "" ? corValor : "Selecione a cor*"}
                                     </Text>
+
+
                                 </TouchableOpacity>
-
-
-                                {maquinasMostra ?
-                                    <FlatList
-                                        style={styles.flatList}
-                                        data={maquinas}
-                                        scrollEnabled={false}
-                                        keyExtractor={(item) => String(item.id)}
-                                        ListHeaderComponent={() => <>
-                                            <Text style={styles.textoFlat}>Selecione uma máquina</Text>
-                                        </>}
-                                        renderItem={({ item }) => <>
-
-
-                                            <TouchableOpacity style={styles.itens}
-                                                onPress={() => {
-                                                    setMaquinasValor(item.id);
-                                                    setMaquinasMostra(false);
-                                                }}
-                                            >
-                                                <Text style={styles.textoMaquinas}>{item.nome}</Text>
-                                            </TouchableOpacity>
-
-
-                                        </>}
-                                    />
-                                    :
-                                    null
-                                }
-
-
-                                <Text style={styles.incremento}>Apenas máquinas ativas aparecem aqui</Text>
-
-
-                                <View style={styles.filamento}>
-                                    <Text style={styles.descricaoFilamento}>Prévia do valor</Text>
-                                    <View>
-                                        <Text style={styles.tituloFilamento}>Calculado: </Text>
-                                        <Text style={styles.tituloFilamento}>Final: </Text>
-                                    </View>
-                                </View>
-
-
 
 
                                 <View style={styles.decisoes}>
                                     <TouchableOpacity style={styles.botaoDecisaoCancelar}
                                         onPress={() => {
-                                            setCategoriasMostra(false);
-                                            setCategoriasValor("");
+                                            setMaterialMostra(false);
+                                            setMaterialValor("");
 
-
-                                            setEstoqueMostra(false);
-                                            setEstoqueValor("");
-
-
-                                            setMaquinasMostra(false);
-                                            setMaquinasValor("");
-
-
-                                            setMateriaisMostra(false);
-                                            setMateriaisValor("");
-
-                                            setObjetivo("");
-                                            setComprador("")
-
-
-
-                                            setNome("");
-                                            setTempo("");
-                                            setGramas("");
-
-
-                                            setMostraAdicionar();
+                                            setMostraFalha();
                                         }
                                         }
                                     >
@@ -487,8 +299,7 @@ export default function ReportaFalha({ navigation }) {
 
                                     <TouchableOpacity style={styles.botaoDecisaoSalvar}
                                         onPress={() => {
-                                            console.log(nome, categoriasValor, tempo, maquinasValor, materiaisValor, estoqueValor, gramas)
-                                            mostraPop(nome, categoriasValor, tempo, maquinasValor, materiaisValor, estoqueValor, gramas, objetivo, comprador)
+                                            mostraPop(id, foto, porcentagem, materialValor, cor, gramasPerdidas, observacao)
                                         }}
 
 

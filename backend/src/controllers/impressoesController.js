@@ -1,6 +1,8 @@
 const impressoesService = require('../services/impressoesService');
 const { extractBearerToken } = require('../utils/header');
 
+const projetoCache = require('../utils/cache');
+
 async function buscaImpressoes(req, res) {
   try {
 
@@ -157,6 +159,8 @@ async function cadastrarImpressao(req, res) {
 
     const resultado = await impressoesService.cadastrarImpressao(nome_impressao, categoria, tempo_impressao, maquina_id, filamentos, material, cor_filamento, gramas, comprador, objetivo, status, token);
 
+
+    projetoCache.flushAll();
     return res.json(resultado);
 
   } catch (error) {

@@ -8,32 +8,39 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 const baseUrl = isWeb
   ? 'http://localhost:3000/financeiro'
-  : 'http://10.0.2.2:3000/financeiro'
+  : 'http://192.168.1.11:3000/financeiro'
 
 
 const useFinanceiro = create((set, get) => ({
   pendentes: [],
+  concluidas: [],
   totalArrecadado: null,
   totalPorMes: [],
   totalPorAluno: [],
   totalPorCategoria: [],
   pendencia: null,
   mostraReceber: false,
+  filtrosUsado: false,
+  recarregando: false,
 
-  consultaFinanceiro: async () => {
+  consultaFinanceiro: async (categoria, forma_pagamento) => {
+      const params = {};
+
+      if (categoria) params.categoria = categoria;
+      if (forma_pagamento) params.forma_pagamento = forma_pagamento;
 
     try {
-      const response = await api.get(`${baseUrl}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const response = await api.get(`${baseUrl}`, { params });
 
       console.log("Status da Resposta:", response.status);
 
 
-      const answer = await response.data;
+      const answer = await response.data.registros;
+
+      if(answer){
+        set({recarregando: false})
+        set({concluidas: answer})
+      }
 
     } catch (error) {
       console.error('Erro ao consultar uruário:', error);
@@ -138,6 +145,21 @@ const useFinanceiro = create((set, get) => ({
     }
     
   },
+
+  setMostraFiltros: () => {
+    const mostra = get().filtrosUsado;
+    if(mostra == false){
+      set({filtrosUsado: true})
+      console.log("setou: "+get().filtrosUsado)
+    } else{
+      set({filtrosUsado: false})
+      console.log("setou: "+get().filtrosUsado)
+    }
+  },
+
+  setRecarregando: (condicao) => {
+    set({ recarregando: condicao });
+  }
 
 
 }));

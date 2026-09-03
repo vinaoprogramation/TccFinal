@@ -14,11 +14,15 @@ import useFinanceiro from "../../Services/useFinanceiro";
 
 import RecebeImpressao from "../../Reutilizaveis/RecebeImpressao";
 
+import FiltrosFinanceiro from "../../Reutilizaveis/FiltrosFinanceiro";
+import BotaoFiltrosFinanceiro from "../../Reutilizaveis/BotaoFiltrosFinanceiro";
+
 export default function Financeiro({ navigation }) {
   const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
   const iniciaMenu = navegacaoMenu((state) => state.iniciaMenu);
 
   const pendentes = useFinanceiro((state) => state.pendentes);
+  const concluidas = useFinanceiro((state) => state.concluidas);
   const setMostraReceber = useFinanceiro((state) => state.setMostraReceber);
   const consultaPendentes = useFinanceiro((state) => state.consultaPendentes);
   const consultaDashboard = useFinanceiro((state) => state.consultaDashboard);
@@ -56,6 +60,15 @@ export default function Financeiro({ navigation }) {
   }
 
 
+  useEffect(() => {
+    if(pendentes){
+      console.log("Teste pendentes:"+pendentes.nome_impressao)
+    }
+  },[pendentes])
+
+
+
+
 
   return <>
     <BotaoMenu />
@@ -63,7 +76,8 @@ export default function Financeiro({ navigation }) {
       navigation={navigation}
     />
     <RecebeImpressao/>
-
+    
+    <BotaoFiltrosFinanceiro/>
     <View style={styles.cabecalho}>
       <View style={styles.textos}>
         <Text style={styles.titulo}>Financeiro</Text>
@@ -79,6 +93,7 @@ export default function Financeiro({ navigation }) {
       <FlatList
         style={styles.flatlist}
         data={pendentes}
+        scrollEnabled={false}
         keyExtractor={(item) => String(item.impressao_id)}
         ListHeaderComponent={() => <>
 
@@ -116,7 +131,7 @@ export default function Financeiro({ navigation }) {
 
             <View style={styles.coluna}>
               <Text style={styles.label}>Valor:</Text>
-              <Text style={styles.nomePendente}>{item.valor_final}</Text>
+              <Text style={styles.nomePendente}>{Number(item.valor_final).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
             </View>
 
 
@@ -147,7 +162,7 @@ export default function Financeiro({ navigation }) {
       <View style={styles.dashboard}>
         <View style={styles.itemDashboard}>
           <Text style={styles.legenda}>Total Arrecadado</Text>
-          <Text style={styles.quantidade}>{totalArrecadado}</Text>
+          <Text style={styles.quantidade}>{Number(totalArrecadado).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
         </View>
       </View>
 
@@ -181,7 +196,7 @@ export default function Financeiro({ navigation }) {
 
       <FlatList
         style={styles.flatlistRecebimentos}
-        data={pendentes}
+        data={concluidas}
         keyExtractor={(item) => String(item.impressao_id)}
         ListFooterComponent={() => <>
           <View style={{ marginBottom: 20 }}></View>
@@ -194,7 +209,6 @@ export default function Financeiro({ navigation }) {
               <Text style={styles.nomePendente}>{item.nome_impressao}</Text>
               <View style={styles.materiais}>
                 <Text style={styles.sobre}>{item.categoria}</Text>
-                <Text style={styles.sobre}>{item.material}</Text>
               </View>
 
             </View>
@@ -211,7 +225,7 @@ export default function Financeiro({ navigation }) {
 
             <View style={styles.coluna}>
               <Text style={styles.label}>Valor:</Text>
-              <Text style={styles.nomePendente}>{item.valor_final}</Text>
+              <Text style={styles.nomePendente}>{Number(item.valor_final).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
             </View>
 
 
@@ -224,7 +238,11 @@ export default function Financeiro({ navigation }) {
         </>}
       />
 
+      
+
     </ScrollView>
+    <FiltrosFinanceiro/>
+
 
 
 

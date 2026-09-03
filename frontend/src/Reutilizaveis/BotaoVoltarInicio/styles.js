@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
         zIndex: 5,
         position: 'absolute',
         alignSelf: 'center',
-        
-        
+        bottom: 50,
+    
         
     },
     imagem:{

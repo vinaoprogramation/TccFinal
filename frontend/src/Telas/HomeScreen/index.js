@@ -44,11 +44,12 @@ export default function HomeScreen({ navigation }) {
     );
   }
 
-  return (
+  return <>
     <View>
 
       <BotaoFiltro />
       <Filtros />
+      
 
 
 
@@ -69,11 +70,7 @@ export default function HomeScreen({ navigation }) {
         extraData={detalhesId}
         keyExtractor={(item) => String(item.id)}
         style={styles.flatList}
-        ListFooterComponent={() => <>
-          <BotaoVoltarInicio
-            navigation={navigation}
-          />
-        </>}
+        ListFooterComponent={() => <View style={{ height: 100 }} />}
         ListHeaderComponent={() => <>
 
           <View style={styles.cabecalho}>
@@ -178,5 +175,8 @@ export default function HomeScreen({ navigation }) {
 
 
     </View >
-  );
+    <BotaoVoltarInicio
+            navigation={navigation}
+          />
+  </>;
 }

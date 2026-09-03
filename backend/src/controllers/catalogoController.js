@@ -1,9 +1,22 @@
 const catalogoService = require('../services/catalogoService');
+const projetoCache = require('../utils/cache');
 
 async function listaProjetos(req, res) {
   try {
     const { busca, categoria, material, aluno } = req.query;
+
+    const cacheKey = `projetos_${JSON.stringify({ busca, categoria, material, aluno })}`;
+
+    const dadosEmCache = projetoCache.get(cacheKey);
+
+    if(dadosEmCache){
+      return res.json(dadosEmCache);
+    }
+
     const resultado = await catalogoService.listaProjetos(busca, categoria, material, aluno);
+
+    projetoCache.set(cacheKey, resultado);
+
     return res.json(resultado);
   } catch (error) {
     console.error(error);

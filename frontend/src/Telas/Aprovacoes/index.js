@@ -27,7 +27,8 @@ export default function Aprovacoes({ navigation }) {
   const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
   const iniciaMenu = navegacaoMenu((state) => state.iniciaMenu);
 
-  const [observacao, setObservacao] = useState('')
+  const [observacao, setObservacao] = useState('');
+  const [idValor, setIdValor] = useState(null);
 
   useEffect(() => {
     if (iniciaMenu) {
@@ -49,6 +50,40 @@ export default function Aprovacoes({ navigation }) {
 
 
 
+  const mostraPop = async (id, status, observacao) => {
+    const mostra = await decide(id, status, observacao);
+
+
+    if (mostra) {
+      
+      if(status == "APROVADO"){
+        Toast.show({
+        type: "success",
+        text1: "Impressão APROVADA com sucesso!",
+        visibilityTime: 3000
+      })
+      return;
+      }
+      
+
+      if(status == "REJEITADO"){
+        Toast.show({
+        type: "success",
+        text1: "Impressão REJEITADA com sucesso!",
+        visibilityTime: 3000
+      })
+      return;
+      }
+      
+      setObservacao("");
+      consultaAprovacoes();
+    }
+
+
+  }
+
+
+
   const decide = async (id, status, observacao) => {
     if (!decideAprovacao) {
       console.log("Função não carregada");
@@ -64,6 +99,7 @@ export default function Aprovacoes({ navigation }) {
       return;
     }
     console.log("Decisão realizada com sucesso!")
+    return true;
   }
 
 
@@ -162,8 +198,9 @@ export default function Aprovacoes({ navigation }) {
 
               <View>
                 <TextInput
-                  value={observacao}
-                  onChangeText={setObservacao}
+                  onFocus={setIdValor(item.id)}
+                  value={idValor == item.id? observacao: null}
+                  onChangeText={idValor == item.id? setObservacao: null}
                   placeholder="Observação Opcional"
                   style={styles.inputObservacao}
                 />
@@ -171,7 +208,7 @@ export default function Aprovacoes({ navigation }) {
                 <View style={styles.botoes}>
                   <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}
                     onPress={() => {
-                      decide(item.id, "APROVADO", observacao)
+                      mostraPop(item.id, "APROVADO", observacao)
                     }}
                   >
                     <Text style={[styles.textoBotao, styles.textoBotaoAprovar]}>APROVAR</Text>
@@ -179,7 +216,7 @@ export default function Aprovacoes({ navigation }) {
 
                   <TouchableOpacity style={[styles.botao, styles.botaoNegar]}
                     onPress={() => {
-                      decide(item.id, "REJEITADO", observacao)
+                      mostraPop(item.id, "REJEITADO", observacao)
                     }}
                   >
                     <Text style={[styles.textoBotao, styles.textoBotaoNegar]}>REJEITAR</Text>

@@ -18,17 +18,22 @@ const useEstoque = create((set, get) => ({
   mostraAdicionarRolo: false,
   mostraDeletar: false,
   id:null,
+  filtrosUsado: false,
+  recarregando: false,
 
-  consultaEstoque: async () => {
+  consultaEstoque: async (material) => {
+     const params = {};
+
+      if (material) params.material = material;
 
     try {
-      const response = await api.get(`${baseUrl}`);
+      const response = await api.get(`${baseUrl}`, { params });
 
       console.log("Status da Resposta:", response.status);
 
       const answer = await response.data;
 
-      set({ estoque: answer.itens, materiais: answer.resumo_por_material })
+      set({ estoque: answer.itens, materiais: answer.resumo_por_material, recarregando:false })
 
     } catch (error) {
       console.error('Erro ao consultar uruário:', error);
@@ -146,6 +151,21 @@ const useEstoque = create((set, get) => ({
     
   },
 
+
+  setMostraFiltros: () => {
+    const mostra = get().filtrosUsado;
+    if(mostra == false){
+      set({filtrosUsado: true})
+      console.log("setou: "+get().filtrosUsado)
+    } else{
+      set({filtrosUsado: false})
+      console.log("setou: "+get().filtrosUsado)
+    }
+  },
+
+  setRecarregando: (condicao) => {
+    set({ recarregando: condicao });
+  }
 
 }));
 

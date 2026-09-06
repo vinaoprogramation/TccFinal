@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         elevation: 5,
         position: 'absolute',
-        zIndex: 5,
+        zIndex: 4,
         marginTop: 200
     },
     categorias:{

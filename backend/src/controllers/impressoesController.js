@@ -8,13 +8,15 @@ async function buscaImpressoes(req, res) {
 
     const token = extractBearerToken(req);
 
+     const { busca, categoria, material, status } = req.query;
+
     if (!token) {
       return res.status(400).json({
         error: 'Token não existe'
       });
     }
 
-    const resultado = await impressoesService.buscaImpressoes(token);
+    const resultado = await impressoesService.buscaImpressoes(token, busca, categoria, material, status);
 
     return res.json(resultado);
 

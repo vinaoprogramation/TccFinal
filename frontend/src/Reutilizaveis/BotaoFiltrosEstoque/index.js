@@ -6,9 +6,9 @@ import styles from "./styles";
 
 import search from '../../../assets/search.png'
 
-import useImpressoes from "../../Services/useImpressoes";
-export default function BotaoFiltrosImpressoes({ navigation }) {
-    const setMostraFiltros = useImpressoes((state) => state.setMostraFiltros)
+import useEstoque from "../../Services/useEstoque";
+export default function BotaoFiltrosEstoque({ navigation }) {
+    const setMostraFiltros = useEstoque((state) => state.setMostraFiltros)
 
     return <>
         <TouchableOpacity

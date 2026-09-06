@@ -8,9 +8,6 @@ import styles from "./styles";
 
 import search from '../../../assets/search.png'
 
-
-
-
 import Toast from 'react-native-toast-message'
 
 
@@ -65,10 +62,6 @@ export default function AdicionaImpressao({ navigation }) {
 
 
   const [comprador, setComprador] = useState(false);
-
-
-
-
 
   useEffect(() => {
     consultaMaquinas();
@@ -324,76 +317,83 @@ export default function AdicionaImpressao({ navigation }) {
                       }
 
 
+                      {
+                        materiaisValor == 'Material Próprio' ?
+                          null
+                          :
+                          <>
+                            <TouchableOpacity
+                              style={styles.input}
+                              onPress={() => {
+                                setEstoqueMostra(!estoqueMostra)
+                              }}
+                            >
+                              <Text>
+                                {estoqueValor != "" ? estoqueValor : "Selecione uma cor*"}
+                              </Text>
+                            </TouchableOpacity>
+                            {materiaisValor != "" ?
+                              <>
+                                {estoqueMostra ?
+                                  <>
 
 
-                      <TouchableOpacity
-                        style={styles.input}
-                        onPress={() => {
-                          setEstoqueMostra(!estoqueMostra)
-                        }}
-                      >
-                        <Text>
-                          {estoqueValor != "" ? estoqueValor : "Selecione uma cor*"}
-                        </Text>
-                      </TouchableOpacity>
-                      {materiaisValor != "" ?
-                        <>
-                          {estoqueMostra ?
-                            <>
+                                    <FlatList
+                                      style={styles.flatList}
+                                      data={estoque}
+                                      scrollEnabled={false}
+                                      keyExtractor={(item) => String(item.id)}
+                                      ListHeaderComponent={() => <>
+                                        <Text style={styles.textoFlat}>Selecione uma cor</Text>
+                                      </>}
+                                      renderItem={({ item }) => <>
+                                        {materiaisValor ?
+                                          <>
 
 
-                              <FlatList
-                                style={styles.flatList}
-                                data={estoque}
-                                scrollEnabled={false}
-                                keyExtractor={(item) => String(item.id)}
-                                ListHeaderComponent={() => <>
-                                  <Text style={styles.textoFlat}>Selecione uma cor</Text>
-                                </>}
-                                renderItem={({ item }) => <>
-                                  {materiaisValor ?
-                                    <>
+                                            {item.material == materiaisValor ? <>
+                                              <TouchableOpacity style={[styles.itens, { flexDirection: 'row', gap: 10, flexWrap: 'wrap' }]}
+                                                onPress={() => {
+                                                  setEstoqueValor(item.cor)
+                                                  setEstoqueMostra(false)
+                                                }}
 
 
-                                      {item.material == materiaisValor ? <>
-                                        <TouchableOpacity style={[styles.itens, { flexDirection: 'row', gap: 10, flexWrap: 'wrap' }]}
-                                          onPress={() => {
-                                            setEstoqueValor(item.cor)
-                                            setEstoqueMostra(false)
-                                          }}
+                                              >
+                                                <Text style={styles.textoMaquinas}>{item.material == materiaisValor ? item.cor : null}</Text>
+                                                <Text style={styles.textoMaquinas}>·</Text>
+                                                <Text style={styles.textoMaquinas}>saldo {item.saldo}g</Text>
+                                              </TouchableOpacity>
+                                            </> : null}
+                                          </>
+                                          :
+                                          null
+                                        }
 
 
-                                        >
-                                          <Text style={styles.textoMaquinas}>{item.material == materiaisValor ? item.cor : null}</Text>
-                                          <Text style={styles.textoMaquinas}>·</Text>
-                                          <Text style={styles.textoMaquinas}>saldo {item.saldo}g</Text>
-                                        </TouchableOpacity>
-                                      </> : null}
-                                    </>
-                                    :
-                                    null
-                                  }
-
-
-                                </>}
-                              />
+                                      </>}
+                                    />
 
 
 
 
-                            </>
-                            :
-                            null
+                                  </>
+                                  :
+                                  null
 
 
-                          }
-                        </>
-                        :
-                        <Text style={styles.textoObs}>Selecione um Material*</Text>
+                                }
+                              </>
+                              :
+                              <Text style={styles.textoObs}>Selecione um Material*</Text>
+                            }
+
+
+                            <Text style={styles.textoObs}>As cores vêm do estoque</Text>
+                          </>
                       }
 
 
-                      <Text style={styles.textoObs}>As cores vêm do estoque</Text>
 
 
 

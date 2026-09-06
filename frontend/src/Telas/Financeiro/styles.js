@@ -3,6 +3,10 @@ import { StyleSheet, Dimensions } from "react-native";
 const { width, height } = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
+  loader: {
+    marginTop: 50,
+    marginBottom: 100,
+  },
   titulo: {
     fontWeight: '600',
     fontSize: 30,
@@ -128,24 +132,24 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomWidth: 0.5
   },
-  dashboard:{
+  dashboard: {
     backgroundColor: '#f8f8f8',
     padding: 30,
     borderRadius: 20,
     elevation: 5,
-    width: width*0.95,
+    width: width * 0.95,
     alignSelf: 'center',
     marginVertical: 5
   },
-  conteudo:{
+  conteudo: {
     marginTop: 20,
     gap: 10,
     marginBottom: 50
   },
-  legenda:{
+  legenda: {
     fontSize: 18
   },
-  quantidade:{
+  quantidade: {
     fontWeight: '900',
     fontSize: 35
   },

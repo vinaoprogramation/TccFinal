@@ -9,7 +9,6 @@ import useCatalogo from "../../Services/useCatalogo";
 
 export default function FiltrosFinanceiro({ navigation, props }) {
   const filtrosUsado = useFinanceiro((state) => state.filtrosUsado);
-  const setFiltros = useFinanceiro((state) => state.setFiltros);
   const setMostraFiltros = useFinanceiro((state) => state.setMostraFiltros);
 
   const consultaFiltros = useCatalogo((state) => state.consultaFiltros);
@@ -53,8 +52,11 @@ export default function FiltrosFinanceiro({ navigation, props }) {
 
 
   const recarrega = async (var1, var2) => {
-    console.log(var1, var2)
     setRecarregando(true)
+
+    if(var2 == "Todos"){
+      var2 = null;
+    }
     consultaFinanceiro(var1, var2);
   }
 

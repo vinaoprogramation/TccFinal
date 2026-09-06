@@ -4,14 +4,14 @@ const FormData = require('form-data');
 const BASE_URL = 'https://api-ip3d.mbinfoseg.com.br/api';
 
 
-async function buscaImpressoes(token) {
-  const api = await axios.get(
-    `${BASE_URL}/impressoes`, {
-    "headers": {
-      "Authorization": `Bearer ${token}`
-    }
-  }
-  );
+async function buscaImpressoes(token, busca, categoria, material, status) {
+  const params = {};
+  if (busca) params.busca = busca;
+  if (categoria) params.categoria = categoria;
+  if (material) params.material = material;
+  if (status) params.status = status;
+
+  const api = await axios.get(`${BASE_URL}/impressoes`, { params, headers: { Authorization: `Bearer ${token}` } });
 
   const response = api.data
 

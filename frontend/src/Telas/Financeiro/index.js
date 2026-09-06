@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Toast from 'react-native-toast-message'
 
-import { Text, View, Image, TouchableOpacity, TextInput, ScrollView, FlatList } from "react-native";
+import { Text, View, Image, TouchableOpacity, TextInput, ScrollView, FlatList, ActivityIndicator } from "react-native";
 
 import styles from "./styles";
 import BotaoMenu from "../../Reutilizaveis/BotaoMenu";
@@ -25,12 +25,14 @@ export default function Financeiro({ navigation }) {
   const concluidas = useFinanceiro((state) => state.concluidas);
   const setMostraReceber = useFinanceiro((state) => state.setMostraReceber);
   const consultaPendentes = useFinanceiro((state) => state.consultaPendentes);
+  const consultaFinanceiro = useFinanceiro((state) => state.consultaFinanceiro);
   const consultaDashboard = useFinanceiro((state) => state.consultaDashboard);
   const totalArrecadado = useFinanceiro((state) => state.totalArrecadado);
   const totalPorMes = useFinanceiro((state) => state.totalPorMes);
   const totalPorAluno = useFinanceiro((state) => state.totalPorAluno);
   const setaPendencia = useFinanceiro((state) => state.setaPendencia);
-  const totalPorCategoria = useFinanceiro((state) => state.totalPorCategoria);
+  const setRecarregando = useFinanceiro((state) => state.setRecarregando);
+  const recarregando = useFinanceiro((state) => state.recarregando);
 
   useEffect(() => {
     if (iniciaMenu) {
@@ -44,6 +46,13 @@ export default function Financeiro({ navigation }) {
       consultaPendentes();
     }
   }, [consultaPendentes])
+
+
+  useEffect(() => {
+    if (consultaFinanceiro) {
+      consultaFinanceiro();
+    }
+  }, [consultaFinanceiro])
 
 
   useEffect(() => {
@@ -61,10 +70,10 @@ export default function Financeiro({ navigation }) {
 
 
   useEffect(() => {
-    if(pendentes){
-      console.log("Teste pendentes:"+pendentes.nome_impressao)
+    if (pendentes) {
+      console.log("Teste pendentes:" + pendentes.nome_impressao)
     }
-  },[pendentes])
+  }, [pendentes])
 
 
 
@@ -75,9 +84,9 @@ export default function Financeiro({ navigation }) {
     <Menu
       navigation={navigation}
     />
-    <RecebeImpressao/>
-    
-    <BotaoFiltrosFinanceiro/>
+    <RecebeImpressao />
+
+    <BotaoFiltrosFinanceiro />
     <View style={styles.cabecalho}>
       <View style={styles.textos}>
         <Text style={styles.titulo}>Financeiro</Text>
@@ -90,158 +99,198 @@ export default function Financeiro({ navigation }) {
 
     <ScrollView>
 
-      <FlatList
-        style={styles.flatlist}
-        data={pendentes}
-        scrollEnabled={false}
-        keyExtractor={(item) => String(item.impressao_id)}
-        ListHeaderComponent={() => <>
+      {
+        !pendentes || !concluidas || !totalArrecadado || !totalPorMes || !totalPorAluno ?
+          <>
+            <ActivityIndicator size="large" color="#00000" style={styles.loader} />
+          </>
+          :
+          <>
+            <FlatList
+              style={styles.flatlist}
+              data={pendentes}
+              scrollEnabled={false}
+              keyExtractor={(item) => String(item.impressao_id)}
+              ListHeaderComponent={() => <>
 
-          <View style={styles.cabecalhoFlatlist}>
-            <Text style={styles.tituloFlatlist}>Contas Pendentes</Text>
-            <Text style={styles.descricaoFlatlist}>Impressões concluídas ainda sem recebimento. Mais de uma semana de atraso aparece em vermelho.</Text>
-          </View>
-        </>}
+                <View style={styles.cabecalhoFlatlist}>
+                  <Text style={styles.tituloFlatlist}>Contas Pendentes</Text>
+                  <Text style={styles.descricaoFlatlist}>Impressões concluídas ainda sem recebimento. Mais de uma semana de atraso aparece em vermelho.</Text>
+                </View>
+              </>}
 
-        ListFooterComponent={() => <>
-          <View style={{ marginBottom: 20 }}></View>
-        </>}
+              ListFooterComponent={() => <>
+                <View style={{ marginBottom: 20 }}></View>
+              </>}
 
-        renderItem={({ item }) => <>
-          <View style={styles.item}>
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Impressão: </Text>
-              <Text style={styles.nomePendente}>{item.nome_impressao}</Text>
-              <View style={styles.materiais}>
-                <Text style={styles.sobre}>{item.categoria}</Text>
-                <Text style={styles.sobre}>{item.material}</Text>
+              renderItem={({ item }) => <>
+                <View style={styles.item}>
+                  <View style={styles.coluna}>
+                    <Text style={styles.label}>Impressão: </Text>
+                    <Text style={styles.nomePendente}>{item.nome_impressao}</Text>
+                    <View style={styles.materiais}>
+                      <Text style={styles.sobre}>{item.categoria}</Text>
+                      <Text style={styles.sobre}>{item.material}</Text>
+                    </View>
+
+                  </View>
+
+                  <View style={styles.coluna}>
+                    <Text style={styles.label}>Comprador:</Text>
+                    <Text style={styles.nomePendente}>{item.impressao_comprador}</Text>
+                  </View>
+
+                  <View style={styles.coluna}>
+                    <Text style={styles.label}>Vencimento:</Text>
+                    <Text style={styles.nomePendente}>{ajustaData(item.data_vencimento)}</Text>
+                  </View>
+
+                  <View style={styles.coluna}>
+                    <Text style={styles.label}>Valor:</Text>
+                    <Text style={styles.nomePendente}>{Number(item.valor_final).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
+                  </View>
+
+
+                  <View style={styles.coluna}>
+                    <Text style={styles.label}>Atraso:</Text>
+                    <Text style={styles.nomePendente}>{item.dias_atraso} dias</Text>
+                  </View>
+
+                  <View style={styles.coluna}>
+                    <View style={styles.containerBotao}>
+                      <TouchableOpacity style={styles.botaoReceber} onPress={() => {
+                        setaPendencia(item);
+                        setMostraReceber();
+                      }}>
+                        <Text style={styles.textoBotaoReceber}>RECEBER</Text>
+                      </TouchableOpacity>
+                    </View>
+
+                  </View>
+
+
+
+
+                </View>
+              </>}
+            />
+
+            <View style={styles.dashboard}>
+              <View style={styles.itemDashboard}>
+                <Text style={styles.legenda}>Total Arrecadado</Text>
+                <Text style={styles.quantidade}>{Number(totalArrecadado).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
               </View>
-
-            </View>
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Comprador:</Text>
-              <Text style={styles.nomePendente}>{item.impressao_comprador}</Text>
-            </View>
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Vencimento:</Text>
-              <Text style={styles.nomePendente}>{ajustaData(item.data_vencimento)}</Text>
-            </View>
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Valor:</Text>
-              <Text style={styles.nomePendente}>{Number(item.valor_final).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
             </View>
 
 
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Atraso:</Text>
-              <Text style={styles.nomePendente}>{item.dias_atraso} dias</Text>
-            </View>
-
-            <View style={styles.coluna}>
-              <View style={styles.containerBotao}>
-                <TouchableOpacity style={styles.botaoReceber} onPress={() => {
-                  setaPendencia(item);
-                  setMostraReceber();
-                }}>
-                  <Text style={styles.textoBotaoReceber}>RECEBER</Text>
-                </TouchableOpacity>
+            <View style={styles.dashboard}>
+              <View style={styles.itemDashboard}>
+                <Text style={styles.legenda}>Meses com receita</Text>
+                <Text style={styles.quantidade}>{totalPorMes.length}</Text>
               </View>
+            </View>
 
+
+            <View style={styles.dashboard}>
+              <View style={styles.itemDashboard}>
+                <Text style={styles.legenda}>Alunos com receita</Text>
+                <Text style={styles.quantidade}>{totalPorAluno.length}</Text>
+              </View>
             </View>
 
 
 
 
-          </View>
-        </>}
-      />
+            <View style={styles.separacao}>
+              <View style={styles.textos}>
+                <Text style={styles.titulo}>Financeiro</Text>
+                <Text style={styles.chamada}>Recebimentos das impressoes.</Text>
+              </View>
+            </View>
+          </>
 
-      <View style={styles.dashboard}>
-        <View style={styles.itemDashboard}>
-          <Text style={styles.legenda}>Total Arrecadado</Text>
-          <Text style={styles.quantidade}>{Number(totalArrecadado).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
-        </View>
-      </View>
-
-
-      <View style={styles.dashboard}>
-        <View style={styles.itemDashboard}>
-          <Text style={styles.legenda}>Meses com receita</Text>
-          <Text style={styles.quantidade}>{totalPorMes.length}</Text>
-        </View>
-      </View>
+      }
 
 
-      <View style={styles.dashboard}>
-        <View style={styles.itemDashboard}>
-          <Text style={styles.legenda}>Alunos com receita</Text>
-          <Text style={styles.quantidade}>{totalPorAluno.length}</Text>
-        </View>
-      </View>
-
-
-
-
-      <View style={styles.separacao}>
-        <View style={styles.textos}>
-          <Text style={styles.titulo}>Financeiro</Text>
-          <Text style={styles.chamada}>Recebimentos das impressoes.</Text>
-        </View>
-      </View>
 
 
 
       <FlatList
         style={styles.flatlistRecebimentos}
         data={concluidas}
+        scrollEnabled={false}
+        ListHeaderComponent={() => <>
+          {
+            recarregando ?
+              <>
+                <ActivityIndicator size="large" color="#00000" style={styles.loader} />
+              </>
+              :
+              concluidas.length == 0 ?
+                <>
+                  <View style={{ marginTop: 50, marginBottom: 100 }}>
+                    <Text style={{ fontSize: 18, marginLeft: 20, fontWeight: 'bold' }}>Não há resultados.</Text>
+                  </View>
+                </>
+                :
+                null
+
+          }
+
+
+        </>}
         keyExtractor={(item) => String(item.impressao_id)}
         ListFooterComponent={() => <>
-          <View style={{ marginBottom: 20 }}></View>
+          <View style={{ marginBottom: 100 }}></View>
         </>}
 
         renderItem={({ item }) => <>
-          <View style={styles.itemRecebimentos}>
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Impressão: </Text>
-              <Text style={styles.nomePendente}>{item.nome_impressao}</Text>
-              <View style={styles.materiais}>
-                <Text style={styles.sobre}>{item.categoria}</Text>
+
+          {
+            recarregando ?
+              null
+              :
+              <View style={styles.itemRecebimentos}>
+                <View style={styles.coluna}>
+                  <Text style={styles.label}>Impressão: </Text>
+                  <Text style={styles.nomePendente}>{item.nome_impressao}</Text>
+                  <View style={styles.materiais}>
+                    <Text style={styles.sobre}>{item.categoria}</Text>
+                  </View>
+
+                </View>
+
+                <View style={styles.coluna}>
+                  <Text style={styles.label}>Comprador:</Text>
+                  <Text style={styles.nomePendente}>{item.impressao_comprador}</Text>
+                </View>
+
+                <View style={styles.coluna}>
+                  <Text style={styles.label}>Vencimento:</Text>
+                  <Text style={styles.nomePendente}>{ajustaData(item.data_vencimento)}</Text>
+                </View>
+
+                <View style={styles.coluna}>
+                  <Text style={styles.label}>Valor:</Text>
+                  <Text style={styles.nomePendente}>{Number(item.valor_final).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
+                </View>
+
+
+                <View style={styles.coluna}>
+                  <Text style={styles.label}>Atraso:</Text>
+                  <Text style={styles.nomePendente}>{item.dias_atraso} dias</Text>
+                </View>
+
               </View>
+          }
 
-            </View>
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Comprador:</Text>
-              <Text style={styles.nomePendente}>{item.impressao_comprador}</Text>
-            </View>
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Vencimento:</Text>
-              <Text style={styles.nomePendente}>{ajustaData(item.data_vencimento)}</Text>
-            </View>
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Valor:</Text>
-              <Text style={styles.nomePendente}>{Number(item.valor_final).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
-            </View>
-
-
-            <View style={styles.coluna}>
-              <Text style={styles.label}>Atraso:</Text>
-              <Text style={styles.nomePendente}>{item.dias_atraso} dias</Text>
-            </View>
-
-          </View>
         </>}
       />
 
-      
+
 
     </ScrollView>
-    <FiltrosFinanceiro/>
+    <FiltrosFinanceiro />
 
 
 

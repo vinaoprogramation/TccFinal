@@ -35,6 +35,8 @@ export default function AcessoInterno({ navigation }) {
        if(loga){
         return true;
        }
+
+       return false;
        
    }
 
@@ -64,7 +66,8 @@ export default function AcessoInterno({ navigation }) {
          setSenha("");
          navigation.navigate('BackDoor')
    
-       } else{
+       } 
+       else{
         Toast.show({
             type: "error",
             text1: "Email ou senha inválidos!",

@@ -3,15 +3,16 @@ import { StyleSheet, Dimensions } from "react-native";
 const {width, height} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
+    loader: {
+    marginTop: 50,
+    marginBottom: 100,
+  },
   fundo:{
     flex: 1,
     backgroundColor: '#ffffff',
-  },
-  conteudo:{
-    marginTop: 20,
-    gap: 10,
     marginBottom: 50
   },
+
   legenda:{
     fontSize: 18
   },
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   conteudo:{
     marginTop: 20,
     gap: 10,
-    marginBottom: 50
+    marginBottom: 100
   },
   legenda:{
     fontSize: 18

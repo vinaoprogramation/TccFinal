@@ -120,6 +120,7 @@ export default function AcessoInterno({ navigation }) {
                    value={email}
                    onChangeText={setEmail}
                    placeholder="email"
+                   placeholderTextColor='#000'
                    style={styles.input}
                />
 
@@ -129,6 +130,7 @@ export default function AcessoInterno({ navigation }) {
                    onChangeText={setSenha}
                    secureTextEntry={true}
                    placeholder="senha"
+                   placeholderTextColor='#000'
                    style={styles.input}
                />
 

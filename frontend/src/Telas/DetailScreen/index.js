@@ -1,203 +1,570 @@
-import React, { useState, useEffect } from 'react';
+// Screens/DetailScreen/index.js
+
+import React, { useEffect, useState } from 'react';
+
 import {
-    Text,
-    View,
-    ActivityIndicator,
-    Image,
-    TouchableOpacity,
-    ScrollView,
-    Alert,
-    Platform
+  Text,
+  View,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  Platform
 } from 'react-native';
 
+import * as FileSystem from 'expo-file-system/legacy';
+
 import styles from './styles';
-import useCatalogo, { baseUrl } from '../../Services/useCatalogo';
+
+import useCatalogo from '../../Services/useCatalogo';
+
 import BotaoVoltar from '../../Reutilizaveis/BotaoVoltar';
 import PassadorImagens from '../../Reutilizaveis/PassadorImagens';
-import passarTela from '../../Services/passarTela';
+import ShimmerCard from '../../Reutilizaveis/ShimmerCard';
 
-// Import correto para versões atuais do Expo
-import * as FileSystem from 'expo-file-system';
+export default function DetailScreen({
+  navigation,
+  route
+}) {
+  const item = route.params;
 
-export default function DetailScreen({ navigation, route }) {
-    const item = route.params;
+  const consultaProjeto = useCatalogo(
+    (state) => state.consultaProjeto
+  );
 
-    const consultaProjeto = useCatalogo((state) => state.consultaProjeto);
-    const projetoIndividual = useCatalogo((state) => state.projetoIndividual);
+  const projetoIndividual = useCatalogo(
+    (state) => state.projetoIndividual
+  );
 
-    const [fotos, setFotos] = useState([]);
-    const [stlDisponivel, setStlDisponivel] = useState(false);
-    const [verificandoStl, setVerificandoStl] = useState(true);
-    const [baixando, setBaixando] = useState(false);
+  const verificarStl = useCatalogo(
+    (state) => state.verificarStl
+  );
 
-    useEffect(() => {
-        const buscarDados = async () => {
-            if (consultaProjeto && item?.id) {
-                await consultaProjeto(item.id);
-            }
-        };
-        buscarDados();
-    }, [item?.id]);
+  const obterUrlDownloadStl = useCatalogo(
+    (state) => state.obterUrlDownloadStl
+  );
 
-    useEffect(() => {
-        if (projetoIndividual) {
-            setFotos(projetoIndividual);
+  const stlDisponivel = useCatalogo(
+    (state) => state.stlDisponivel
+  );
+
+  const verificandoStl = useCatalogo(
+    (state) => state.verificandoStl
+  );
+
+  const [fotos, setFotos] = useState([]);
+
+  const [baixando, setBaixando] =
+    useState(false);
+
+
+  useEffect(() => {
+    let cancelado = false;
+
+    const carregarProjeto = async () => {
+      if (!item?.id) {
+        return;
+      }
+
+      try {
+        await consultaProjeto(item.id);
+      } catch (error) {
+        if (!cancelado) {
+          console.error(
+            'Erro ao carregar projeto:',
+            error
+          );
         }
-    }, [projetoIndividual]);
-
-    // ============================================
-    // VERIFICAR STL (ATRAVÉS DO SEU BACKEND)
-    // ============================================
-    useEffect(() => {
-        let cancelado = false;
-
-        const verificarStl = async () => {
-            if (!item?.id) {
-                if (!cancelado) {
-                    setStlDisponivel(false);
-                    setVerificandoStl(false);
-                }
-                return;
-            }
-
-            // Consulta o SEU backend
-            const urlVerificacao = `${baseUrl}/catalogo/stl/${item.id}/verificar`;
-
-            try {
-                const resposta = await fetch(urlVerificacao);
-                const dados = await resposta.json();
-
-                if (!cancelado) {
-                    setStlDisponivel(!!dados.disponivel);
-                }
-            } catch (error) {
-                console.error("Erro ao verificar STL via backend:", error);
-                if (!cancelado) setStlDisponivel(false);
-            } finally {
-                if (!cancelado) setVerificandoStl(false);
-            }
-        };
-
-        setVerificandoStl(true);
-        setStlDisponivel(false);
-        verificarStl();
-
-        return () => { cancelado = true; };
-    }, [item?.id]);
-
-    // ============================================
-    // DOWNLOAD DO STL (WEB + MOBILE)
-    // ============================================
-    const baixarStl = async () => {
-        if (!item?.id) {
-            Alert.alert('Erro', 'Projeto inválido.');
-            return;
-        }
-
-        const urlDownload = `${baseUrl}/catalogo/stl/${item.id}/download`;
-        setBaixando(true);
-
-        try {
-            // === COMPORTAMENTO PARA WEB ===
-            if (Platform.OS === 'web') {
-                window.open(urlDownload, '_blank');
-                setBaixando(false);
-                return;
-            }
-
-            // === COMPORTAMENTO PARA MOBILE (ANDROID/IOS) ===
-            const permissao = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-
-            if (!permissao.granted) {
-                setBaixando(false);
-                return;
-            }
-
-            const nomeArquivo = `modelo-${item.id}.stl`;
-            const arquivoTemporario = `${FileSystem.cacheDirectory}${nomeArquivo}`;
-
-            const resultado = await FileSystem.downloadAsync(urlDownload, arquivoTemporario);
-
-            if (!resultado || resultado.status !== 200 || !resultado.uri) {
-                throw new Error('Arquivo STL não encontrado.');
-            }
-
-            const arquivoFinal = await FileSystem.StorageAccessFramework.createFileAsync(
-                permissao.directoryUri,
-                nomeArquivo,
-                'application/octet-stream'
-            );
-
-            const base64 = await FileSystem.readAsStringAsync(resultado.uri, {
-                encoding: FileSystem.EncodingType.Base64
-            });
-
-            await FileSystem.writeAsStringAsync(arquivoFinal, base64, {
-                encoding: FileSystem.EncodingType.Base64
-            });
-
-            await FileSystem.deleteAsync(resultado.uri, { idempotent: true });
-
-            Alert.alert('Sucesso', `O arquivo ${nomeArquivo} foi salvo com sucesso!`);
-        } catch (error) {
-            console.error('Erro ao baixar STL:', error);
-            Alert.alert('Erro', 'Não foi possível baixar o arquivo STL.');
-        } finally {
-            setBaixando(false);
-        }
+      }
     };
 
-    return (
-        <ScrollView style={styles.item}>
-            <BotaoVoltar navigation={navigation} />
+    carregarProjeto();
 
-            <View>
-                <PassadorImagens navigation={navigation} props={[item.id, fotos]} />
+    return () => {
+      cancelado = true;
+    };
 
-                <View style={styles.textos}>
-                    <View style={styles.usuario}>
-                        <Image source={{ uri: item.fotoPerfil }} style={styles.imagemUsuario} />
-                        <Text style={styles.nomeUsuario}>{item.usuario_nome}</Text>
-                    </View>
+  }, [item?.id]);
 
-                    <Text style={styles.nomeImpressao}>{item.nome_impressao}</Text>
 
-                    <View style={styles.detalhes}>
-                        <View style={styles.conteudo}>
-                            <View style={styles.materiais}>
-                                <Text style={styles.materiaisItem}>{item.categoria}</Text>
-                                <Text style={styles.materiaisItem}>{item.material}</Text>
-                                <Text style={styles.materiaisItem}>{item.cor_filamento}</Text>
-                            </View>
+  useEffect(() => {
+    if (Array.isArray(projetoIndividual)) {
+      setFotos(projetoIndividual);
+    } else {
+      setFotos([]);
+    }
+  }, [projetoIndividual]);
 
-                            <View style={styles.detalhes}>
-                                <Text>Data: {item.data}</Text>
-                                <Text>Peso: {item.gramas}g</Text>
-                                <Text>Tempo: {item.tempo_impressao}</Text>
-                                <Text>{item.comprador ? item.comprador : 'Não há comprador'}</Text>
-                                <Text>Valor Final: {item.valor_final}R$</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
+
+  useEffect(() => {
+    if (!item?.id) {
+      return;
+    }
+
+    verificarStl(item.id);
+
+  }, [item?.id]);
+
+
+  const baixarStl = async () => {
+    if (baixando) {
+      return;
+    }
+
+    if (!item?.id) {
+      Alert.alert(
+        'Erro',
+        'Projeto inválido.'
+      );
+
+      return;
+    }
+
+    if (!stlDisponivel) {
+      Alert.alert(
+        'Erro',
+        'Este projeto não possui um arquivo STL disponível.'
+      );
+
+      return;
+    }
+
+    setBaixando(true);
+
+    let arquivoTemporario = null;
+
+    try {
+
+      const urlDownload =
+        obterUrlDownloadStl(item.id);
+
+      if (!urlDownload) {
+        throw new Error(
+          'URL de download inválida.'
+        );
+      }
+
+
+      console.log(
+        '[STL] URL:',
+        urlDownload
+      );
+
+
+      if (Platform.OS === 'web') {
+
+        window.open(
+          urlDownload,
+          '_blank',
+          'noopener,noreferrer'
+        );
+
+        return;
+      }
+
+
+      if (Platform.OS !== 'android') {
+        Alert.alert(
+          'Indisponível',
+          'O download de STL está configurado para Android e Web.'
+        );
+
+        return;
+      }
+
+
+      const permissao =
+        await FileSystem.StorageAccessFramework
+          .requestDirectoryPermissionsAsync();
+
+
+      if (!permissao?.granted) {
+        return;
+      }
+
+
+      if (!permissao.directoryUri) {
+        throw new Error(
+          'Nenhuma pasta foi selecionada.'
+        );
+      }
+
+
+      const nomeArquivo =
+        `modelo-${item.id}.stl`;
+
+
+      if (!FileSystem.cacheDirectory) {
+        throw new Error(
+          'Diretório temporário indisponível.'
+        );
+      }
+
+
+      arquivoTemporario =
+        `${FileSystem.cacheDirectory}${nomeArquivo}`;
+
+
+      await FileSystem.deleteAsync(
+        arquivoTemporario,
+        {
+          idempotent: true
+        }
+      );
+
+
+      const resultado =
+        await FileSystem.downloadAsync(
+          urlDownload,
+          arquivoTemporario,
+          {
+            headers: {
+              Accept:
+                'application/octet-stream'
+            }
+          }
+        );
+
+
+      console.log(
+        '[STL] Resultado:',
+        resultado
+      );
+
+
+      if (!resultado) {
+        throw new Error(
+          'O servidor não retornou uma resposta.'
+        );
+      }
+
+
+      if (resultado.status !== 200) {
+        throw new Error(
+          `Servidor respondeu com HTTP ${resultado.status}.`
+        );
+      }
+
+
+      if (!resultado.uri) {
+        throw new Error(
+          'Arquivo temporário inválido.'
+        );
+      }
+
+
+      const arquivoInfo =
+        await FileSystem.getInfoAsync(
+          resultado.uri
+        );
+
+
+      if (!arquivoInfo.exists) {
+        throw new Error(
+          'O arquivo STL não foi baixado.'
+        );
+      }
+
+
+      if (
+        typeof arquivoInfo.size === 'number' &&
+        arquivoInfo.size <= 0
+      ) {
+        throw new Error(
+          'O arquivo STL está vazio.'
+        );
+      }
+
+
+      let arquivoFinal;
+
+
+      try {
+
+        arquivoFinal =
+          await FileSystem
+            .StorageAccessFramework
+            .createFileAsync(
+              permissao.directoryUri,
+              nomeArquivo,
+              'application/octet-stream'
+            );
+
+      } catch (error) {
+
+        console.error(
+          '[STL] Erro criando arquivo:',
+          error
+        );
+
+        throw new Error(
+          'Não foi possível criar o arquivo na pasta escolhida.'
+        );
+      }
+
+
+      const base64 =
+        await FileSystem.readAsStringAsync(
+          resultado.uri,
+          {
+            encoding:
+              FileSystem.EncodingType.Base64
+          }
+        );
+
+
+      if (!base64) {
+        throw new Error(
+          'Não foi possível ler o STL baixado.'
+        );
+      }
+
+
+      await FileSystem.writeAsStringAsync(
+        arquivoFinal,
+        base64,
+        {
+          encoding:
+            FileSystem.EncodingType.Base64
+        }
+      );
+
+
+      await FileSystem.deleteAsync(
+        resultado.uri,
+        {
+          idempotent: true
+        }
+      );
+
+
+      Alert.alert(
+        'Sucesso',
+        `O arquivo ${nomeArquivo} foi salvo com sucesso.`
+      );
+
+    } catch (error) {
+
+      console.error(
+        '[STL] Erro completo:',
+        error
+      );
+
+      let mensagem =
+        'Não foi possível baixar o arquivo STL.';
+
+      if (error?.message) {
+        mensagem =
+          error.message;
+      }
+
+      Alert.alert(
+        'Erro',
+        mensagem
+      );
+
+    } finally {
+
+      if (arquivoTemporario) {
+        try {
+          await FileSystem.deleteAsync(
+            arquivoTemporario,
+            {
+              idempotent: true
+            }
+          );
+        } catch (error) {
+          console.warn(
+            '[STL] Erro removendo temporário:',
+            error
+          );
+        }
+      }
+
+      setBaixando(false);
+    }
+  };
+
+
+  return (
+    <ScrollView style={styles.item}>
+
+      <BotaoVoltar
+        navigation={navigation}
+      />
+
+
+      <View>
+
+        <PassadorImagens
+          navigation={navigation}
+          props={[
+            item.id,
+            fotos
+          ]}
+        />
+
+
+        <View style={styles.textos}>
+
+          <View style={styles.usuario}>
+
+            {
+              item.fotoPerfil ? (
+
+                <Image
+                  source={{
+                    uri: item.fotoPerfil
+                  }}
+                  style={
+                    styles.imagemUsuario
+                  }
+                />
+
+              ) : (
+
+                <ShimmerCard
+                  style={
+                    styles.imagemUsuario
+                  }
+                />
+
+              )
+            }
+
+
+            <Text style={styles.nomeUsuario}>
+              {item.usuario_nome}
+            </Text>
+
+          </View>
+
+
+          <Text style={styles.nomeImpressao}>
+            {item.nome_impressao}
+          </Text>
+
+
+          <View style={styles.detalhes}>
+
+            <View style={styles.conteudo}>
+
+              <View style={styles.materiais}>
+
+                <Text
+                  style={
+                    styles.materiaisItem
+                  }
+                >
+                  {item.categoria}
+                </Text>
+
+
+                <Text
+                  style={
+                    styles.materiaisItem
+                  }
+                >
+                  {item.material}
+                </Text>
+
+
+                <Text
+                  style={
+                    styles.materiaisItem
+                  }
+                >
+                  {item.cor_filamento}
+                </Text>
+
+              </View>
+
+
+              <View style={styles.detalhes}>
+
+                <Text>
+                  Data: {item.data}
+                </Text>
+
+                <Text>
+                  Peso: {item.gramas}g
+                </Text>
+
+                <Text>
+                  Tempo: {item.tempo_impressao}
+                </Text>
+
+                <Text>
+                  {
+                    item.comprador
+                      ? item.comprador
+                      : 'Não há comprador'
+                  }
+                </Text>
+
+                <Text>
+                  Valor Final: {item.valor_final}R$
+                </Text>
+
+              </View>
+
             </View>
 
-            <TouchableOpacity
-                style={[
-                    styles.botaoStl,
-                    (!stlDisponivel || verificandoStl || baixando) && { opacity: 0.5 }
-                ]}
-                onPress={baixarStl}
-                disabled={!stlDisponivel || verificandoStl || baixando}
-            >
-                {baixando ? (
-                    <ActivityIndicator color="#fff" />
-                ) : (
-                    <Text style={styles.textoStl}>
-                        {verificandoStl ? 'Verificando...' : 'Baixar Stl'}
-                    </Text>
-                )}
-            </TouchableOpacity>
-        </ScrollView>
-    );
+          </View>
+
+        </View>
+
+      </View>
+
+
+      <TouchableOpacity
+        style={[
+          styles.botaoStl,
+
+          (
+            !stlDisponivel ||
+            verificandoStl ||
+            baixando
+          ) && {
+            opacity: 0.5
+          }
+        ]}
+        onPress={baixarStl}
+        disabled={
+          !stlDisponivel ||
+          verificandoStl ||
+          baixando
+        }
+      >
+
+        {
+          baixando ? (
+
+            <ActivityIndicator
+              color="#fff"
+            />
+
+          ) : (
+
+            <Text style={styles.textoStl}>
+
+              {
+                verificandoStl
+                  ? 'Verificando...'
+                  : stlDisponivel
+                    ? 'Baixar STL'
+                    : 'STL indisponível'
+              }
+
+            </Text>
+
+          )
+        }
+
+      </TouchableOpacity>
+
+
+    </ScrollView>
+  );
 }

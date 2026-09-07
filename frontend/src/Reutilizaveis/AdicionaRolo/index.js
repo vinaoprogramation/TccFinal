@@ -58,6 +58,7 @@ export default function AdicionaRolo({ navigation }) {
                                         value={peso}
                                         onChangeText={setPeso}
                                         placeholder="Peso*"
+                                        placeholderTextColor='#000'
                                         style={styles.input}
                                     />
 
@@ -65,6 +66,7 @@ export default function AdicionaRolo({ navigation }) {
                                         value={observacao}
                                         onChangeText={setObservacao}
                                         placeholder="Observação"
+                                        placeholderTextColor='#000'
                                         style={styles.input}
                                     />
 

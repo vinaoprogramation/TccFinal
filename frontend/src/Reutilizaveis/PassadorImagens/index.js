@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import { Text, View, Image, TouchableOpacity } from "react-native";
-
 import styles from "./styles";
-
-import arrow from '../../../assets/arrow.png'
-
+import arrow from '../../../assets/arrow.png';
 import passarTela from "../../Services/passarTela";
+import ShimmerCard from "../ShimmerCard";
 
 export default function PassadorImagens({ navigation, props }) {
   const numeroInicial = props[0];
@@ -17,45 +14,53 @@ export default function PassadorImagens({ navigation, props }) {
   const [contador, setContador] = useState(numeroInicial);
   const [contadorFotos, setContadorFotos] = useState(0);
 
-
   useEffect(() => {
-    console.log("Fotos: " + fotos)
-  })
+    console.log("Fotos: " + fotos);
+  });
 
   return <>
-        <View style={styles.container}>
-          <Image
-            source={{ uri: fotos[contadorFotos] }}
-            style={styles.foto}
-          />
-
-          {contador > numeroInicial ? (<TouchableOpacity
-            style={styles.fundo2}
-            onPress={() => {
-              setContador(contador - 1)
-              setContadorFotos(contadorFotos - 1)
-            }}
-          >
+    <View style={styles.container}>
+      {
+        fotos[contadorFotos] ?
+          <>
             <Image
-              source={arrow}
-              style={styles.imagem2}
+              source={{ uri: fotos[contadorFotos] }}
+              style={styles.foto}
             />
-          </TouchableOpacity>) : null}
-
-          {contador < fotos.length - 1 + numeroInicial ? (<TouchableOpacity
-            onPress={() => {
-              setContador(contador + 1)
-              setContadorFotos(contadorFotos + 1)
-            }}
-            style={styles.fundo}
-          >
-            <Image
-              source={arrow}
-              style={styles.imagem}
+          </>
+          :
+          <>
+            <ShimmerCard
+              style={styles.foto}
             />
-          </TouchableOpacity>) : null}
-        </View>
+          </>
+      }
 
+      {contador > numeroInicial ? (<TouchableOpacity
+        style={styles.fundo2}
+        onPress={() => {
+          setContador(contador - 1);
+          setContadorFotos(contadorFotos - 1);
+        }}
+      >
+        <Image
+          source={arrow}
+          style={styles.imagem2}
+        />
+      </TouchableOpacity>) : null}
 
-  </>
+      {contador < fotos.length - 1 + numeroInicial ? (<TouchableOpacity
+        onPress={() => {
+          setContador(contador + 1);
+          setContadorFotos(contadorFotos + 1);
+        }}
+        style={styles.fundo}
+      >
+        <Image
+          source={arrow}
+          style={styles.imagem}
+        />
+      </TouchableOpacity>) : null}
+    </View>
+  </>;
 }

@@ -117,6 +117,7 @@ export default function AdicionaEstoque({ navigation }) {
                     value={cor}
                     onChangeText={setCor}
                     placeholder="Cor*"
+                    placeholderTextColor='#000'
                     style={styles.input}
                   />
 
@@ -124,6 +125,7 @@ export default function AdicionaEstoque({ navigation }) {
                     value={pesoInicial}
                     onChangeText={setPesoInicial}
                     placeholder="Peso Inicial"
+                    placeholderTextColor='#000'
                     style={styles.input}
                   />
 
@@ -131,6 +133,7 @@ export default function AdicionaEstoque({ navigation }) {
                     value={entrada}
                     onChangeText={setEntrada}
                     placeholder="Entrada*"
+                    placeholderTextColor='#000'
                     style={styles.input}
                   />
 
@@ -138,6 +141,7 @@ export default function AdicionaEstoque({ navigation }) {
                     value={saida}
                     onChangeText={setSaida}
                     placeholder="Saida*"
+                    placeholderTextColor='#000'
                     style={styles.input}
                   />
                 </View>

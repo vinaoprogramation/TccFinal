@@ -208,6 +208,7 @@ export default function AdicionaImpressao({ navigation }) {
                   value={nome}
                   onChangeText={setNome}
                   placeholder="Nome da Impressão*"
+                  placeholderTextColor='#000'
                   style={styles.input}
                 />
 
@@ -401,6 +402,7 @@ export default function AdicionaImpressao({ navigation }) {
                       <TextInput
                         style={styles.input}
                         placeholder="Gramas Previstas*"
+                        placeholderTextColor='#000'
                         value={gramas}
                         onChangeText={setGramas}
                       />
@@ -417,6 +419,7 @@ export default function AdicionaImpressao({ navigation }) {
                   value={tempo}
                   onChangeText={setTempo}
                   placeholder="Tempo de Impressão*"
+                  placeholderTextColor='#000'
                   style={styles.input}
                 />
 
@@ -428,6 +431,7 @@ export default function AdicionaImpressao({ navigation }) {
                         value={objetivo}
                         onChangeText={setObjetivo}
                         placeholder="Objetivo*"
+                        placeholderTextColor='#000'
                         style={styles.input}
                       />
 
@@ -444,6 +448,7 @@ export default function AdicionaImpressao({ navigation }) {
                         value={comprador}
                         onChangeText={setComprador}
                         placeholder="Comprador*"
+                        placeholderTextColor='#000'
                         style={styles.input}
                       />
 

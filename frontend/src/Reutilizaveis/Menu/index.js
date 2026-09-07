@@ -15,9 +15,13 @@ import estoque from '../../../assets/estoque.png'
 
 import navegacaoMenu from "../../Services/navegacaoMenu";
 
+import autenticacao from "../../Services/autenticacao";
+
 export default function Menu({ navigation }) {
   const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
   const setMostra = navegacaoMenu((state) => state.setMostra);
+
+  const logout = autenticacao((state) => state.logout);
 
   return <>
     {mostraMenu ?
@@ -121,6 +125,7 @@ export default function Menu({ navigation }) {
 
               <TouchableOpacity style={styles.item}
               onPress={() => {
+                logout();
                 navigation.replace('Inicio')
               }}
               >

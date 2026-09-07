@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, ActivityIndicator, Image, Touchable, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import useCatalogo from '../../Services/useCatalogo';
-
 import Filtros from '../../Reutilizaveis/Filtros';
-
 import BotaoFiltro from '../../Reutilizaveis/BotaoFiltro';
-
 import BotaoVoltarInicio from '../../Reutilizaveis/BotaoVoltarInicio';
-
+import ShimmerCard from '../../Reutilizaveis/ShimmerCard';
 
 export default function HomeScreen({ navigation }) {
   const projetos = useCatalogo((state) => state.projetos);
@@ -18,8 +15,8 @@ export default function HomeScreen({ navigation }) {
   const setRecarregando = useCatalogo((state) => state.setRecarregando);
 
   const [carregando, setCarregando] = useState(true);
-  const [detalhes, setDetalhes] = useState(false)
-  const [detalhesId, setDetalhesId] = useState(null)
+  const [detalhes, setDetalhes] = useState(false);
+  const [detalhesId, setDetalhesId] = useState(null);
 
   useEffect(() => {
     async function carregarDados() {
@@ -32,8 +29,8 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   useEffect(() => {
-    setRecarregando(false)
-  }, [projetos])
+    setRecarregando(false);
+  }, [projetos]);
 
   if (carregando) {
     return (
@@ -46,15 +43,8 @@ export default function HomeScreen({ navigation }) {
 
   return <>
     <View>
-
       <BotaoFiltro />
       <Filtros />
-      
-
-
-
-
-
 
       {
         recarregando ?
@@ -63,8 +53,6 @@ export default function HomeScreen({ navigation }) {
           null
       }
 
-
-
       <FlatList
         data={projetos}
         extraData={detalhesId}
@@ -72,14 +60,9 @@ export default function HomeScreen({ navigation }) {
         style={styles.flatList}
         ListFooterComponent={() => <View style={{ height: 100 }} />}
         ListHeaderComponent={() => <>
-
           <View style={styles.cabecalho}>
             <Text style={styles.saudacao}>Olá, confira o nosso catálogo de impressões</Text>
-
             <Text style={styles.app}>Reni 3D App</Text>
-
-
-
           </View>
         </>
         }
@@ -89,39 +72,40 @@ export default function HomeScreen({ navigation }) {
             :
             <TouchableOpacity style={styles.item}
               onPress={() => {
-                {
-                  if (detalhesId === item.id) {
-                    setDetalhes(!detalhes);
-                  } else {
-                    setDetalhesId(item.id);
-                    setDetalhes(true);
-                  }
-
+                if (detalhesId === item.id) {
+                  setDetalhes(!detalhes);
+                } else {
+                  setDetalhesId(item.id);
+                  setDetalhes(true);
                 }
               }}
             >
               <View>
-                <Image
-                  source={{ uri: item.thumbnailUrl }}
-                  style={styles.imagemImpressao}
-                />
+                {
+                  item.thumbnailUrl ?
+                    <>
+                      <Image
+                        source={{ uri: item.thumbnailUrl }}
+                        style={styles.imagemImpressao}
+                      />
+                    </>
+                    :
+                    <>
+                      <ShimmerCard
+                        style={styles.imagemImpressao}
+                      />
+                    </>
+                }
               </View>
 
-
               <View style={styles.textos}>
-
-                <View
-                  style={styles.usuario}
-                >
+                <View style={styles.usuario}>
                   <Image
                     source={{ uri: item.fotoPerfil }}
                     style={styles.imagemUsuario}
                   />
                   <Text style={styles.nomeUsuario}>{item.usuario_nome}</Text>
                 </View>
-
-
-
 
                 <Text style={styles.nomeImpressao}>{item.nome_impressao}</Text>
 
@@ -142,41 +126,23 @@ export default function HomeScreen({ navigation }) {
                     </View>
                   </View>
 
-
-
                   <TouchableOpacity style={styles.botaoEntrar}
                     onPress={() => {
-                      navigation.navigate('DetailScreen', item)
+                      navigation.navigate('DetailScreen', item);
                     }}
                   >
                     <Text style={styles.textoBotaoEntrar}>Abrir Projeto</Text>
                   </TouchableOpacity>
-
-
-
                 </View>) : (null)}
-
-
-
               </View>
-
-
             </TouchableOpacity>
-
           }
-
-
-
-
-
         </>
         }
       />
-
-
-    </View >
+    </View>
     <BotaoVoltarInicio
-            navigation={navigation}
-          />
+      navigation={navigation}
+    />
   </>;
 }

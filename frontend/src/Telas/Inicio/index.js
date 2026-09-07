@@ -4,9 +4,6 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 
 import styles from "./styles";
 
-import sheilong from '../../../assets/sheilong.png'
-import coruja from '../../../assets/coruja.png'
-
 import usePublicConfig from "../../Services/usePublicConfig";
 
 export default function Inicio({ navigation }) {

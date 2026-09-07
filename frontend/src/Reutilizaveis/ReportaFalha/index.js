@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {
+    useState,
+    useEffect
+} from "react";
+
 
 import {
     Text,
@@ -10,75 +14,145 @@ import {
     FlatList
 } from "react-native";
 
-import * as ImagePicker from "expo-image-picker";
+
+import * as ImagePicker
+    from "expo-image-picker";
+
 
 import styles from "./styles";
 
-import Toast from "react-native-toast-message";
 
-import useImpressoes from "../../Services/useImpressoes";
-import useEstoque from "../../Services/useEstoque";
-import useConfiguracoes from "../../Services/useConfiguracoes";
+import Toast
+    from "react-native-toast-message";
 
 
-export default function ReportaFalha({ navigation }) {
-
-    const consultaImpressoes = useImpressoes(
-        (state) => state.consultaImpressoes
-    );
-
-    const mostraFalha = useImpressoes(
-        (state) => state.mostraFalha
-    );
-
-    const setMostraFalha = useImpressoes(
-        (state) => state.setMostraFalha
-    );
-
-    const reportaFalha = useImpressoes(
-        (state) => state.reportaFalha
-    );
-
-    const id = useImpressoes(
-        (state) => state.id
-    );
+import useImpressoes
+    from "../../Services/useImpressoes";
 
 
-    const consultaOpcoes = useConfiguracoes(
-        (state) => state.consultaOpcoes
-    );
-
-    const materiais = useConfiguracoes(
-        (state) => state.materiais
-    );
+import useEstoque
+    from "../../Services/useEstoque";
 
 
-    const estoque = useEstoque(
-        (state) => state.estoque
-    );
-
-    const consultaEstoque = useEstoque(
-        (state) => state.consultaEstoque
-    );
+import useConfiguracoes
+    from "../../Services/useConfiguracoes";
 
 
-    const [porcentagem, setPorcentagem] = useState("");
 
-    const [observacao, setObservacao] = useState("");
-
-    const [gramasPerdidas, setGramasPerdidas] = useState("");
-
-    const [foto, setFoto] = useState(null);
+export default function ReportaFalha({
+    navigation
+}) {
 
 
-    const [materialMostra, setMaterialMostra] = useState(false);
+    const consultaImpressoes =
+        useImpressoes(
+            (state) =>
+                state.consultaImpressoes
+        );
 
-    const [materialValor, setMaterialValor] = useState("");
+
+    const mostraFalha =
+        useImpressoes(
+            (state) =>
+                state.mostraFalha
+        );
 
 
-    const [corMostra, setCorMostra] = useState(false);
+    const setMostraFalha =
+        useImpressoes(
+            (state) =>
+                state.setMostraFalha
+        );
 
-    const [corValor, setCorValor] = useState("");
+
+    const reportaFalha =
+        useImpressoes(
+            (state) =>
+                state.reportaFalha
+        );
+
+
+    const id =
+        useImpressoes(
+            (state) =>
+                state.id
+        );
+
+
+    const consultaOpcoes =
+        useConfiguracoes(
+            (state) =>
+                state.consultaOpcoes
+        );
+
+
+    const materiais =
+        useConfiguracoes(
+            (state) =>
+                state.materiais
+        );
+
+
+    const estoque =
+        useEstoque(
+            (state) =>
+                state.estoque
+        );
+
+
+    const consultaEstoque =
+        useEstoque(
+            (state) =>
+                state.consultaEstoque
+        );
+
+
+    const [
+        porcentagem,
+        setPorcentagem
+    ] = useState("");
+
+
+    const [
+        observacao,
+        setObservacao
+    ] = useState("");
+
+
+    const [
+        gramasPerdidas,
+        setGramasPerdidas
+    ] = useState("");
+
+
+    const [
+        foto,
+        setFoto
+    ] = useState(null);
+
+
+    const [
+        materialMostra,
+        setMaterialMostra
+    ] = useState(false);
+
+
+    const [
+        materialValor,
+        setMaterialValor
+    ] = useState("");
+
+
+    const [
+        corMostra,
+        setCorMostra
+    ] = useState(false);
+
+
+    const [
+        corValor,
+        setCorValor
+    ] = useState("");
 
 
     useEffect(() => {
@@ -100,35 +174,48 @@ export default function ReportaFalha({ navigation }) {
         try {
 
             const permissao =
-                await ImagePicker.requestMediaLibraryPermissionsAsync();
+                await ImagePicker
+                    .requestMediaLibraryPermissionsAsync();
 
 
             if (!permissao.granted) {
 
                 Toast.show({
+
                     type: "error",
-                    text1: "Permissão negada",
-                    text2: "Permita o acesso à galeria.",
+
+                    text1:
+                        "Permissão negada",
+
+                    text2:
+                        "Permita o acesso à galeria.",
+
                     visibilityTime: 3000
+
                 });
 
                 return;
-
             }
 
 
             const resultado =
-                await ImagePicker.launchImageLibraryAsync({
+                await ImagePicker
+                    .launchImageLibraryAsync({
 
-                    mediaTypes: ["images"],
+                        mediaTypes: [
+                            "images"
+                        ],
 
-                    allowsEditing: false,
+                        allowsEditing:
+                            false,
 
-                    quality: 0.8,
+                        quality:
+                            0.8,
 
-                    selectionLimit: 1
+                        selectionLimit:
+                            1
 
-                });
+                    });
 
 
             if (resultado.canceled) {
@@ -136,11 +223,14 @@ export default function ReportaFalha({ navigation }) {
             }
 
 
-            const arquivo = resultado.assets[0];
+            const arquivo =
+                resultado.assets[0];
 
 
             setFoto({
-                uri: arquivo.uri,
+
+                uri:
+                    arquivo.uri,
 
                 name:
                     arquivo.fileName ||
@@ -149,7 +239,9 @@ export default function ReportaFalha({ navigation }) {
                 type:
                     arquivo.mimeType ||
                     "image/jpeg"
+
             });
+
 
         } catch (error) {
 
@@ -158,10 +250,16 @@ export default function ReportaFalha({ navigation }) {
                 error
             );
 
+
             Toast.show({
+
                 type: "error",
-                text1: "Erro ao selecionar foto",
+
+                text1:
+                    "Erro ao selecionar foto",
+
                 visibilityTime: 3000
+
             });
 
         }
@@ -174,13 +272,17 @@ export default function ReportaFalha({ navigation }) {
         if (!id) {
 
             Toast.show({
+
                 type: "error",
-                text1: "Impressão não identificada",
+
+                text1:
+                    "Impressão não identificada",
+
                 visibilityTime: 3000
+
             });
 
             return;
-
         }
 
 
@@ -193,53 +295,77 @@ export default function ReportaFalha({ navigation }) {
         ) {
 
             Toast.show({
+
                 type: "error",
-                text1: "Insira todos os campos",
+
+                text1:
+                    "Insira todos os campos",
+
                 visibilityTime: 3000
+
             });
 
             return;
-
         }
 
 
         if (
-            materialValor !== "Material Próprio" &&
+            materialValor !==
+                "Material Próprio" &&
             !corValor
         ) {
 
             Toast.show({
+
                 type: "error",
-                text1: "Selecione a cor",
+
+                text1:
+                    "Selecione a cor",
+
                 visibilityTime: 3000
+
             });
 
             return;
-
         }
 
 
-        const mostra = await reportaFalha(
-            id,
-            foto,
-            porcentagem,
-            materialValor,
-            corValor,
-            gramasPerdidas,
-            observacao
-        );
+        const mostra =
+            await reportaFalha(
+
+                id,
+
+                foto,
+
+                porcentagem,
+
+                materialValor,
+
+                corValor,
+
+                gramasPerdidas,
+
+                observacao
+
+            );
 
 
         if (mostra) {
 
             Toast.show({
+
                 type: "success",
-                text1: "Falha registrada com sucesso!",
+
+                text1:
+                    "Falha registrada com sucesso!",
+
                 visibilityTime: 3000
+
             });
 
 
             setCorMostra(false);
+
             setCorValor("");
 
             setPorcentagem("");
@@ -271,7 +397,9 @@ export default function ReportaFalha({ navigation }) {
             <>
 
                 <TouchableOpacity
+
                     style={styles.fundo}
+
                     onPress={() => {
 
                         setMaterialMostra(false);
@@ -281,105 +409,185 @@ export default function ReportaFalha({ navigation }) {
                         setMostraFalha();
 
                     }}
+
                 >
 
                     <TouchableOpacity
+
                         style={styles.container}
+
                         activeOpacity={1}
+
                     >
 
                         <ScrollView>
 
-                            <Text style={styles.titulo}>
+                            <Text
+                                style={styles.titulo}
+                            >
                                 Registrar Falha
                             </Text>
 
 
-                            <Text style={styles.subTitulo}>
+                            <Text
+                                style={styles.subTitulo}
+                            >
                                 Informe apenas o material realmente perdido. A porcentagem fica como historico e não calcula estoque automaticamente.
                             </Text>
 
 
-                            <View style={styles.inputs}>
+                            <View
+                                style={styles.inputs}
+                            >
+
 
                                 <TouchableOpacity
-                                    style={styles.input}
-                                    onPress={selecionaFoto}
+
+                                    style={
+                                        styles.input
+                                    }
+
+                                    onPress={
+                                        selecionaFoto
+                                    }
+
                                 >
 
                                     <Text>
-                                        {foto
-                                            ? "Foto selecionada"
-                                            : "Enviar foto*"
+
+                                        {
+                                            foto
+                                                ? "Foto selecionada"
+                                                : "Enviar foto*"
                                         }
+
                                     </Text>
 
                                 </TouchableOpacity>
 
 
-                                {foto ?
+                                {
+                                    foto ?
 
-                                    <View style={styles.previewFoto}>
-
-                                        <Image
-                                            source={{
-                                                uri: foto.uri
-                                            }}
-                                            style={styles.miniaturaFoto}
-                                            resizeMode="cover"
-                                        />
-
-
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setFoto(null);
-                                            }}
+                                        <View
+                                            style={
+                                                styles.previewFoto
+                                            }
                                         >
 
-                                            <Text
-                                                style={styles.removerFoto}
+                                            <Image
+
+                                                source={{
+                                                    uri:
+                                                        foto.uri
+                                                }}
+
+                                                style={
+                                                    styles.miniaturaFoto
+                                                }
+
+                                                resizeMode="cover"
+
+                                            />
+
+
+                                            <TouchableOpacity
+
+                                                onPress={() => {
+
+                                                    setFoto(null);
+
+                                                }}
+
                                             >
-                                                REMOVER FOTO
-                                            </Text>
 
-                                        </TouchableOpacity>
+                                                <Text
+                                                    style={
+                                                        styles.removerFoto
+                                                    }
+                                                >
+                                                    REMOVER FOTO
+                                                </Text>
 
-                                    </View>
+                                            </TouchableOpacity>
 
-                                    :
-                                    null
+                                        </View>
+
+                                        :
+
+                                        null
                                 }
 
 
                                 <TextInput
-                                    value={porcentagem}
-                                    onChangeText={setPorcentagem}
+
+                                    value={
+                                        porcentagem
+                                    }
+
+                                    onChangeText={
+                                        setPorcentagem
+                                    }
+
                                     placeholder="Porcentagem aproximada onde parou*"
+
                                     keyboardType="numeric"
-                                    style={styles.input}
+
+                                    style={
+                                        styles.input
+                                    }
+
                                 />
 
 
                                 <TextInput
-                                    value={gramasPerdidas}
-                                    onChangeText={setGramasPerdidas}
+
+                                    value={
+                                        gramasPerdidas
+                                    }
+
+                                    onChangeText={
+                                        setGramasPerdidas
+                                    }
+
                                     placeholder="Gramas perdidas*"
+
                                     keyboardType="numeric"
-                                    style={styles.input}
+
+                                    style={
+                                        styles.input
+                                    }
+
                                 />
 
 
                                 <TextInput
-                                    value={observacao}
-                                    onChangeText={setObservacao}
+
+                                    value={
+                                        observacao
+                                    }
+
+                                    onChangeText={
+                                        setObservacao
+                                    }
+
                                     placeholder="Observação*"
+
                                     multiline={true}
-                                    style={styles.input}
+
+                                    style={
+                                        styles.input
+                                    }
+
                                 />
 
 
                                 <TouchableOpacity
-                                    style={styles.input}
+
+                                    style={
+                                        styles.input
+                                    }
+
                                     onPress={() => {
 
                                         setMaterialMostra(
@@ -389,14 +597,21 @@ export default function ReportaFalha({ navigation }) {
                                         setCorMostra(false);
 
                                     }}
+
                                 >
 
                                     <Text>
 
                                         {
                                             materialValor !== ""
-                                                ? materialValor
-                                                : "Selecione o material*"
+
+                                                ?
+
+                                                materialValor
+
+                                                :
+
+                                                "Selecione o material*"
                                         }
 
                                     </Text>
@@ -404,96 +619,131 @@ export default function ReportaFalha({ navigation }) {
                                 </TouchableOpacity>
 
 
-                                {materialMostra ?
+                                {
+                                    materialMostra ?
 
-                                    <FlatList
-                                        style={styles.flatList}
-                                        data={materiais}
-                                        scrollEnabled={false}
-                                        keyExtractor={(item) =>
-                                            String(item.id)
-                                        }
+                                        <FlatList
 
-                                        ListHeaderComponent={() => (
-                                            <Text
-                                                style={styles.textoFlat}
-                                            >
-                                                Selecione um material
-                                            </Text>
-                                        )}
+                                            style={
+                                                styles.flatList
+                                            }
 
-                                        renderItem={({ item }) => (
+                                            data={
+                                                materiais
+                                            }
 
-                                            <TouchableOpacity
-                                                style={[
-                                                    styles.itens,
-                                                    {
-                                                        flexDirection: 'row',
-                                                        gap: 10,
-                                                        flexWrap: 'wrap'
-                                                    }
-                                                ]}
-                                                onPress={() => {
+                                            scrollEnabled={
+                                                false
+                                            }
 
-                                                    setMaterialValor(
-                                                        item.nome
-                                                    );
+                                            keyExtractor={(
+                                                item
+                                            ) =>
+                                                String(item.id)
+                                            }
 
-                                                    setMaterialMostra(
-                                                        false
-                                                    );
-
-                                                    setCorValor("");
-
-                                                }}
-                                            >
+                                            ListHeaderComponent={() => (
 
                                                 <Text
                                                     style={
-                                                        styles.textoMaquinas
+                                                        styles.textoFlat
                                                     }
                                                 >
-                                                    {item.nome}
+                                                    Selecione um material
                                                 </Text>
 
+                                            )}
 
-                                                <Text
-                                                    style={
-                                                        styles.textoMaquinas
-                                                    }
+                                            renderItem={({
+                                                item
+                                            }) => (
+
+                                                <TouchableOpacity
+
+                                                    style={[
+                                                        styles.itens,
+                                                        {
+                                                            flexDirection:
+                                                                'row',
+
+                                                            gap:
+                                                                10,
+
+                                                            flexWrap:
+                                                                'wrap'
+                                                        }
+                                                    ]}
+
+                                                    onPress={() => {
+
+                                                        setMaterialValor(
+                                                            item.nome
+                                                        );
+
+                                                        setMaterialMostra(
+                                                            false
+                                                        );
+
+                                                        setCorValor("");
+
+                                                    }}
+
                                                 >
-                                                    ·
-                                                </Text>
+
+                                                    <Text
+                                                        style={
+                                                            styles.textoMaquinas
+                                                        }
+                                                    >
+                                                        {item.nome}
+                                                    </Text>
 
 
-                                                <Text
-                                                    style={
-                                                        styles.textoMaquinas
-                                                    }
-                                                >
-                                                    R$ {item.valor_grama}/g
-                                                </Text>
+                                                    <Text
+                                                        style={
+                                                            styles.textoMaquinas
+                                                        }
+                                                    >
+                                                        ·
+                                                    </Text>
 
-                                            </TouchableOpacity>
 
-                                        )}
+                                                    <Text
+                                                        style={
+                                                            styles.textoMaquinas
+                                                        }
+                                                    >
+                                                        R$ {item.valor_grama}/g
+                                                    </Text>
 
-                                    />
+                                                </TouchableOpacity>
 
-                                    :
-                                    null
+                                            )}
+
+                                        />
+
+                                        :
+
+                                        null
                                 }
 
 
                                 {
                                     materialValor !== "" &&
-                                    materialValor !== "Material Próprio"
+
+                                    materialValor !==
+                                        "Material Próprio"
+
                                         ?
 
                                         <>
 
                                             <TouchableOpacity
-                                                style={styles.input}
+
+                                                style={
+                                                    styles.input
+                                                }
+
                                                 onPress={() => {
 
                                                     setCorMostra(
@@ -505,14 +755,21 @@ export default function ReportaFalha({ navigation }) {
                                                     );
 
                                                 }}
+
                                             >
 
                                                 <Text>
 
                                                     {
                                                         corValor !== ""
-                                                            ? corValor
-                                                            : "Selecione a cor*"
+
+                                                            ?
+
+                                                            corValor
+
+                                                            :
+
+                                                            "Selecione a cor*"
                                                     }
 
                                                 </Text>
@@ -520,128 +777,178 @@ export default function ReportaFalha({ navigation }) {
                                             </TouchableOpacity>
 
 
-                                            {corMostra ?
+                                            {
+                                                corMostra ?
 
-                                                <FlatList
-                                                    style={styles.flatList}
-                                                    data={estoque}
-                                                    scrollEnabled={false}
-                                                    keyExtractor={(item) =>
-                                                        String(item.id)
-                                                    }
+                                                    <FlatList
 
-                                                    ListHeaderComponent={() => (
-                                                        <Text
-                                                            style={
-                                                                styles.textoFlat
-                                                            }
-                                                        >
-                                                            Selecione uma cor
-                                                        </Text>
-                                                    )}
-
-                                                    renderItem={({ item }) => {
-
-                                                        if (
-                                                            item.material !==
-                                                            materialValor
-                                                        ) {
-                                                            return null;
+                                                        style={
+                                                            styles.flatList
                                                         }
 
+                                                        data={
+                                                            estoque
+                                                        }
 
-                                                        return (
+                                                        scrollEnabled={
+                                                            false
+                                                        }
 
-                                                            <TouchableOpacity
-                                                                style={[
-                                                                    styles.itens,
-                                                                    {
-                                                                        flexDirection: 'row',
-                                                                        gap: 10,
-                                                                        flexWrap: 'wrap'
-                                                                    }
-                                                                ]}
-                                                                onPress={() => {
+                                                        keyExtractor={(
+                                                            item
+                                                        ) =>
+                                                            String(item.id)
+                                                        }
 
-                                                                    setCorValor(
-                                                                        item.cor
-                                                                    );
+                                                        ListHeaderComponent={() => (
 
-                                                                    setCorMostra(
-                                                                        false
-                                                                    );
-
-                                                                }}
+                                                            <Text
+                                                                style={
+                                                                    styles.textoFlat
+                                                                }
                                                             >
+                                                                Selecione uma cor
+                                                            </Text>
 
-                                                                <Text
-                                                                    style={
-                                                                        styles.textoMaquinas
-                                                                    }
+                                                        )}
+
+                                                        renderItem={({
+                                                            item
+                                                        }) => {
+
+                                                            if (
+                                                                item.material !==
+                                                                materialValor
+                                                            ) {
+                                                                return null;
+                                                            }
+
+
+                                                            return (
+
+                                                                <TouchableOpacity
+
+                                                                    style={[
+                                                                        styles.itens,
+                                                                        {
+                                                                            flexDirection:
+                                                                                'row',
+
+                                                                            gap:
+                                                                                10,
+
+                                                                            flexWrap:
+                                                                                'wrap'
+                                                                        }
+                                                                    ]}
+
+                                                                    onPress={() => {
+
+                                                                        setCorValor(
+                                                                            item.cor
+                                                                        );
+
+                                                                        setCorMostra(
+                                                                            false
+                                                                        );
+
+                                                                    }}
+
                                                                 >
-                                                                    {item.cor}
-                                                                </Text>
+
+                                                                    <Text
+                                                                        style={
+                                                                            styles.textoMaquinas
+                                                                        }
+                                                                    >
+                                                                        {item.cor}
+                                                                    </Text>
 
 
-                                                                <Text
-                                                                    style={
-                                                                        styles.textoMaquinas
-                                                                    }
-                                                                >
-                                                                    ·
-                                                                </Text>
+                                                                    <Text
+                                                                        style={
+                                                                            styles.textoMaquinas
+                                                                        }
+                                                                    >
+                                                                        ·
+                                                                    </Text>
 
 
-                                                                <Text
-                                                                    style={
-                                                                        styles.textoMaquinas
-                                                                    }
-                                                                >
-                                                                    saldo {item.saldo}g
-                                                                </Text>
+                                                                    <Text
+                                                                        style={
+                                                                            styles.textoMaquinas
+                                                                        }
+                                                                    >
+                                                                        saldo {item.saldo}g
+                                                                    </Text>
 
-                                                            </TouchableOpacity>
+                                                                </TouchableOpacity>
 
-                                                        );
+                                                            );
 
-                                                    }}
+                                                        }}
 
-                                                />
+                                                    />
 
-                                                :
-                                                null
+                                                    :
+
+                                                    null
                                             }
 
                                         </>
 
                                         :
+
                                         null
                                 }
 
 
                                 {
-                                    materialValor === "Material Próprio"
+                                    materialValor ===
+                                        "Material Próprio"
+
                                         ?
+
                                         null
+
                                         :
+
                                         materialValor === ""
+
                                             ?
-                                            null
-                                            :
+
                                             <Text
-                                                style={styles.textoObs}
+                                                style={
+                                                    styles.textoObs
+                                                }
+                                            >
+                                                Selecione um Material*
+                                            </Text>
+
+                                            :
+
+                                            <Text
+                                                style={
+                                                    styles.textoObs
+                                                }
                                             >
                                                 As cores vêm do estoque
                                             </Text>
                                 }
 
 
-                                <View style={styles.decisoes}>
+                                <View
+                                    style={
+                                        styles.decisoes
+                                    }
+                                >
 
                                     <TouchableOpacity
+
                                         style={
                                             styles.botaoDecisaoCancelar
                                         }
+
                                         onPress={() => {
 
                                             setMaterialMostra(
@@ -650,7 +957,9 @@ export default function ReportaFalha({ navigation }) {
 
                                             setMaterialValor("");
 
-                                            setCorMostra(false);
+                                            setCorMostra(
+                                                false
+                                            );
 
                                             setCorValor("");
 
@@ -665,6 +974,7 @@ export default function ReportaFalha({ navigation }) {
                                             setMostraFalha();
 
                                         }}
+
                                     >
 
                                         <Text
@@ -679,10 +989,15 @@ export default function ReportaFalha({ navigation }) {
 
 
                                     <TouchableOpacity
+
                                         style={
                                             styles.botaoDecisaoSalvar
                                         }
-                                        onPress={mostraPop}
+
+                                        onPress={
+                                            mostraPop
+                                        }
+
                                     >
 
                                         <Text
@@ -708,6 +1023,7 @@ export default function ReportaFalha({ navigation }) {
             </>
 
             :
+
             null
         }
 

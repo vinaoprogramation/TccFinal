@@ -1,7 +1,13 @@
-import { StyleSheet, Dimensions } from "react-native";
+import {
+    StyleSheet,
+    Dimensions
+} from "react-native";
 
 
-const { width, height } = Dimensions.get('screen');
+const {
+    width,
+    height
+} = Dimensions.get('screen');
 
 
 const styles = StyleSheet.create({
@@ -122,7 +128,8 @@ const styles = StyleSheet.create({
 
         backgroundColor: 'rgb(255, 255, 255)',
 
-        borderColor: 'rgb(41, 135, 223)',
+        borderColor:
+            'rgb(41, 135, 223)',
 
         width: '95%',
 
@@ -137,7 +144,8 @@ const styles = StyleSheet.create({
 
     textoAdicionarFilamento: {
 
-        color: 'rgb(41, 135, 223)',
+        color:
+            'rgb(41, 135, 223)',
 
         fontSize: 16,
 
@@ -192,9 +200,11 @@ const styles = StyleSheet.create({
 
     botaoDecisaoCancelar: {
 
-        backgroundColor: 'rgba(255, 255, 255, 0)',
+        backgroundColor:
+            'rgba(255, 255, 255, 0)',
 
-        color: 'rgb(41, 135, 223)',
+        color:
+            'rgb(41, 135, 223)',
 
         padding: 10
 
@@ -203,14 +213,16 @@ const styles = StyleSheet.create({
 
     textoDecisaoCancelar: {
 
-        color: 'rgb(41, 135, 223)'
+        color:
+            'rgb(41, 135, 223)'
 
     },
 
 
     botaoDecisaoSalvar: {
 
-        backgroundColor: 'rgb(41, 135, 223)',
+        backgroundColor:
+            'rgb(41, 135, 223)',
 
         paddingVertical: 10,
 
@@ -281,7 +293,8 @@ const styles = StyleSheet.create({
 
     removerFoto: {
 
-        color: 'rgb(41, 135, 223)',
+        color:
+            'rgb(41, 135, 223)',
 
         fontSize: 12,
 

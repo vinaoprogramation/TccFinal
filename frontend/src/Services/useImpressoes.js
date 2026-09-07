@@ -5,105 +5,195 @@ import { Platform } from 'react-native';
 
 import api from './api';
 
+
 const isWeb = Platform.OS === 'web';
+
 
 const baseUrl = isWeb
   ? 'http://localhost:3000/impressoes'
   : 'http://192.168.1.11:3000/impressoes';
-// 'http://10.0.2.2:3000/usuarios'
+
+
+const arquivosUrl = isWeb
+  ? 'http://localhost:3000/arquivos'
+  : 'http://192.168.1.11:3000/arquivos';
 
 
 const useImpressoes = create((set, get) => ({
 
   mostraAdicionar: false,
+
   mostraDeletar: false,
+
   impressoes: [],
+
   id: null,
+
   mostraConcluir: false,
+
   mostraFalha: false,
+
   filtrosUsado: false,
+
   recarregando: false,
 
 
-  consultaImpressoes: async (categoria, material, status) => {
+  consultaImpressoes: async (
+    categoria,
+    material,
+    status
+  ) => {
 
-    console.log(categoria, material, status);
+    console.log(
+      categoria,
+      material,
+      status
+    );
+
 
     const params = {};
 
-    if (categoria) params.categoria = categoria;
-    if (material) params.material = material;
-    if (status) params.status = status;
+
+    if (categoria) {
+      params.categoria = categoria;
+    }
+
+
+    if (material) {
+      params.material = material;
+    }
+
+
+    if (status) {
+      params.status = status;
+    }
+
 
     try {
 
-      const response = await api.get(`${baseUrl}/busca`, { params });
+      const response =
+        await api.get(
+          `${baseUrl}/busca`,
+          { params }
+        );
 
-      console.log("Status da Resposta:", response.status);
 
-      const answer = await response.data.impressoes;
+      console.log(
+        "Status da Resposta:",
+        response.status
+      );
+
+
+      const answer =
+        await response.data.impressoes;
+
 
       set({
+
         impressoes: answer,
+
         recarregando: false
+
       });
+
 
     } catch (error) {
 
-      console.error('Erro ao consultar impressoes:', error);
+      console.error(
+        'Erro ao consultar impressoes:',
+        error
+      );
 
     }
 
   },
 
 
-  decideAprovacao: async (id, status, observacao) => {
+  decideAprovacao: async (
+    id,
+    status,
+    observacao
+  ) => {
 
     try {
 
-      const response = await api.patch(`${baseUrl}/aprovacoes/${id}`, {
-        "status": status,
-        "observacao": observacao,
-      });
+      const response =
+        await api.patch(
+          `${baseUrl}/aprovacoes/${id}`,
+          {
+            "status": status,
+            "observacao": observacao,
+          }
+        );
 
-      console.log("Status da Resposta:", response.status);
 
-      const answer = await response.data;
+      console.log(
+        "Status da Resposta:",
+        response.status
+      );
+
+
+      const answer =
+        await response.data;
+
 
       if (answer) {
         return true;
       }
 
+
     } catch (error) {
 
-      console.error('Erro ao DECIDIR:', error);
+      console.error(
+        'Erro ao DECIDIR:',
+        error
+      );
 
     }
 
   },
 
 
-  alteraStatus: async (id, comprador, objetivo) => {
+  alteraStatus: async (
+    id,
+    comprador,
+    objetivo
+  ) => {
 
     try {
 
-      const response = await api.patch(`${baseUrl}/altera/status/${id}`, {
-        "status": "Concluida",
-        "comprador": "string",
-        "objetivo": "string"
-      });
+      const response =
+        await api.patch(
+          `${baseUrl}/altera/status/${id}`,
+          {
+            "status": "Concluida",
+            "comprador": "string",
+            "objetivo": "string"
+          }
+        );
 
-      console.log("Status da Resposta:", response.status);
 
-      const answer = await response.data;
+      console.log(
+        "Status da Resposta:",
+        response.status
+      );
+
+
+      const answer =
+        await response.data;
+
 
       if (answer) {
         return true;
       }
 
+
     } catch (error) {
 
-      console.error('Erro ao concluir:', error);
+      console.error(
+        'Erro ao concluir:',
+        error
+      );
 
     }
 
@@ -122,31 +212,22 @@ const useImpressoes = create((set, get) => ({
 
     try {
 
-      const formData = new FormData();
+      const formData =
+        new FormData();
 
 
-      /*
-       * A imagem vem da galeria como:
-       *
-       * {
-       *   uri: "...",
-       *   name: "...",
-       *   type: "image/jpeg"
-       * }
-       *
-       * O backend é quem vai transformar isso
-       * no caminho "uploads/falhas/2026/..."
-       */
-
-      if (foto) {
-
-        formData.append("foto", {
+      formData.append(
+        "foto",
+        {
           uri: foto.uri,
-          name: foto.name,
-          type: foto.type
-        });
-
-      }
+          name:
+            foto.name ||
+            `foto-${Date.now()}.jpg`,
+          type:
+            foto.type ||
+            "image/jpeg"
+        }
+      );
 
 
       formData.append(
@@ -161,7 +242,8 @@ const useImpressoes = create((set, get) => ({
           {
             material: material,
             cor: cor,
-            gramas_perdidas: String(gramasPerdidas)
+            gramas_perdidas:
+              String(gramasPerdidas)
           }
         ])
       );
@@ -173,21 +255,24 @@ const useImpressoes = create((set, get) => ({
       );
 
 
-      const response = await api.patch(
-        `${baseUrl}/altera/falha/${id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data"
+      const response =
+        await api.patch(
+          `${baseUrl}/altera/falha/${id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type":
+                "multipart/form-data"
+            }
           }
-        }
-      );
+        );
 
 
       console.log(
         "Status da Resposta:",
         response.status
       );
+
 
       console.log(
         "Resposta da falha:",
@@ -200,12 +285,192 @@ const useImpressoes = create((set, get) => ({
       }
 
 
+      return false;
+
+
     } catch (error) {
 
       console.error(
         "Erro ao reportar falha:",
-        error.response?.data || error.message || error
+        error.response?.data ||
+        error.message ||
+        error
       );
+
+
+      return false;
+
+    }
+
+  },
+
+
+  enviaStl: async (
+    id,
+    arquivo
+  ) => {
+
+    try {
+
+      if (!id || !arquivo) {
+        return false;
+      }
+
+
+      const formData =
+        new FormData();
+
+
+      formData.append(
+        "stl",
+        {
+          uri: arquivo.uri,
+
+          name:
+            arquivo.name ||
+            `arquivo-${Date.now()}.stl`,
+
+          type:
+            arquivo.mimeType ||
+            "application/octet-stream"
+        }
+      );
+
+
+      const response =
+        await api.post(
+
+          `${arquivosUrl}/envia/stl/${id}`,
+
+          formData,
+
+          {
+            headers: {
+              "Content-Type":
+                "multipart/form-data"
+            }
+          }
+
+        );
+
+
+      console.log(
+        "Status do upload STL:",
+        response.status
+      );
+
+
+      console.log(
+        "Resposta do upload STL:",
+        response.data
+      );
+
+
+      if (response.data) {
+        return true;
+      }
+
+
+      return false;
+
+
+    } catch (error) {
+
+      console.error(
+        "Erro ao enviar STL:",
+        error.response?.data ||
+        error.message ||
+        error
+      );
+
+
+      return false;
+
+    }
+
+  },
+
+
+  enviaFoto: async (
+    id,
+    arquivo
+  ) => {
+
+    try {
+
+      if (!id || !arquivo) {
+        return false;
+      }
+
+
+      const formData =
+        new FormData();
+
+
+      formData.append(
+        "foto",
+        {
+          uri: arquivo.uri,
+
+          name:
+            arquivo.fileName ||
+            `midia-${Date.now()}`,
+
+          type:
+            arquivo.mimeType ||
+            "application/octet-stream"
+        }
+      );
+
+
+      const response =
+        await api.post(
+
+          `${arquivosUrl}/envia/foto/impressao/${id}`,
+
+          formData,
+
+          {
+            headers: {
+              "Content-Type":
+                "multipart/form-data"
+            }
+          }
+
+        );
+
+
+      console.log(
+        "Status do upload da foto:",
+        response.status
+      );
+
+
+      console.log(
+        "Resposta da foto:",
+        response.data
+      );
+
+
+      if (response.data) {
+        return true;
+      }
+
+
+      return false;
+
+
+    } catch (error) {
+
+      console.error(
+        "Erro ao enviar foto:",
+        error.response?.data ||
+        error.message ||
+        error
+      );
+
+
+      return false;
 
     }
 
@@ -236,38 +501,68 @@ const useImpressoes = create((set, get) => ({
       comprador
     );
 
+
     try {
 
-      const response = await api.post(`${baseUrl}/cadastrar`, {
-        "nome_impressao": nome,
-        "categoria": categoria,
-        "tempo_impressao": tempo,
-        "maquina_id": maquina,
-        "filamentos": [
+      const response =
+        await api.post(
+          `${baseUrl}/cadastrar`,
           {
+            "nome_impressao": nome,
+            "categoria": categoria,
+            "tempo_impressao": tempo,
+            "maquina_id": maquina,
+
+            "filamentos": [
+              {
+                "material": material,
+                "cor": cor
+                  ? cor
+                  : "Material Próprio",
+                "gramas_previstas": gramas,
+              }
+            ],
+
             "material": material,
-            "cor": cor ? cor : "Material Próprio",
-            "gramas_previstas": gramas,
+
+            "cor_filamento": cor
+              ? cor
+              : "Material Próprio",
+
+            "gramas": gramas,
+
+            "comprador": comprador
+              ? comprador
+              : null,
+
+            "objetivo": objetivo
+              ? objetivo
+              : null,
           }
-        ],
-        "material": material,
-        "cor_filamento": cor ? cor : "Material Próprio",
-        "gramas": gramas,
-        "comprador": comprador ? comprador : null,
-        "objetivo": objetivo ? objetivo : null,
-      });
+        );
 
-      console.log("Status da Resposta:", response.status);
 
-      const answer = await response.data;
+      console.log(
+        "Status da Resposta:",
+        response.status
+      );
+
+
+      const answer =
+        await response.data;
+
 
       if (answer) {
         return true;
       }
 
+
     } catch (error) {
 
-      console.error('Erro ao DECIDIR:', error);
+      console.error(
+        'Erro ao DECIDIR:',
+        error
+      );
 
     }
 
@@ -276,16 +571,22 @@ const useImpressoes = create((set, get) => ({
 
   setMostraAdicionar: () => {
 
-    const mostra = get().mostraAdicionar;
+    const mostra =
+      get().mostraAdicionar;
+
 
     if (mostra == false) {
+
       set({
         mostraAdicionar: true
       });
+
     } else {
+
       set({
         mostraAdicionar: false
       });
+
     }
 
   },
@@ -293,7 +594,9 @@ const useImpressoes = create((set, get) => ({
 
   setMostraFiltros: () => {
 
-    const mostra = get().filtrosUsado;
+    const mostra =
+      get().filtrosUsado;
+
 
     if (mostra == false) {
 
@@ -301,7 +604,10 @@ const useImpressoes = create((set, get) => ({
         filtrosUsado: true
       });
 
-      console.log("setou: " + get().filtrosUsado);
+      console.log(
+        "setou: " +
+        get().filtrosUsado
+      );
 
     } else {
 
@@ -309,7 +615,10 @@ const useImpressoes = create((set, get) => ({
         filtrosUsado: false
       });
 
-      console.log("setou: " + get().filtrosUsado);
+      console.log(
+        "setou: " +
+        get().filtrosUsado
+      );
 
     }
 
@@ -318,7 +627,9 @@ const useImpressoes = create((set, get) => ({
 
   setMostraFalha: () => {
 
-    const mostra = get().mostraFalha;
+    const mostra =
+      get().mostraFalha;
+
 
     if (mostra == false) {
 
@@ -339,7 +650,9 @@ const useImpressoes = create((set, get) => ({
 
   setMostraConcluir: () => {
 
-    const mostra = get().mostraConcluir;
+    const mostra =
+      get().mostraConcluir;
+
 
     if (mostra == false) {
 
@@ -360,7 +673,9 @@ const useImpressoes = create((set, get) => ({
 
   setMostraDeletar: () => {
 
-    const mostra = get().mostraDeletar;
+    const mostra =
+      get().mostraDeletar;
+
 
     if (mostra == false) {
 
@@ -379,26 +694,37 @@ const useImpressoes = create((set, get) => ({
   },
 
 
-  deletaImpressao: async (id) => {
+  deletaImpressao: async (
+    id
+  ) => {
 
-    console.log("Id: " + id);
+    console.log(
+      "Id: " + id
+    );
+
 
     try {
 
-      const response = await api.delete(
-        `${baseUrl}/deletar/${id}`
-      );
+      const response =
+        await api.delete(
+          `${baseUrl}/deletar/${id}`
+        );
+
 
       console.log(
         "Status da Resposta:",
         response.status
       );
 
-      const answer = await response;
+
+      const answer =
+        await response;
+
 
       if (answer) {
         return true;
       }
+
 
     } catch (error) {
 
@@ -421,7 +747,9 @@ const useImpressoes = create((set, get) => ({
   },
 
 
-  setRecarregando: (condicao) => {
+  setRecarregando: (
+    condicao
+  ) => {
 
     set({
       recarregando: condicao

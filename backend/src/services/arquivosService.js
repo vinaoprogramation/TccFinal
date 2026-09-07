@@ -1,112 +1,203 @@
 const axios = require('axios');
 
-const BASE_URL = 'https://api-ip3d.mbinfoseg.com.br/api';
+const FormData = require('form-data');
 
 
-async function enviaStl(token, stl, id) {
+const BASE_URL =
+  'https://api-ip3d.mbinfoseg.com.br/api';
 
-   const api = await axios.post(
+
+
+async function enviaStl(
+  token,
+  stl,
+  id
+) {
+
+  const formData =
+    new FormData();
+
+
+  formData.append(
+    'arquivo',
+
+    stl.buffer,
+
+    {
+      filename:
+        stl.originalname,
+
+      contentType:
+        stl.mimetype ||
+        'application/octet-stream'
+    }
+  );
+
+
+  const api =
+    await axios.post(
+
       `${BASE_URL}/stl/impressoes/${id}`,
+
+      formData,
+
       {
-        "arquivo": stl
-      },
-      {
-        "headers": {
-          "Authorization": `Bearer ${token}`
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+
+          ...formData.getHeaders()
         }
       }
+
     );
 
-    const response = api.data
 
-    return response;
+  return api.data;
+
 }
 
 
 
-async function baixaStl(token, id) {
+async function baixaStl(
+  token,
+  id
+) {
 
-   const api = await axios.get(
+  const api =
+    await axios.get(
+
       `${BASE_URL}/stl/${id}/download`,
+
       {
-        "headers": {
-          "Authorization": `Bearer ${token}`
+        headers: {
+          Authorization:
+            `Bearer ${token}`
         }
       }
+
     );
 
-    const response = api.data
 
-    return response;
+  return api.data;
+
 }
 
 
 
+async function excluiStl(
+  token,
+  id
+) {
 
-async function excluiStl(token, id) {
+  const api =
+    await axios.delete(
 
-   const api = await axios.delete(
       `${BASE_URL}/stl/${id}`,
+
       {
-        "headers": {
-          "Authorization": `Bearer ${token}`
+        headers: {
+          Authorization:
+            `Bearer ${token}`
         }
       }
+
     );
 
-    const response = api.data
 
-    return response;
+  return api.data;
+
 }
 
 
-async function buscaFotosImpressao(token, id) {
 
-   const api = await axios.get(
+async function buscaFotosImpressao(
+  token,
+  id
+) {
+
+  const api =
+    await axios.get(
+
       `${BASE_URL}/fotos/impressoes/${id}`,
+
       {
-        "headers": {
-          "Authorization": `Bearer ${token}`
+        headers: {
+          Authorization:
+            `Bearer ${token}`
         }
       }
+
     );
 
-    const response = api.data
 
-    return response;
+  return api.data;
+
 }
 
 
 
+async function enviaFotoImpressao(
+  foto,
+  token,
+  id
+) {
+
+  const formData =
+    new FormData();
 
 
-async function enviaFotoImpressao(foto, token, id) {
+  formData.append(
+    'foto',
 
-   const api = await axios.post(
+    foto.buffer,
+
+    {
+      filename:
+        foto.originalname,
+
+      contentType:
+        foto.mimetype ||
+        'application/octet-stream'
+    }
+  );
+
+
+  const api =
+    await axios.post(
+
       `${BASE_URL}/fotos/impressoes/${id}`,
+
+      formData,
+
       {
-        "foto": foto
-      },
-      {
-        "headers": {
-          "Authorization": `Bearer ${token}`
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+
+          ...formData.getHeaders()
         }
       }
+
     );
 
-    const response = api.data
 
-    return response;
+  return api.data;
+
 }
-
-
 
 
 
 module.exports = {
+
   enviaStl,
+
   baixaStl,
+
   excluiStl,
+
   buscaFotosImpressao,
+
   enviaFotoImpressao,
+
 };

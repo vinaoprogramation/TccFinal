@@ -5,9 +5,7 @@ import { getToken } from './authStorage';
 const isWeb = Platform.OS === 'web';
 
 const api = axios.create({
-  baseURL: isWeb
-    ? 'http://localhost:3000'
-    : 'http://192.168.1.11:3000',
+  baseURL: 'https://reni-3d-app.onrender.com/'
 });
 
 api.interceptors.request.use(

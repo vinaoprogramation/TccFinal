@@ -5,11 +5,7 @@ import { Platform } from 'react-native';
 
 import api from './api';
 
-const isWeb = Platform.OS === 'web';
-const baseUrl = isWeb
-  ? 'http://localhost:3000/financeiro'
-  : 'http://192.168.1.11:3000/financeiro'
-
+const baseUrl = 'https://reni-3d-app.onrender.com/financeiro'
 
 const useFinanceiro = create((set, get) => ({
   pendentes: [],

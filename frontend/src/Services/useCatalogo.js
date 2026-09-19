@@ -5,9 +5,7 @@ import api from './api';
 
 const isWeb = Platform.OS === 'web';
 
-const baseUrl = isWeb
-  ? 'http://localhost:3000'
-  : 'http://192.168.1.11:3000';
+const baseUrl = 'https://reni-3d-app.onrender.com'
 
 const useCatalogo = create((set) => ({
 

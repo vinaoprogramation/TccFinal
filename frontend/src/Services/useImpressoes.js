@@ -9,15 +9,9 @@ import api from './api';
 const isWeb = Platform.OS === 'web';
 
 
-const baseUrl = isWeb
-  ? 'http://localhost:3000/impressoes'
-  : 'http://192.168.1.11:3000/impressoes';
+const baseUrl = 'https://reni-3d-app.onrender.com/impressoes'
 
-
-const arquivosUrl = isWeb
-  ? 'http://localhost:3000/arquivos'
-  : 'http://192.168.1.11:3000/arquivos';
-
+const arquivosUrl = 'https://reni-3d-app.onrender.com/arquivos'
 
 const useImpressoes = create((set, get) => ({
 

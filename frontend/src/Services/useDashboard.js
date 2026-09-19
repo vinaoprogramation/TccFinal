@@ -5,11 +5,7 @@ import { Platform } from 'react-native';
 
 import api from './api';
 
-const isWeb = Platform.OS === 'web';
-const baseUrl = isWeb
-  ? 'http://localhost:3000'
-  : 'http://192.168.1.11:3000'
-//'http://10.0.2.2:3000/usuarios'
+const baseUrl = 'https://reni-3d-app.onrender.com'
 
 const useDashboard = create((set, get) => ({
   atualizado: null,

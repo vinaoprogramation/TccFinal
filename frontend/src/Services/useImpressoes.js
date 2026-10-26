@@ -11,8 +11,6 @@ const isWeb = Platform.OS === 'web';
 
 const baseUrl = 'https://reni-3d-app.onrender.com/impressoes'
 
-const arquivosUrl = 'https://reni-3d-app.onrender.com/arquivos'
-
 const useImpressoes = create((set, get) => ({
 
   mostraAdicionar: false,
@@ -286,8 +284,6 @@ const useImpressoes = create((set, get) => ({
 
       console.error(
         "Erro ao reportar falha:",
-        error.response?.data ||
-        error.message ||
         error
       );
 

@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
 
     textoObs: {
 
-        marginTop: -25,
+        marginTop: -15,
 
         marginLeft: 10,
 

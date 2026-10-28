@@ -173,7 +173,7 @@ async function alterarFalha(foto, percentual_falha, consumos, observacao, token,
   // foto is expected to be a Buffer
   form.append('foto', foto, { filename: 'foto.jpg' });
   form.append('percentual_falha', percentual_falha);
-  form.append('consumos', JSON.stringify(consumos));
+  form.append('consumos', consumos);
   if (observacao) form.append('observacao', observacao);
 
   const api = await axios.patch(

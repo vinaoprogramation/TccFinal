@@ -176,7 +176,7 @@ async function alterarFalha(foto, percentual_falha, consumos, observacao, token,
   form.append('consumos', JSON.stringify(consumos));
   if (observacao) form.append('observacao', observacao);
 
-  const api = await axios.post(
+  const api = await axios.patch(
     `${BASE_URL}/impressoes/${Id}/falha`,
     form,
     {

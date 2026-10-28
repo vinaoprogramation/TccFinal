@@ -240,8 +240,6 @@ async function alterarFalha(req, res) {
 
     const foto = req.file? req.file.buffer : null;
 
-    console.log(foto)
-
     const {percentual_falha, consumos, observacao} = req.body;
 
     const token = extractBearerToken(req);

@@ -255,10 +255,9 @@ async function alterarFalha(req, res) {
     return res.json(resultado);
 
   } catch (error) {
-    console.error(error);
 
     return res.status(401).json({
-      error: 'Erro na busca'
+      error: 'Erro ao reportar falha | ', error
     });
   }
 };

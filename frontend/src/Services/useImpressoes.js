@@ -234,7 +234,7 @@ const useImpressoes = create((set, get) => ({
         "consumos",
           {
             material: material,
-            cor: cor,
+            cor: corEnviada,
             gramas_perdidas:
               String(gramasPerdidas)
           }

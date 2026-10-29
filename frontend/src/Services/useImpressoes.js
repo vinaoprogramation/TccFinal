@@ -227,17 +227,17 @@ const useImpressoes = create((set, get) => ({
         String(percentualFalha)
       );
 
+      const corEnviada = cor? cor : "Sem cor"
+
 
       formData.append(
         "consumos",
-        JSON.stringify([
           {
             material: material,
             cor: cor,
             gramas_perdidas:
               String(gramasPerdidas)
           }
-        ])
       );
 
 

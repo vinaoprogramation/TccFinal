@@ -23,6 +23,7 @@ export default function AdicionaImpressao({ navigation }) {
   const setMostraAdicionar = useImpressoes((state) => state.setMostraAdicionar);
   const cadastraImpressao = useImpressoes((state) => state.cadastraImpressao);
   const consultaImpressoes = useImpressoes((state) => state.consultaImpressoes);
+  const setRecarregando = useImpressoes((state) => state.setRecarregando);
 
 
   const maquinas = useMaquinas((state) => state.maquinas);
@@ -78,8 +79,6 @@ export default function AdicionaImpressao({ navigation }) {
   }, [consultaEstoque]);
 
 
-
-
   useEffect(() => {
     console.log(maquinasValor)
   }, [maquinasValor])
@@ -96,6 +95,7 @@ export default function AdicionaImpressao({ navigation }) {
 
 
     if (mostra) {
+      setRecarregando(true)
       Toast.show({
         type: "success",
         text1: "Impressão cadastrada com sucesso!",

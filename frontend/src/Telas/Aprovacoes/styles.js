@@ -101,7 +101,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 20,
     alignSelf: 'center'
-  }
+  },
+  loader: {
+    marginTop: 50,
+    transform: [{ scale: 3 }]
+  },
 });
 
 export default styles;

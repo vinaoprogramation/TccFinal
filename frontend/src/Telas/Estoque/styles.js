@@ -122,7 +122,11 @@ const styles = StyleSheet.create({
  textoRolo:{
   color: 'rgb(41, 135, 223)',
   textAlign: 'center'
- }
+ },
+ loader: {
+  marginTop: 50,
+  transform: [{ scale: 3 }]
+},
 
 });
 

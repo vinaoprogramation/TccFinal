@@ -9,6 +9,7 @@ const baseUrl = 'https://reni-3d-app.onrender.com'
 
 const useAprovacao = create((set, get) => ({
   aprovacoes: [],
+  recarregando: false,
 
   consultaAprovacoes: async () => {
 
@@ -21,6 +22,8 @@ const useAprovacao = create((set, get) => ({
       const answer = await response.data.aprovacoes;
 
       set({aprovacoes: answer})
+
+      get().setRecarregando(false)
 
 
     } catch (error) {
@@ -51,6 +54,16 @@ const useAprovacao = create((set, get) => ({
       console.error('Erro ao DECIDIR:', error);
     }
   },
+
+  setRecarregando: (
+    condicao
+  ) => {
+
+    set({
+      recarregando: condicao
+    });
+
+  }
 
   
 

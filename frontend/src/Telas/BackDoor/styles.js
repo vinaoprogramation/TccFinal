@@ -78,7 +78,11 @@ const styles = StyleSheet.create({
         lineHeight: 25,
         fontSize: 18,
         fontWeight: '500'
-    }
+    },
+    loader: {
+        marginTop: 200,
+        transform: [{ scale: 3 }]
+      },
 
 });
 

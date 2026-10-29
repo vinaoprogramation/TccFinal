@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Toast from 'react-native-toast-message'
 
-import { Text, View, Image, TouchableOpacity, TextInput, ScrollView, FlatList } from "react-native";
+import { Text, View, Image, TouchableOpacity, TextInput, ScrollView, FlatList, ActivityIndicator } from "react-native";
 
 import styles from "./styles";
 
@@ -22,8 +22,8 @@ export default function Aprovacoes({ navigation }) {
   const consultaAprovacoes = useAprovacao((state) => state.consultaAprovacoes);
   const aprovacoes = useAprovacao((state) => state.aprovacoes);
   const decideAprovacao = useAprovacao((state) => state.decideAprovacao);
+  const recarregando = useAprovacao((state) => state.recarregando);
   const resultado = useAprovacao((state) => state.resultado);
-
   const mostraMenu = navegacaoMenu((state) => state.mostraMenu);
   const iniciaMenu = navegacaoMenu((state) => state.iniciaMenu);
 
@@ -55,34 +55,30 @@ export default function Aprovacoes({ navigation }) {
 
 
     if (mostra) {
-      
-      if(status == "APROVADO"){
-        Toast.show({
-        type: "success",
-        text1: "Impressão APROVADA com sucesso!",
-        visibilityTime: 3000
-      })
-      return;
-      }
-      
 
-      if(status == "REJEITADO"){
+      if (status == "APROVADO") {
         Toast.show({
-        type: "success",
-        text1: "Impressão REJEITADA com sucesso!",
-        visibilityTime: 3000
-      })
-      return;
+          type: "success",
+          text1: "Impressão APROVADA com sucesso!",
+          visibilityTime: 3000
+        })
+        return;
       }
-      
+
+
+      if (status == "REJEITADO") {
+        Toast.show({
+          type: "success",
+          text1: "Impressão REJEITADA com sucesso!",
+          visibilityTime: 3000
+        })
+        return;
+      }
+
       setObservacao("");
       consultaAprovacoes();
     }
-
-
   }
-
-
 
   const decide = async (id, status, observacao) => {
     if (!decideAprovacao) {
@@ -102,17 +98,11 @@ export default function Aprovacoes({ navigation }) {
     return true;
   }
 
-
-
-
   const ajustaData = (dataInteira) => {
     const timestamp = dataInteira;
     const dataFormatada = new Date(timestamp);
     return dataFormatada.toLocaleString('pt-BR')
   }
-
-
-
 
   return <>
     <BotaoMenu />
@@ -128,115 +118,126 @@ export default function Aprovacoes({ navigation }) {
 
     </View>
 
-    {aprovacoes.length != 0 ?
-      <>
-        <FlatList
-          data={aprovacoes}
-          keyExtractor={(item) => String(item.id)}
-          ListFooterComponent={() => <>
-            <View style={{ height: 500, width: 100 }}>
+    {
+      recarregando ?
+        <>
+          <ActivityIndicator
+            size="large"
+            color="#00000"
+            style={styles.loader}
+          />
+        </>
 
-            </View>
-          </>}
-          renderItem={({ item }) => <>
-            <View style={styles.item}>
-              <View>
-                <Text style={styles.legenda}>{item.nome_impressao}</Text>
-                <View style={styles.containerInformacoes}>
-                  <Text style={styles.informacoes}>{item.categoria}</Text>
-                  <Text style={styles.informacoes}>{item.cor_filamento}</Text>
-                </View>
+        :
 
-                <View style={styles.containerDetalhes}>
-                  <View style={styles.detalhes}>
-                    <Text style={styles.informacoes}>Solicitante</Text>
-                    <Text style={styles.legenda}>{item.usuario_nome}</Text>
+        <>
+          {aprovacoes.length != 0 ?
+            <>
+              <FlatList
+                data={aprovacoes}
+                keyExtractor={(item) => String(item.id)}
+                ListFooterComponent={() => <>
+                  <View style={{ height: 500, width: 100 }}>
+
                   </View>
+                </>}
+                renderItem={({ item }) => <>
+                  <View style={styles.item}>
+                    <View>
+                      <Text style={styles.legenda}>{item.nome_impressao}</Text>
+                      <View style={styles.containerInformacoes}>
+                        <Text style={styles.informacoes}>{item.categoria}</Text>
+                        <Text style={styles.informacoes}>{item.cor_filamento}</Text>
+                      </View>
+
+                      <View style={styles.containerDetalhes}>
+                        <View style={styles.detalhes}>
+                          <Text style={styles.informacoes}>Solicitante</Text>
+                          <Text style={styles.legenda}>{item.usuario_nome}</Text>
+                        </View>
 
 
-                  <View style={styles.detalhes}>
-                    <Text style={styles.informacoes}>Material</Text>
-                    <Text style={styles.legenda}>{item.material}</Text>
+                        <View style={styles.detalhes}>
+                          <Text style={styles.informacoes}>Material</Text>
+                          <Text style={styles.legenda}>{item.material}</Text>
+                        </View>
+
+                      </View>
+
+
+                      <View style={styles.containerDetalhes}>
+                        <View style={styles.detalhes}>
+                          <Text style={styles.informacoes}>Gramas</Text>
+                          <Text style={styles.legenda}>{item.gramas}</Text>
+                        </View>
+
+
+                        <View style={styles.detalhes}>
+                          <Text style={styles.informacoes}>Valor Final</Text>
+                          <Text style={styles.legenda}>{item.valor_final}</Text>
+                        </View>
+
+                      </View>
+
+
+                      <View style={styles.containerDetalhes}>
+                        <View style={styles.detalhes}>
+                          <Text style={styles.informacoes}>Tempo</Text>
+                          <Text style={styles.legenda}>{item.tempo_impressao}</Text>
+                        </View>
+
+
+
+                        <View style={styles.detalhes}>
+                          <Text style={styles.informacoes}>Criada em </Text>
+                          <Text style={styles.legenda}>{ajustaData(item.impressao_created_at)}</Text>
+                        </View>
+
+                      </View>
+
+
+
+                    </View>
+
+                    <View>
+                      <TextInput
+                        onFocus={setIdValor(item.id)}
+                        value={idValor == item.id ? observacao : null}
+                        onChangeText={idValor == item.id ? setObservacao : null}
+                        placeholder="Observação Opcional"
+                        style={styles.inputObservacao}
+                      />
+
+                      <View style={styles.botoes}>
+                        <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}
+                          onPress={() => {
+                            mostraPop(item.id, "APROVADO", observacao)
+                          }}
+                        >
+                          <Text style={[styles.textoBotao, styles.textoBotaoAprovar]}>APROVAR</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={[styles.botao, styles.botaoNegar]}
+                          onPress={() => {
+                            mostraPop(item.id, "REJEITADO", observacao)
+                          }}
+                        >
+                          <Text style={[styles.textoBotao, styles.textoBotaoNegar]}>REJEITAR</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+
                   </View>
+                </>}
+              />
+            </>
+            :
+            <Text style={styles.nulo}>Não há aprovações pendentes</Text>
 
-                </View>
-
-
-                <View style={styles.containerDetalhes}>
-                  <View style={styles.detalhes}>
-                    <Text style={styles.informacoes}>Gramas</Text>
-                    <Text style={styles.legenda}>{item.gramas}</Text>
-                  </View>
-
-
-                  <View style={styles.detalhes}>
-                    <Text style={styles.informacoes}>Valor Final</Text>
-                    <Text style={styles.legenda}>{item.valor_final}</Text>
-                  </View>
-
-                </View>
-
-
-                <View style={styles.containerDetalhes}>
-                  <View style={styles.detalhes}>
-                    <Text style={styles.informacoes}>Tempo</Text>
-                    <Text style={styles.legenda}>{item.tempo_impressao}</Text>
-                  </View>
-
-
-
-                  <View style={styles.detalhes}>
-                    <Text style={styles.informacoes}>Criada em </Text>
-                    <Text style={styles.legenda}>{ajustaData(item.impressao_created_at)}</Text>
-                  </View>
-
-                </View>
-
-
-
-              </View>
-
-              <View>
-                <TextInput
-                  onFocus={setIdValor(item.id)}
-                  value={idValor == item.id? observacao: null}
-                  onChangeText={idValor == item.id? setObservacao: null}
-                  placeholder="Observação Opcional"
-                  style={styles.inputObservacao}
-                />
-
-                <View style={styles.botoes}>
-                  <TouchableOpacity style={[styles.botao, styles.botaoAprovar]}
-                    onPress={() => {
-                      mostraPop(item.id, "APROVADO", observacao)
-                    }}
-                  >
-                    <Text style={[styles.textoBotao, styles.textoBotaoAprovar]}>APROVAR</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={[styles.botao, styles.botaoNegar]}
-                    onPress={() => {
-                      mostraPop(item.id, "REJEITADO", observacao)
-                    }}
-                  >
-                    <Text style={[styles.textoBotao, styles.textoBotaoNegar]}>REJEITAR</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-
-            </View>
-          </>}
-        />
-      </>
-      :
-      <Text style={styles.nulo}>Não há aprovações pendentes</Text>
-
+          }
+        </>
     }
-
-
-
-
 
   </>
 }

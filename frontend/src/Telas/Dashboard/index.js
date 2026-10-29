@@ -14,6 +14,8 @@ import user from '../../../assets/user.png'
 import BotaoMenu from "../../Reutilizaveis/BotaoMenu";
 import Menu from "../../Reutilizaveis/Menu";
 
+import ShimmerCard from "../../Reutilizaveis/ShimmerCard";
+
 import navegacaoMenu from "../../Services/navegacaoMenu";
 import useDashboard from "../../Services/useDashboard";
 
@@ -58,51 +60,140 @@ export default function Dashboard({ navigation }) {
       <View style={styles.conteudo}>
         <View style={styles.item}>
           <Text style={styles.legenda}>Quantidade de impressões</Text>
-          <Text style={styles.quantidade}>{indicadores?.quantidade_impressoes}</Text>
+          {
+            indicadores?.quantidade_impressoes?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.quantidade_impressoes}</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
+          
         </View>
 
         <View style={styles.item}>
           <Text style={styles.legenda}>Quantidade STL</Text>
-          <Text style={styles.quantidade}>{indicadores?.quantidade_stl}</Text>
+          {
+            !indicadores?.quantidade_stl?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.quantidade_stl}</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
         </View>
 
         <View style={styles.item}>
           <Text style={styles.legenda}>Quantidade Fotos</Text>
-          <Text style={styles.quantidade}>{indicadores?.quantidade_fotos}</Text>
+          {
+            indicadores?.quantidade_fotos?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.quantidade_fotos}</Text>
+            </>
+            :
+            <>
+              <ShimmerCard style={styles.shimmer} />
+            </>
+          }
+          
         </View>
 
         <View style={styles.item}>
           <Text style={styles.legenda}>Projetos Pedagógicos</Text>
-          <Text style={styles.quantidade}>{indicadores?.projetos_pedagogicos}</Text>
+          
+          {
+            indicadores?.projetos_pedagogicos?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.projetos_pedagogicos}</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
         </View>
 
         <View style={styles.item}>
           <Text style={styles.legenda}>Projetos Vendidos</Text>
-          <Text style={styles.quantidade}>{indicadores?.projetos_vendidos}</Text>
+          {
+            indicadores?.projetos_vendidos?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.projetos_vendidos}</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
+          
         </View>
 
         <View style={styles.item}>
           <Text style={styles.legenda}>PLA Consumido</Text>
-          <Text style={styles.quantidade}>{indicadores?.pla_consumido}g</Text>
+          {
+            indicadores?.pla_consumido?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.pla_consumido}g</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
+          
         </View>
 
 
         <View style={styles.item}>
           <Text style={styles.legenda}>TPU Consumido</Text>
-          <Text style={styles.quantidade}>{indicadores?.tpu_consumido}g</Text>
+          {
+            indicadores?.pla_consumido?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.tpu_consumido}g</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
+          
         </View>
 
 
          <View style={styles.item}>
           <Text style={styles.legenda}>Arrecadação</Text>
-          <Text style={styles.quantidade}>R$ {indicadores?.arrecadacao}</Text>
+          {
+            indicadores?.arrecadacao?
+            <>
+              <Text style={styles.quantidade}>R$ {indicadores?.arrecadacao}</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
+          
         </View>
 
 
 
         <View style={styles.item}>
           <Text style={styles.legenda}>Horas Totais</Text>
-          <Text style={styles.quantidade}>{indicadores?.horas_totais}h</Text>
+          {
+            indicadores?.horas_totais?
+            <>
+              <Text style={styles.quantidade}>{indicadores?.horas_totais}h</Text>
+            </>
+            :
+            <>
+              <ShimmerCard/>
+            </>
+          }
+          
         </View>
 
 
@@ -117,5 +208,5 @@ export default function Dashboard({ navigation }) {
 
 
     </ScrollView>
-  </>
+  </> 
 }

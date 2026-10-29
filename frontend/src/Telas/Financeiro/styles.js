@@ -153,7 +153,10 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 35
   },
-
+  loader: {
+    marginTop: 50,
+    transform: [{ scale: 3 }]
+  },
 
 
 });

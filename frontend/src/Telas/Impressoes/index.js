@@ -470,534 +470,539 @@ export default function Impressoes({ navigation }) {
 
     {
       recarregando ?
+        <>
+          <ActivityIndicator
+            size="large"
+            color="#00000"
+            style={styles.loader}
+          />
+        </>
 
-        <ActivityIndicator
-          size="large"
-          color="#00000"
-          style={styles.loader}
-        />
+          :
+        
+        <>
 
-        :
+          <FlatList
 
-        <FlatList
+            data={impressoes}
 
-          data={impressoes}
-
-          keyExtractor={(item) =>
-            String(item.id)
-          }
-
-
-          ListHeaderComponent={() => <>
-
-            <TouchableOpacity
-              style={styles.botaoAdicionar}
-              onPress={() => {
-                setMostraAdicionar();
-              }}
-            >
-
-              <Text
-                style={styles.textoAdicionar}
-              >
-                NOVA IMPRESSÃO
-              </Text>
-
-            </TouchableOpacity>
-
-
-            {
-              impressoes.length == 0 ?
-
-                <View
-                  style={{
-                    marginTop: 50,
-                    marginBottom: 100
-                  }}
-                >
-
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      marginLeft: 20,
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    Não há resultados.
-                  </Text>
-
-                </View>
-
-                :
-
-                null
+            keyExtractor={(item) =>
+              String(item.id)
             }
 
-          </>}
+
+            ListHeaderComponent={() => <>
+
+              <TouchableOpacity
+                style={styles.botaoAdicionar}
+                onPress={() => {
+                  setMostraAdicionar();
+                }}
+              >
+
+                <Text
+                  style={styles.textoAdicionar}
+                >
+                  NOVA IMPRESSÃO
+                </Text>
+
+              </TouchableOpacity>
 
 
-          ListFooterComponent={() => <>
+              {
+                impressoes.length == 0 ?
 
-            <View
-              style={{
-                height: 500,
-                width: 100
-              }}
-            />
+                  <View
+                    style={{
+                      marginTop: 50,
+                      marginBottom: 100
+                    }}
+                  >
 
-          </>}
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        marginLeft: 20,
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Não há resultados.
+                    </Text>
+
+                  </View>
+
+                  :
+
+                  null
+              }
+
+            </>}
 
 
-          renderItem={({ item }) => <>
+            ListFooterComponent={() => <>
 
-            <View style={styles.item}>
+              <View
+                style={{
+                  height: 500,
+                  width: 100
+                }}
+              />
 
-              <View style={styles.topo}>
+            </>}
 
-                <View style={styles.cima}>
+
+            renderItem={({ item }) => <>
+
+              <View style={styles.item}>
+
+                <View style={styles.topo}>
+
+                  <View style={styles.cima}>
+
+                    <Text
+                      style={styles.nomeImpressao}
+                    >
+                      {item.nome_impressao}
+                    </Text>
+
+
+                    <Text
+                      style={styles.statusImpressao}
+                    >
+                      {item.status}
+                    </Text>
+
+                  </View>
+
 
                   <Text
-                    style={styles.nomeImpressao}
+                    style={styles.criadorImpressao}
                   >
-                    {item.nome_impressao}
-                  </Text>
-
-
-                  <Text
-                    style={styles.statusImpressao}
-                  >
-                    {item.status}
+                    por {item.usuario_nome}
                   </Text>
 
                 </View>
 
 
-                <Text
-                  style={styles.criadorImpressao}
-                >
-                  por {item.usuario_nome}
-                </Text>
+                <View style={styles.conteudo}>
 
-              </View>
+                  <View style={styles.informacoes}>
 
-
-              <View style={styles.conteudo}>
-
-                <View style={styles.informacoes}>
-
-                  <Text style={styles.informacao}>
-                    {item.categoria}
-                  </Text>
+                    <Text style={styles.informacao}>
+                      {item.categoria}
+                    </Text>
 
 
-                  <Text style={styles.informacao}>
-                    {item.material}
-                  </Text>
+                    <Text style={styles.informacao}>
+                      {item.material}
+                    </Text>
 
 
-                  <Text style={styles.informacao}>
-                    1 cor(es)
-                  </Text>
+                    <Text style={styles.informacao}>
+                      1 cor(es)
+                    </Text>
 
 
-                  <Text
-                    style={[
-                      item.aprovacao_status
-
-                        ?
-
-                        item.aprovacao_status ==
-                          'APROVADO'
+                    <Text
+                      style={[
+                        item.aprovacao_status
 
                           ?
 
-                          [
-                            styles.informacao,
-                            {
-                              color: 'green',
-                              borderColor: 'green'
-                            }
-                          ]
-
-                          :
-
                           item.aprovacao_status ==
-                            'REJEITADO'
+                            'APROVADO'
 
                             ?
 
                             [
                               styles.informacao,
                               {
-                                color: 'red',
-                                borderColor: 'red'
+                                color: 'green',
+                                borderColor: 'green'
                               }
                             ]
 
                             :
 
-                            styles.informacao
+                            item.aprovacao_status ==
+                              'REJEITADO'
 
-                        :
+                              ?
 
-                        {
-                          display: 'none'
-                        }
-                    ]}
-                  >
-
-                    {
-                      [
-                        item.aprovacao_status ||
-                        null
-                      ]
-                    }
-
-                  </Text>
-
-                </View>
-
-
-                <View style={styles.containerDetalhe}>
-
-                  <View style={styles.detalhes}>
-
-                    <View style={styles.detalhe}>
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        Gramas
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.principalDetalhe
-                        }
-                      >
-                        {item.gramas}g
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        {item.material}
-                      </Text>
-
-                    </View>
-
-
-                    <View style={styles.detalhe}>
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        Tempo
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.principalDetalhe
-                        }
-                      >
-                        {item.tempo_impressao}
-                      </Text>
-
-                    </View>
-
-                  </View>
-
-
-                  <View style={styles.detalhes}>
-
-                    <View style={styles.detalhe}>
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        Maquina
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.principalDetalhe
-                        }
-                      >
-                        {item.maquina}
-                      </Text>
-
-                    </View>
-
-
-                    <View style={styles.detalhe}>
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        Valor Final
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.principalDetalhe
-                        }
-                      >
-                        {item.valor_final}
-                      </Text>
-
-                    </View>
-
-                  </View>
-
-
-                  <View style={styles.detalhes}>
-
-                    <View style={styles.detalhe}>
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        Criado por
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.principalDetalhe
-                        }
-                      >
-                        {item.usuario_nome}
-                      </Text>
-
-                    </View>
-
-
-                    <View style={styles.detalhe}>
-
-                      <Text
-                        style={
-                          styles.informacaoDetalhe
-                        }
-                      >
-                        Comprador
-                      </Text>
-
-
-                      <Text
-                        style={
-                          styles.principalDetalhe
-                        }
-                      >
-                        {
-                          [
-                            item.comprador ||
-                            "A ver"
-                          ]
-                        }
-                      </Text>
-
-                    </View>
-
-                  </View>
-
-                </View>
-
-              </View>
-
-
-              <View style={styles.footer}>
-
-                {
-                  item.status == 'Concluida' ?
-                    <>
-                      <View style={styles.containerCaixas}>
-
-
-                        <TouchableOpacity
-                          style={styles.caixa}
-
-                          disabled={enviandoArquivo}
-
-                          onPress={() =>
-                            selecionaStl(item)
-                          }
-                        >
-
-                          {
-                            enviandoArquivo ?
-
-                              <ActivityIndicator
-                                size="small"
-                              />
+                              [
+                                styles.informacao,
+                                {
+                                  color: 'red',
+                                  borderColor: 'red'
+                                }
+                              ]
 
                               :
 
-                              <Text
-                                style={styles.textoCaixa}
-                              >
-                                STL
-                              </Text>
-                          }
+                              styles.informacao
 
-                        </TouchableOpacity>
-
-
-                        <TouchableOpacity
-                          style={styles.caixa}
-
-                          disabled={enviandoArquivo}
-
-                          onPress={() =>
-                            selecionaMidias(item)
-                          }
-                        >
+                          :
 
                           {
-                            enviandoArquivo ?
-
-                              <ActivityIndicator
-                                size="small"
-                              />
-
-                              :
-
-                              <Text
-                                style={styles.textoCaixa}
-                              >
-                                FOTOS E VÍDEOS
-                              </Text>
+                            display: 'none'
                           }
+                      ]}
+                    >
 
-                        </TouchableOpacity>
+                      {
+                        [
+                          item.aprovacao_status ||
+                          null
+                        ]
+                      }
+
+                    </Text>
+
+                  </View>
 
 
-                      </View>
-                    </>
-                    :
-                    null
-                }
+                  <View style={styles.containerDetalhe}>
 
+                    <View style={styles.detalhes}>
 
-
-                <View style={styles.acoes}>
-
-
-                  {
-                    item.aprovacao_status &&
-                      (
-                        item.aprovacao_status ==
-                        'REJEITADO' ||
-
-                        item.aprovacao_status ==
-                        'PENDENTE'
-                      )
-
-                      ?
-
-                      null
-
-                      :
-
-                      <TouchableOpacity
-                        style={
-                          styles.botaoConcluir
-                        }
-
-                        onPress={() => {
-
-                          setMostraConcluir();
-
-                          setaId(item.id);
-
-                        }}
-                      >
+                      <View style={styles.detalhe}>
 
                         <Text
                           style={
-                            styles.textoBotaoConcluir
+                            styles.informacaoDetalhe
                           }
                         >
-                          CONCLUIR
+                          Gramas
                         </Text>
 
-                      </TouchableOpacity>
+
+                        <Text
+                          style={
+                            styles.principalDetalhe
+                          }
+                        >
+                          {item.gramas}g
+                        </Text>
+
+
+                        <Text
+                          style={
+                            styles.informacaoDetalhe
+                          }
+                        >
+                          {item.material}
+                        </Text>
+
+                      </View>
+
+
+                      <View style={styles.detalhe}>
+
+                        <Text
+                          style={
+                            styles.informacaoDetalhe
+                          }
+                        >
+                          Tempo
+                        </Text>
+
+
+                        <Text
+                          style={
+                            styles.principalDetalhe
+                          }
+                        >
+                          {item.tempo_impressao}
+                        </Text>
+
+                      </View>
+
+                    </View>
+
+
+                    <View style={styles.detalhes}>
+
+                      <View style={styles.detalhe}>
+
+                        <Text
+                          style={
+                            styles.informacaoDetalhe
+                          }
+                        >
+                          Maquina
+                        </Text>
+
+
+                        <Text
+                          style={
+                            styles.principalDetalhe
+                          }
+                        >
+                          {item.maquina}
+                        </Text>
+
+                      </View>
+
+
+                      <View style={styles.detalhe}>
+
+                        <Text
+                          style={
+                            styles.informacaoDetalhe
+                          }
+                        >
+                          Valor Final
+                        </Text>
+
+
+                        <Text
+                          style={
+                            styles.principalDetalhe
+                          }
+                        >
+                          {item.valor_final}
+                        </Text>
+
+                      </View>
+
+                    </View>
+
+
+                    <View style={styles.detalhes}>
+
+                      <View style={styles.detalhe}>
+
+                        <Text
+                          style={
+                            styles.informacaoDetalhe
+                          }
+                        >
+                          Criado por
+                        </Text>
+
+
+                        <Text
+                          style={
+                            styles.principalDetalhe
+                          }
+                        >
+                          {item.usuario_nome}
+                        </Text>
+
+                      </View>
+
+
+                      <View style={styles.detalhe}>
+
+                        <Text
+                          style={
+                            styles.informacaoDetalhe
+                          }
+                        >
+                          Comprador
+                        </Text>
+
+
+                        <Text
+                          style={
+                            styles.principalDetalhe
+                          }
+                        >
+                          {
+                            [
+                              item.comprador ||
+                              "A ver"
+                            ]
+                          }
+                        </Text>
+
+                      </View>
+
+                    </View>
+
+                  </View>
+
+                </View>
+
+
+                <View style={styles.footer}>
+
+                  {
+                    item.status == 'Concluida' ?
+                      <>
+                        <View style={styles.containerCaixas}>
+
+
+                          <TouchableOpacity
+                            style={styles.caixa}
+
+                            disabled={enviandoArquivo}
+
+                            onPress={() =>
+                              selecionaStl(item)
+                            }
+                          >
+
+                            {
+                              enviandoArquivo ?
+
+                                <ActivityIndicator
+                                  size="small"
+                                />
+
+                                :
+
+                                <Text
+                                  style={styles.textoCaixa}
+                                >
+                                  STL
+                                </Text>
+                            }
+
+                          </TouchableOpacity>
+
+
+                          <TouchableOpacity
+                            style={styles.caixa}
+
+                            disabled={enviandoArquivo}
+
+                            onPress={() =>
+                              selecionaMidias(item)
+                            }
+                          >
+
+                            {
+                              enviandoArquivo ?
+
+                                <ActivityIndicator
+                                  size="small"
+                                />
+
+                                :
+
+                                <Text
+                                  style={styles.textoCaixa}
+                                >
+                                  FOTOS E VÍDEOS
+                                </Text>
+                            }
+
+                          </TouchableOpacity>
+
+
+                        </View>
+                      </>
+                      :
+                      null
                   }
 
 
-                  <TouchableOpacity
-                    style={
-                      styles.botaoRegistrarFalha
+
+                  <View style={styles.acoes}>
+
+
+                    {
+                      item.aprovacao_status &&
+                        (
+                          item.aprovacao_status ==
+                          'REJEITADO' ||
+
+                          item.aprovacao_status ==
+                          'PENDENTE'
+                        )
+
+                        ?
+
+                        null
+
+                        :
+
+                        <TouchableOpacity
+                          style={
+                            styles.botaoConcluir
+                          }
+
+                          onPress={() => {
+
+                            setMostraConcluir();
+
+                            setaId(item.id);
+
+                          }}
+                        >
+
+                          <Text
+                            style={
+                              styles.textoBotaoConcluir
+                            }
+                          >
+                            CONCLUIR
+                          </Text>
+
+                        </TouchableOpacity>
                     }
 
-                    onPress={() => {
 
-                      setaId(item.id);
-
-                      setMostraFalha();
-
-                    }}
-                  >
-
-                    <Text
+                    <TouchableOpacity
                       style={
-                        styles.textoBotaoRegistrarFalha
+                        styles.botaoRegistrarFalha
                       }
+
+                      onPress={() => {
+
+                        setaId(item.id);
+
+                        setMostraFalha();
+
+                      }}
                     >
-                      REGISTRAR FALHA
-                    </Text>
 
-                  </TouchableOpacity>
+                      <Text
+                        style={
+                          styles.textoBotaoRegistrarFalha
+                        }
+                      >
+                        REGISTRAR FALHA
+                      </Text>
+
+                    </TouchableOpacity>
 
 
-                  <TouchableOpacity
-                    style={
-                      styles.botaoLixeira
-                    }
+                    <TouchableOpacity
+                      style={
+                        styles.botaoLixeira
+                      }
 
-                    onPress={() => {
+                      onPress={() => {
 
-                      setMostraDeletar();
+                        setMostraDeletar();
 
-                      setaId(item.id);
+                        setaId(item.id);
 
-                    }}
-                  >
+                      }}
+                    >
 
-                    <Image
-                      source={trashcan}
-                      style={styles.lixeira}
-                    />
+                      <Image
+                        source={trashcan}
+                        style={styles.lixeira}
+                      />
 
-                  </TouchableOpacity>
+                    </TouchableOpacity>
 
+
+                  </View>
 
                 </View>
 
               </View>
 
-            </View>
+            </>}
 
-          </>}
+          />
+        </>
 
-        />
-
+      
     }
 
   </>

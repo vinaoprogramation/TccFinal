@@ -17,11 +17,13 @@ export default function AvisoDelete({ navigation }) {
   const setMostraDeletar = useImpressoes((state) => state.setMostraDeletar);
   const deletaImpressao = useImpressoes((state) => state.deletaImpressao);
   const consultaImpressoes = useImpressoes((state) => state.consultaImpressoes);
+  const setRecarregando = useImpressoes((state) => state.setRecarregando);
 
    const mostraPop = async (id) => {
      const mostra = await deletaImpressao(id);
      
      if (mostra) {
+      setRecarregando(true)
        Toast.show({
          type: "success",
          text1: "Impressão deletada com sucesso!",

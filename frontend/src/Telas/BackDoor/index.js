@@ -179,7 +179,13 @@ export default function BackDoor({ navigation }) {
         </View>
       </>
       :
-      <ActivityIndicator />
+      <>
+          <ActivityIndicator
+            size="large"
+            color="#00000"
+            style={styles.loader}
+          />
+      </>
     }
     <>
 

@@ -42,6 +42,14 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
     backgroundColor: 'rgb(41, 135, 223)',
     borderRadius: 10
+  },
+  loader: {
+    marginTop: 50,
+    transform: [{ scale: 3 }]
+  },
+  shimmer:{
+    width: 100,
+    paddingVertical: 50
   }
 });
 

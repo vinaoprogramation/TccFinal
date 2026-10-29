@@ -155,7 +155,11 @@ const styles = StyleSheet.create({
   botaoLixeira: {
     verticalAlign: 'middle',
     marginTop: 10
-  }
+  },
+  loader: {
+    marginTop: 50,
+    transform: [{ scale: 3 }]
+  },
 }
 );
 

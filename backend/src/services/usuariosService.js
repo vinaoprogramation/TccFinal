@@ -16,15 +16,16 @@ async function atualizarPerfil(token, body) {
 async function enviaAvatar(token, foto) {
   const form = new FormData();
   
-  form.append('foto', foto.buffer, {
-    filename: foto.originalname,
-    contentType: foto.mimetype
+  // Tente mudar 'foto' para 'file' (ou 'avatar', dependendo da doc da sua API externa)
+  form.append('file', foto.buffer, { 
+    filename: foto.originalname || 'avatar.jpg', // Adiciona um fallback seguro
+    contentType: foto.mimetype || 'image/jpeg'
   });
 
   const apiResponse = await axios.post(`${BASE_URL}/usuarios/avatar`, form, { 
     headers: { 
       Authorization: `Bearer ${token}`,
-      ...form.getHeaders() 
+      ...form.getHeaders()
     } 
   });
   

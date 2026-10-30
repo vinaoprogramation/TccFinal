@@ -30,7 +30,13 @@ async function atualizarPerfil(req, res) {
 async function enviaAvatar(req, res) {
   try {
     const token = req.headers.authorization?.split(' ')[1];
-    const { foto } = req.body
+  
+    const foto = req.file; 
+    
+    if (!foto) {
+      return res.status(400).json({ error: 'Nenhum arquivo enviado' });
+    }
+
     const resultado = await usuariosService.enviaAvatar(token, foto);
     return res.json(resultado);
   } catch (error) {

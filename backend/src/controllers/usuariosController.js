@@ -31,6 +31,8 @@ async function enviaAvatar(req, res) {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     const foto = req.file? req.file.buffer : null;
+    console.log(req.file)
+    console.log(req.body)
     const resultado = await usuariosService.enviaAvatar(token, foto);
     return res.json(resultado);
   } catch (error) {

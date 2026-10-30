@@ -24,7 +24,7 @@ router.get('/busca/falha/:id/foto', buscaFalhaFoto);
 router.post('/cadastrar', cadastrarImpressao);
 router.delete('/deletar/:id', deletarImpressao);
 router.patch('/altera/status/:id', alterarStatus);
-router.patch('/altera/falha/:id', upload.single('foto'), alterarFalha);
+router.patch('/altera/falha/:id', alterarFalha);
 
 module.exports = router;
 

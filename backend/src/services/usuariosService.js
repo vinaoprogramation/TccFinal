@@ -12,8 +12,10 @@ async function atualizarPerfil(token, body) {
   return api.data;
 }
 
-async function enviaAvatar(token, body) {
-  const api = await axios.post(`${BASE_URL}/usuarios/avatar`, body, { headers: { Authorization: `Bearer ${token}` } });
+async function enviaAvatar(token, foto) {
+  const form = new FormData();    
+  form.append('foto', foto, { filename: 'foto.jpg' });
+  const api = await axios.post(`${BASE_URL}/usuarios/avatar`, form, { headers: { Authorization: `Bearer ${token}` } });
   return api.data;
 }
 

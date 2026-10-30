@@ -1,5 +1,6 @@
 const axios = require('axios');
 const BASE_URL = 'https://api-ip3d.mbinfoseg.com.br/api';
+const FormData = require('form-data');
 
 async function perfil(token) {
   const api = await axios.get(`${BASE_URL}/usuarios/perfil`, { headers: { Authorization: `Bearer ${token}` } });
@@ -13,9 +14,7 @@ async function atualizarPerfil(token, body) {
 }
 
 async function enviaAvatar(token, foto) {
-  const form = new FormData();    
-  form.append('foto', foto, { filename: 'foto.jpg' });
-  const api = await axios.post(`${BASE_URL}/usuarios/avatar`, form, { headers: { Authorization: `Bearer ${token}` } });
+  const api = await axios.post(`${BASE_URL}/usuarios/avatar`, foto, { headers: { Authorization: `Bearer ${token}` } });
   return api.data;
 }
 

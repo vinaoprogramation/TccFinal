@@ -16,9 +16,8 @@ async function atualizarPerfil(token, body) {
 async function enviaAvatar(token, foto) {
   const form = new FormData();
   
-  // Tente mudar 'foto' para 'file' (ou 'avatar', dependendo da doc da sua API externa)
-  form.append('file', foto.buffer, { 
-    filename: foto.originalname || 'avatar.jpg', // Adiciona um fallback seguro
+  form.append('avatar', foto.buffer, { 
+    filename: foto.originalname || 'avatar.jpg',
     contentType: foto.mimetype || 'image/jpeg'
   });
 
